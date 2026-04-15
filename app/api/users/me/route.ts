@@ -8,6 +8,7 @@ const bodySchema = z.object({
   name: z.string().min(2),
   email: z.string().email().optional(),
   role: z.enum(['user', 'owner']).default('user'),
+  plan: z.enum(['gratuit', 'explorer', 'premium', 'starter', 'pro', 'business']).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -33,6 +34,7 @@ export async function POST(req: NextRequest) {
     email,
     name: parsed.data.name,
     role: parsed.data.role,
+    plan: parsed.data.plan,
     createdAt: existing?.createdAt ?? now,
   });
 
