@@ -9,3 +9,5 @@ npm install
 cp .env.example .env.local
 npm run dev
 ```
+
+Update `.env.local` with your real Firebase values before running the app.
