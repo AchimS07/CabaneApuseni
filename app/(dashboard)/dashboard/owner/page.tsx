@@ -25,7 +25,7 @@ export default async function OwnerDashboardPage() {
   const publishedCabins = cabins.filter((c) => c.published).length;
   const pendingBookings = bookings.filter((b) => b.status === 'pending').length;
 
-  const today = new Date().toISOString().split('T')[0]!;
+  const today = new Date().toISOString().split('T')[0];
   const upcomingStays = bookings.filter(
     (b) => b.status === 'confirmed' && b.checkIn >= today,
   ).length;

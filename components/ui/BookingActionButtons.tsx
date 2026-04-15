@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { confirmBookingAction, rejectBookingAction } from '@/modules/bookings/actions';
 
+const GENERIC_ERROR = 'A apărut o eroare. Încearcă din nou.';
+
 interface BookingActionButtonsProps {
   bookingId: string;
 }
@@ -29,7 +31,7 @@ export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
       }
       router.refresh();
     } catch {
-      setError('A apărut o eroare. Încearcă din nou.');
+      setError(GENERIC_ERROR);
     } finally {
       setLoadingConfirm(false);
     }
@@ -51,7 +53,7 @@ export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
       }
       router.refresh();
     } catch {
-      setError('A apărut o eroare. Încearcă din nou.');
+      setError(GENERIC_ERROR);
     } finally {
       setLoadingReject(false);
     }

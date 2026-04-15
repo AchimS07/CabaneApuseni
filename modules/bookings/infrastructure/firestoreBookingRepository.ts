@@ -49,7 +49,7 @@ export async function listBookingsByCabinIds(
 ): Promise<Booking[]> {
   if (cabinIds.length === 0) return [];
   const db = getAdminFirestore();
-  // Firestore IN supports up to 30 values; slice defensively for MVP
+  // Firestore IN supports up to 30 values per query; slice defensively for MVP
   const ids = cabinIds.slice(0, 30);
   const snapshot = await db
     .collection(COLLECTION)
