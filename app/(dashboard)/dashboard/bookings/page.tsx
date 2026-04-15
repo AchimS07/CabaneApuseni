@@ -1,59 +1,103 @@
 import { requireAuth } from '@/lib/auth/authorization';
 import { getUserBookings } from '@/modules/bookings/application/bookingService';
+import { StatusBadge } from '@/components/ui/StatusBadge';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { CancelBookingButton } from '@/components/ui/CancelBookingButton';
 import type { Metadata } from 'next';
+import type { BookingStatus } from '@/modules/bookings/domain/types';
 
 export const metadata: Metadata = { title: 'Rezervările mele' };
 export const dynamic = 'force-dynamic';
 
-const STATUS_LABEL: Record<string, string> = {
-  pending: 'În așteptare',
-  confirmed: 'Confirmată',
-  cancelled: 'Anulată',
-  completed: 'Finalizată',
-};
+/** Statuses that can still be cancelled by the user */
+const CANCELLABLE: BookingStatus[] = ['pending', 'confirmed'];
 
-const STATUS_COLOR: Record<string, string> = {
-  pending: 'bg-yellow-100 text-yellow-800',
-  confirmed: 'bg-green-100 text-green-800',
-  cancelled: 'bg-red-100 text-red-800',
-  completed: 'bg-gray-100 text-gray-700',
-};
+interface Props {
+  searchParams: Promise<{ success?: string }>;
+}
 
-export default async function BookingsPage() {
+export default async function BookingsPage({ searchParams }: Props) {
   const session = await requireAuth();
-  const result = await getUserBookings(session);
+  const [result, params] = await Promise.all([
+    getUserBookings(session),
+    searchParams,
+  ]);
   const bookings = result.ok ? result.data : [];
+  const showSuccess = params.success === '1';
 
   return (
     <div>
       <h1 className="mb-6 text-2xl font-bold">Rezervările mele</h1>
 
-      {bookings.length === 0 ? (
-        <div className="rounded-xl border p-10 text-center text-gray-500">
-          <p>Nu ai nicio rezervare.</p>
-          <a href="/cabins" className="mt-4 inline-block text-indigo-600 hover:underline">
-            Explorează cabane
-          </a>
+      {/* Success notification after a new booking */}
+      {showSuccess && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="mb-6 flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"
+        >
+          <span aria-hidden="true" className="mt-0.5 shrink-0 text-base">✅</span>
+          <p>
+            <strong>Rezervare trimisă cu succes!</strong> Vei fi contactat pentru
+            confirmare.
+          </p>
         </div>
+      )}
+
+      {bookings.length === 0 ? (
+        <EmptyState
+          icon="📅"
+          title="Nu ai nicio rezervare"
+          description="Explorează cabanele disponibile și fă prima ta rezervare."
+          action={{ label: 'Explorează cabane', href: '/cabins' }}
+        />
       ) : (
-        <ul className="divide-y rounded-xl border">
-          {bookings.map((b) => (
-            <li key={b.id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="font-semibold">{b.cabin.title}</p>
-                <p className="text-sm text-gray-500">
-                  {b.checkIn} → {b.checkOut} · {b.guestCount} persoane
-                </p>
-                <p className="text-sm font-medium text-indigo-700">{b.totalPrice} RON</p>
-              </div>
-              <span
-                className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${STATUS_COLOR[b.status] ?? ''}`}
-              >
-                {STATUS_LABEL[b.status] ?? b.status}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <div className="overflow-x-auto rounded-xl border">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 text-left text-gray-600">
+              <tr>
+                <th className="px-4 py-3 font-medium">Cabană</th>
+                <th className="px-4 py-3 font-medium">Perioadă</th>
+                <th className="px-4 py-3 font-medium">Oaspeți</th>
+                <th className="px-4 py-3 font-medium">Total</th>
+                <th className="px-4 py-3 font-medium">Status</th>
+                <th className="px-4 py-3 font-medium">
+                  <span className="sr-only">Acțiuni</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {bookings.map((b) => (
+                <tr key={b.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-4 font-medium text-gray-900">
+                    {b.cabin.title}
+                  </td>
+                  <td className="px-4 py-4 text-gray-600">
+                    <span className="whitespace-nowrap">
+                      {b.checkIn}
+                    </span>
+                    <span className="mx-1 text-gray-400">→</span>
+                    <span className="whitespace-nowrap">
+                      {b.checkOut}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4 text-gray-600">{b.guestCount}</td>
+                  <td className="px-4 py-4 font-medium text-indigo-700">
+                    {b.totalPrice} RON
+                  </td>
+                  <td className="px-4 py-4">
+                    <StatusBadge status={b.status} />
+                  </td>
+                  <td className="px-4 py-4">
+                    {CANCELLABLE.includes(b.status) && (
+                      <CancelBookingButton bookingId={b.id} />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

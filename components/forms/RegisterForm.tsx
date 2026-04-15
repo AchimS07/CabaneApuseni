@@ -7,7 +7,11 @@ import { Input } from '@/components/ui/Input';
 import { register } from '@/modules/auth/application/authService';
 import { registerSchema } from '@/lib/validation/schemas';
 
-export default function RegisterForm() {
+interface RegisterFormProps {
+  redirectTo?: string;
+}
+
+export default function RegisterForm({ redirectTo = '/dashboard' }: RegisterFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState('');
@@ -38,7 +42,8 @@ export default function RegisterForm() {
     setLoading(true);
     try {
       await register(parsed.data.email, parsed.data.password, parsed.data.name);
-      router.push('/dashboard');
+      router.push(redirectTo);
+      router.refresh();
     } catch (err) {
       setGlobalError(
         err instanceof Error ? err.message : 'Înregistrare eșuată. Încercați din nou.',
@@ -89,7 +94,7 @@ export default function RegisterForm() {
         error={fieldErrors.confirmPassword}
       />
 
-      <Button type="submit" loading={loading} className="w-full mt-2">
+      <Button type="submit" loading={loading} className="mt-2 w-full">
         Creează cont
       </Button>
     </form>

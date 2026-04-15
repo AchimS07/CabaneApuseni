@@ -3,11 +3,20 @@ import LoginForm from '@/components/forms/LoginForm';
 
 export const metadata: Metadata = { title: 'Autentificare' };
 
-export default function LoginPage() {
+interface Props {
+  searchParams: Promise<{ redirect?: string }>;
+}
+
+export default async function LoginPage({ searchParams }: Props) {
+  const { redirect } = await searchParams;
+  // Sanitize – only allow relative internal paths
+  const redirectTo =
+    redirect && redirect.startsWith('/') ? redirect : '/dashboard';
+
   return (
     <>
       <h1 className="mb-6 text-center text-2xl font-bold">Autentificare</h1>
-      <LoginForm />
+      <LoginForm redirectTo={redirectTo} />
       <p className="mt-4 text-center text-sm text-gray-500">
         Nu ai cont?{' '}
         <a href="/register" className="font-medium text-indigo-600 hover:underline">

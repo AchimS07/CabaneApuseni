@@ -7,7 +7,11 @@ import { Input } from '@/components/ui/Input';
 import { login } from '@/modules/auth/application/authService';
 import { loginSchema } from '@/lib/validation/schemas';
 
-export default function LoginForm() {
+interface LoginFormProps {
+  redirectTo?: string;
+}
+
+export default function LoginForm({ redirectTo = '/dashboard' }: LoginFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState('');
@@ -34,7 +38,8 @@ export default function LoginForm() {
     setLoading(true);
     try {
       await login(parsed.data.email, parsed.data.password);
-      router.push('/dashboard');
+      router.push(redirectTo);
+      router.refresh();
     } catch (err) {
       setGlobalError(
         err instanceof Error ? err.message : 'Autentificare eșuată. Verificați credențialele.',
@@ -69,7 +74,7 @@ export default function LoginForm() {
         error={fieldErrors.password}
       />
 
-      <Button type="submit" loading={loading} className="w-full mt-2">
+      <Button type="submit" loading={loading} className="mt-2 w-full">
         Autentificare
       </Button>
     </form>
