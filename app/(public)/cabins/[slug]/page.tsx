@@ -89,15 +89,7 @@ export default async function CabinDetailPage({ params }: Props) {
                     key={url}
                     src={url}
                     alt={`${cabin.title} – imagine ${i + 2}`}
-                    className={`h-full w-full object-cover ${
-                      allImages.length >= 5
-                        ? allImages.slice(1, 5).length === 4
-                          ? i < 2
-                            ? 'col-span-1'
-                            : 'col-span-1'
-                          : ''
-                        : ''
-                    }`}
+                    className="h-full w-full object-cover"
                   />
                 ))}
               </div>

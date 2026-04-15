@@ -58,3 +58,14 @@
            focus-visible:ring-forest-500 focus-visible:ring-offset-2;
   }
 }
+
+@layer utilities {
+  /* Hide scrollbar cross-browser (no plugin needed) */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
