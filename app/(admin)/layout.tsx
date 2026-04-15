@@ -35,6 +35,14 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               </Link>
             </li>
             <li>
+              <Link
+                href="/admin/bookings"
+                className="text-gray-700 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+              >
+                Rezervări
+              </Link>
+            </li>
+            <li>
               <LogoutButton />
             </li>
           </ul>
@@ -67,6 +75,14 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                   className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   Cabane
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin/bookings"
+                  className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  Rezervări
                 </Link>
               </li>
               <li className="pt-2 border-t mt-2">

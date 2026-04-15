@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { Cabin } from '@/modules/cabins/domain/types';
 import { AvailableCabinsMap } from './AvailableCabinsMap';
@@ -13,9 +13,109 @@ interface Props {
 
 export function CabinsViewSwitcher({ cabins }: Props) {
   const [view, setView] = useState<View>('list');
+  const [search, setSearch] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [minGuests, setMinGuests] = useState('');
+
+  const maxPriceInCabins = useMemo(
+    () => Math.max(...cabins.map((c) => c.pricePerNight), 0),
+    [cabins],
+  );
+
+  const filtered = useMemo(() => {
+    return cabins.filter((c) => {
+      const q = search.trim().toLowerCase();
+      if (q && !c.title.toLowerCase().includes(q) && !c.location.toLowerCase().includes(q)) {
+        return false;
+      }
+      if (maxPrice && c.pricePerNight > Number(maxPrice)) return false;
+      if (minGuests && c.maxGuests < Number(minGuests)) return false;
+      return true;
+    });
+  }, [cabins, search, maxPrice, minGuests]);
+
+  const hasFilters = search || maxPrice || minGuests;
+
+  function clearFilters() {
+    setSearch('');
+    setMaxPrice('');
+    setMinGuests('');
+  }
 
   return (
     <>
+      {/* Filter bar */}
+      <div className="mb-6 rounded-xl border bg-gray-50 px-4 py-4">
+        <div className="flex flex-wrap items-end gap-3">
+          {/* Text search */}
+          <div className="flex flex-1 min-w-[160px] flex-col gap-1">
+            <label htmlFor="cabin-search" className="text-xs font-medium text-gray-600">
+              Caută după nume sau locație
+            </label>
+            <input
+              id="cabin-search"
+              type="search"
+              placeholder="Arieșeni, cabana…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Max price */}
+          <div className="flex min-w-[120px] flex-col gap-1">
+            <label htmlFor="cabin-price" className="text-xs font-medium text-gray-600">
+              Preț max (RON/noapte)
+            </label>
+            <input
+              id="cabin-price"
+              type="number"
+              min={0}
+              max={maxPriceInCabins}
+              placeholder={maxPriceInCabins ? String(maxPriceInCabins) : '—'}
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {/* Min guests */}
+          <div className="flex min-w-[120px] flex-col gap-1">
+            <label htmlFor="cabin-guests" className="text-xs font-medium text-gray-600">
+              Oaspeți minim
+            </label>
+            <input
+              id="cabin-guests"
+              type="number"
+              min={1}
+              max={20}
+              placeholder="1"
+              value={minGuests}
+              onChange={(e) => setMinGuests(e.target.value)}
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          {hasFilters && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="self-end rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Resetează
+            </button>
+          )}
+        </div>
+
+        {hasFilters && (
+          <p className="mt-2 text-xs text-gray-500">
+            {filtered.length === 0
+              ? 'Nicio cabană nu corespunde filtrelor selectate.'
+              : `${filtered.length} ${filtered.length === 1 ? 'cabană găsită' : 'cabane găsite'}`}
+          </p>
+        )}
+      </div>
+
       {/* View toggle */}
       <div className="mb-6 flex items-center gap-1 rounded-full border border-gray-200 bg-gray-100 p-1 w-fit">
         <button
@@ -71,62 +171,77 @@ export function CabinsViewSwitcher({ cabins }: Props) {
       </div>
 
       {/* Map view */}
-      {view === 'map' && <AvailableCabinsMap cabins={cabins} />}
+      {view === 'map' && <AvailableCabinsMap cabins={filtered} />}
 
       {/* List view */}
       {view === 'list' && (
-        <ul
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          aria-label="Lista cabane disponibile"
-        >
-          {cabins.map((cabin) => (
-            <li key={cabin.id}>
-              <Link
-                href={`/cabins/${cabin.slug}`}
-                className="group block overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                aria-label={`${cabin.title}, ${cabin.location}, ${cabin.pricePerNight} RON pe noapte`}
+        <>
+          {filtered.length === 0 ? (
+            <p className="py-12 text-center text-sm text-gray-500">
+              Nicio cabană nu corespunde filtrelor selectate.{' '}
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="font-medium text-indigo-600 hover:underline"
               >
-                {cabin.imageUrls[0] ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={cabin.imageUrls[0]}
-                    alt=""
-                    aria-hidden="true"
-                    className="h-48 w-full object-cover transition duration-300 group-hover:scale-105"
-                  />
-                ) : (
-                  <div
-                    className="flex h-48 items-center justify-center bg-indigo-50 text-5xl"
-                    aria-hidden="true"
+                Resetează filtrele
+              </button>
+            </p>
+          ) : (
+            <ul
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              aria-label="Lista cabane disponibile"
+            >
+              {filtered.map((cabin) => (
+                <li key={cabin.id}>
+                  <Link
+                    href={`/cabins/${cabin.slug}`}
+                    className="group block overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    aria-label={`${cabin.title}, ${cabin.location}, ${cabin.pricePerNight} RON pe noapte`}
                   >
-                    🏔️
-                  </div>
-                )}
-                <div className="p-4">
-                  <h2 className="font-semibold text-gray-900 group-hover:text-indigo-700">
-                    {cabin.title}
-                  </h2>
-                  <p className="mt-1 flex items-center gap-1 text-sm text-gray-500">
-                    <span aria-hidden="true">📍</span>
-                    {cabin.location}
-                  </p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <p className="font-semibold text-indigo-700">
-                      {cabin.pricePerNight}{' '}
-                      <span className="text-xs font-normal text-gray-500">RON / noapte</span>
-                    </p>
-                    <span className="text-xs text-gray-400">
-                      👥 max {cabin.maxGuests}
-                    </span>
-                  </div>
-                  <span className="mt-3 inline-block text-sm font-medium text-indigo-600 group-hover:underline">
-                    Vezi detalii →
-                  </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+                    {cabin.imageUrls[0] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={cabin.imageUrls[0]}
+                        alt=""
+                        aria-hidden="true"
+                        className="h-48 w-full object-cover transition duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div
+                        className="flex h-48 items-center justify-center bg-indigo-50 text-5xl"
+                        aria-hidden="true"
+                      >
+                        🏔️
+                      </div>
+                    )}
+                    <div className="p-4">
+                      <h2 className="font-semibold text-gray-900 group-hover:text-indigo-700">
+                        {cabin.title}
+                      </h2>
+                      <p className="mt-1 flex items-center gap-1 text-sm text-gray-500">
+                        <span aria-hidden="true">📍</span>
+                        {cabin.location}
+                      </p>
+                      <div className="mt-3 flex items-center justify-between">
+                        <p className="font-semibold text-indigo-700">
+                          {cabin.pricePerNight}{' '}
+                          <span className="text-xs font-normal text-gray-500">RON / noapte</span>
+                        </p>
+                        <span className="text-xs text-gray-400">
+                          👥 max {cabin.maxGuests}
+                        </span>
+                      </div>
+                      <span className="mt-3 inline-block text-sm font-medium text-indigo-600 group-hover:underline">
+                        Vezi detalii →
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </>
   );

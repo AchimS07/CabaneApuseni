@@ -43,6 +43,7 @@ export default async function AdminPage() {
           label="Rezervări totale"
           value={bookingCount}
           icon="📅"
+          href="/admin/bookings"
         />
         <KpiCard
           label="În așteptare"
@@ -50,12 +51,14 @@ export default async function AdminPage() {
           icon="⏳"
           highlight={pendingCount > 0}
           variant="warning"
+          href="/admin/bookings?status=pending"
         />
         <KpiCard
           label="Confirmate"
           value={confirmedCount}
           icon="✅"
           variant="success"
+          href="/admin/bookings?status=confirmed"
         />
       </div>
 
@@ -73,6 +76,12 @@ export default async function AdminPage() {
             className="rounded-md border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             Gestionează cabane
+          </Link>
+          <Link
+            href="/admin/bookings"
+            className="rounded-md border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            Gestionează rezervări
           </Link>
           <Link
             href="/"

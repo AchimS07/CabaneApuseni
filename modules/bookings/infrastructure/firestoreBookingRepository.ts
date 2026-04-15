@@ -78,7 +78,7 @@ export async function listOverlappingBookings(
   return all.filter((b) => b.checkIn < checkOut && b.checkOut > checkIn);
 }
 
-
+export async function saveBooking(id: string, data: Omit<Booking, 'id'>): Promise<void> {
   const db = getAdminFirestore();
   await db.collection(COLLECTION).doc(id).set(data);
 }
