@@ -17,6 +17,16 @@ export async function requireAuth(): Promise<SessionUser> {
 }
 
 /**
+ * Requires owner or admin role. Redirects appropriately if not authorized.
+ */
+export async function requireOwner(): Promise<SessionUser> {
+  const user = await verifySession();
+  if (!user) redirect('/login');
+  if (user.role !== 'owner' && user.role !== 'admin') redirect('/dashboard');
+  return user;
+}
+
+/**
  * Requires admin role. Redirects appropriately if not authorized.
  */
 export async function requireAdmin(): Promise<SessionUser> {

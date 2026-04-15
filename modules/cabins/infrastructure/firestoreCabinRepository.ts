@@ -21,6 +21,16 @@ export async function getCabinById(id: string): Promise<Cabin | null> {
   return { id: doc.id, ...doc.data() } as Cabin;
 }
 
+export async function listCabinsByOwner(ownerId: string): Promise<Cabin[]> {
+  const db = getAdminFirestore();
+  const snapshot = await db
+    .collection(COLLECTION)
+    .where('ownerId', '==', ownerId)
+    .orderBy('createdAt', 'desc')
+    .get();
+  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Cabin);
+}
+
 export async function listPublishedCabins(): Promise<Cabin[]> {
   const db = getAdminFirestore();
   const snapshot = await db

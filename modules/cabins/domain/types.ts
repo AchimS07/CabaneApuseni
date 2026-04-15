@@ -4,6 +4,8 @@
 
 export interface Cabin {
   id: string;
+  /** UID of the owner who created this listing. Optional for legacy/seeded cabins. */
+  ownerId?: string;
   title: string;
   slug: string;
   description: string;

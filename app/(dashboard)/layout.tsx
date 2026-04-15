@@ -40,14 +40,32 @@ export default async function DashboardLayout({ children }: { children: ReactNod
               </Link>
             </li>
             {role === 'owner' && (
-              <li>
-                <Link
-                  href="/dashboard/owner"
-                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  Owner
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link
+                    href="/dashboard/owner"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    Owner
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/dashboard/owner/listings"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    Cabane mele
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/dashboard/owner/bookings"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    Rezervări
+                  </Link>
+                </li>
+              </>
             )}
             <li>
               <LogoutButton />

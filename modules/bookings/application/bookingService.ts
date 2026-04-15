@@ -6,11 +6,13 @@ import { bookingSchema, type BookingInput } from '@/lib/validation/schemas';
 import {
   getBookingById,
   listBookingsByUser,
+  listBookingsByCabinIds,
   listAllBookings,
   saveBooking,
   updateBookingStatus,
 } from '@/modules/bookings/infrastructure/firestoreBookingRepository';
 import { getCabinById } from '@/modules/cabins/infrastructure/firestoreCabinRepository';
+import { listCabinsByOwner } from '@/modules/cabins/infrastructure/firestoreCabinRepository';
 import type { Booking } from '@/modules/bookings/domain/types';
 import { canAccess } from '@/lib/auth/authorization';
 import { createLogger } from '@/lib/observability/logger';
@@ -79,6 +81,18 @@ export async function getAllBookings(): Promise<Result<Booking[]>> {
   return ok(bookings);
 }
 
+export async function getOwnerBookings(actor: SessionUser): Promise<Result<Booking[]>> {
+  try {
+    const ownedCabins = await listCabinsByOwner(actor.uid);
+    const cabinIds = ownedCabins.map((c) => c.id);
+    const bookings = await listBookingsByCabinIds(cabinIds);
+    return ok(bookings);
+  } catch (error) {
+    log.error({ error, actorUid: actor.uid }, 'Failed to load owner bookings');
+    return fail('INTERNAL_ERROR', 'Failed to load bookings.');
+  }
+}
+
 export async function cancelBooking(id: string, actor: SessionUser): Promise<Result<void>> {
   const booking = await getBookingById(id);
   if (!booking) return fail('NOT_FOUND', 'Booking not found.');
@@ -96,5 +110,43 @@ export async function confirmBooking(id: string, actor: SessionUser): Promise<Re
 
   await updateBookingStatus(id, 'confirmed');
   log.info({ id, actorUid: actor.uid }, 'Booking confirmed');
+  return ok(undefined);
+}
+
+/**
+ * Owner confirms a pending booking for one of their cabins.
+ */
+export async function confirmBookingForOwner(id: string, actor: SessionUser): Promise<Result<void>> {
+  const booking = await getBookingById(id);
+  if (!booking) return fail('NOT_FOUND', 'Booking not found.');
+  if (booking.status !== 'pending') return fail('CONFLICT', 'Only pending bookings can be confirmed.');
+
+  const cabin = await getCabinById(booking.cabin.id);
+  if (!cabin) return fail('NOT_FOUND', 'Cabin not found.');
+  if (actor.role !== 'admin' && cabin.ownerId !== actor.uid) {
+    return fail('FORBIDDEN', 'Access denied.');
+  }
+
+  await updateBookingStatus(id, 'confirmed');
+  log.info({ id, actorUid: actor.uid }, 'Booking confirmed by owner');
+  return ok(undefined);
+}
+
+/**
+ * Owner rejects (cancels) a pending booking for one of their cabins.
+ */
+export async function rejectBookingForOwner(id: string, actor: SessionUser): Promise<Result<void>> {
+  const booking = await getBookingById(id);
+  if (!booking) return fail('NOT_FOUND', 'Booking not found.');
+  if (booking.status !== 'pending') return fail('CONFLICT', 'Only pending bookings can be rejected.');
+
+  const cabin = await getCabinById(booking.cabin.id);
+  if (!cabin) return fail('NOT_FOUND', 'Cabin not found.');
+  if (actor.role !== 'admin' && cabin.ownerId !== actor.uid) {
+    return fail('FORBIDDEN', 'Access denied.');
+  }
+
+  await updateBookingStatus(id, 'cancelled');
+  log.info({ id, actorUid: actor.uid }, 'Booking rejected by owner');
   return ok(undefined);
 }

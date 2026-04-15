@@ -6,6 +6,7 @@ import { cabinSchema, type CabinInput } from '@/lib/validation/schemas';
 import {
   listPublishedCabins,
   listAllCabins,
+  listCabinsByOwner,
   getCabinBySlug,
   getCabinById,
   saveCabin,
@@ -13,6 +14,7 @@ import {
   deleteCabin,
 } from '@/modules/cabins/infrastructure/firestoreCabinRepository';
 import type { Cabin } from '@/modules/cabins/domain/types';
+import type { SessionUser } from '@/lib/auth/session';
 import { createLogger } from '@/lib/observability/logger';
 import { randomUUID } from 'crypto';
 import { MOCK_CABINS } from '@/modules/cabins/application/mockCabins';
@@ -39,6 +41,16 @@ export async function getAllCabins(): Promise<Result<Cabin[]>> {
   }
 }
 
+export async function getOwnerCabins(ownerId: string): Promise<Result<Cabin[]>> {
+  try {
+    const cabins = await listCabinsByOwner(ownerId);
+    return ok(cabins);
+  } catch (error) {
+    log.error({ error, ownerId }, 'Failed to load owner cabins');
+    return fail('INTERNAL_ERROR', 'Failed to load your listings.');
+  }
+}
+
 export async function getCabinDetail(slug: string): Promise<Result<Cabin>> {
   try {
     const cabin = await getCabinBySlug(slug);
@@ -53,7 +65,7 @@ export async function getCabinDetail(slug: string): Promise<Result<Cabin>> {
   }
 }
 
-export async function createCabin(input: CabinInput, actorUid: string): Promise<Result<Cabin>> {
+export async function createCabin(input: CabinInput, actor: SessionUser): Promise<Result<Cabin>> {
   const parsed = cabinSchema.safeParse(input);
   if (!parsed.success) {
     return fail('VALIDATION_ERROR', 'Invalid cabin data.', parsed.error.flatten().fieldErrors as Record<string, string[]>);
@@ -61,31 +73,39 @@ export async function createCabin(input: CabinInput, actorUid: string): Promise<
 
   const now = new Date().toISOString();
   const id = randomUUID();
-  const cabin: Cabin = { id, ...parsed.data, createdAt: now, updatedAt: now };
+  const cabin: Cabin = { id, ownerId: actor.uid, ...parsed.data, createdAt: now, updatedAt: now };
 
-  await saveCabin(id, { ...parsed.data, createdAt: now, updatedAt: now });
-  log.info({ id, actorUid }, 'Cabin created');
+  await saveCabin(id, { ownerId: actor.uid, ...parsed.data, createdAt: now, updatedAt: now });
+  log.info({ id, actorUid: actor.uid }, 'Cabin created');
   return ok(cabin);
 }
 
 export async function editCabin(
   id: string,
   input: Partial<CabinInput>,
-  actorUid: string,
+  actor: SessionUser,
 ): Promise<Result<void>> {
   const existing = await getCabinById(id);
   if (!existing) return fail('NOT_FOUND', 'Cabin not found.');
 
+  if (actor.role !== 'admin' && existing.ownerId !== actor.uid) {
+    return fail('FORBIDDEN', 'Access denied.');
+  }
+
   await updateCabin(id, input);
-  log.info({ id, actorUid }, 'Cabin updated');
+  log.info({ id, actorUid: actor.uid }, 'Cabin updated');
   return ok(undefined);
 }
 
-export async function removeCabin(id: string, actorUid: string): Promise<Result<void>> {
+export async function removeCabin(id: string, actor: SessionUser): Promise<Result<void>> {
   const existing = await getCabinById(id);
   if (!existing) return fail('NOT_FOUND', 'Cabin not found.');
 
+  if (actor.role !== 'admin' && existing.ownerId !== actor.uid) {
+    return fail('FORBIDDEN', 'Access denied.');
+  }
+
   await deleteCabin(id);
-  log.info({ id, actorUid }, 'Cabin deleted');
+  log.info({ id, actorUid: actor.uid }, 'Cabin deleted');
   return ok(undefined);
 }
