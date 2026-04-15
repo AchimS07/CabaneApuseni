@@ -1,61 +1,13 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { useState, type FormEvent } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { signUp } from '@/lib/auth';
-
-export default function RegisterPage() {
-  const router = useRouter();
-  const [displayName,      setDisplayName]      = useState('');
-  const [email,            setEmail]            = useState('');
-  const [password,         setPassword]         = useState('');
-  const [confirmPassword,  setConfirmPassword]  = useState('');
-  const [role,             setRole]             = useState<'owner' | 'guest'>('guest');
-  const [errors,           setErrors]           = useState<Record<string, string>>({});
-  const [loading,          setLoading]          = useState(false);
-
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!displayName.trim())           e.displayName       = 'Name is required.';
-    if (!email.trim())                 e.email             = 'Email is required.';
-    if (password.length < 6)           e.password          = 'Password must be at least 6 characters.';
-    if (password !== confirmPassword)  e.confirmPassword   = 'Passwords do not match.';
-    return e;
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    const errs = validate();
-    if (Object.keys(errs).length) { setErrors(errs); return; }
-    setErrors({}); setLoading(true);
-    try {
-      await signUp(email, password, displayName.trim(), role);
-      router.push('/');
-    } catch (err: unknown) {
-      const code = (err as { code?: string }).code ?? '';
-      setErrors(
-        code === 'auth/email-already-in-use'
-          ? { email: 'An account with this email already exists.' }
-          : code === 'auth/configuration-not-found'
-            ? { form: 'Authentication is not configured for this project yet. Enable Email/Password sign-in in Firebase Console.' }
-          : { form:  'Registration failed. Please try again.' },
-      );
-    } finally { setLoading(false); }
-  };
-
-  return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12">
-      <div className="card w-full max-w-md p-8">
-        <div className="text-center mb-8">
-          <span className="text-5xl" aria-hidden="true">🏔️</span>
-          <h1 className="text-2xl font-bold text-stone-800 mt-3">Create an account</h1>
-          <p className="text-stone-500 text-sm mt-1">Join Cabane Apuseni as a guest or cabin owner</p>
-        </div>
-
-        <form onSubmit={handleSubmit} noValidate className="space-y-4">
-          {/* Role */}
-          <fieldset>
+/**
+ * Legacy register page — redirects to canonical /register route.
+ * The canonical implementation lives in app/(auth)/register.
+ */
+export default function LegacyRegisterPage() {
+  redirect('/register');
+}
+/*
             <legend className="label mb-1">I am a…</legend>
             <div className="grid grid-cols-2 gap-3">
               {(['guest', 'owner'] as const).map((r) => (
@@ -127,3 +79,4 @@ export default function RegisterPage() {
     </div>
   );
 }
+*/

@@ -4,7 +4,7 @@
  * Session cookies are stored as HTTP-only cookies for security.
  */
 import { cookies } from 'next/headers';
-import { getAdminAuth } from '@/lib/firebase/admin';
+import { getAdminAuth, getAdminFirestore } from '@/lib/firebase/admin';
 import type { UserRole } from '@/modules/users/domain/types';
 
 export const SESSION_COOKIE_NAME = '__session';
@@ -45,10 +45,18 @@ export async function verifySession(): Promise<SessionUser | null> {
     const auth = getAdminAuth();
     const decoded = await auth.verifySessionCookie(sessionCookie, true);
 
+    // Read the role from Firestore — custom claims are not set during client-side
+    // registration, so the token role claim is always absent.
+    const db = getAdminFirestore();
+    const userDoc = await db.collection('users').doc(decoded.uid).get();
+    const role: UserRole = userDoc.exists
+      ? ((userDoc.data()?.role as UserRole | undefined) ?? 'user')
+      : ((decoded['role'] as UserRole | undefined) ?? 'user');
+
     return {
       uid: decoded.uid,
       email: decoded.email ?? null,
-      role: (decoded['role'] as UserRole | undefined) ?? 'user',
+      role,
     };
   } catch {
     return null;
