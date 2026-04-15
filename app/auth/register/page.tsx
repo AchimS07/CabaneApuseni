@@ -37,6 +37,8 @@ export default function RegisterPage() {
       setErrors(
         code === 'auth/email-already-in-use'
           ? { email: 'An account with this email already exists.' }
+          : code === 'auth/configuration-not-found'
+            ? { form: 'Authentication is not configured for this project yet. Enable Email/Password sign-in in Firebase Console.' }
           : { form:  'Registration failed. Please try again.' },
       );
     } finally { setLoading(false); }
