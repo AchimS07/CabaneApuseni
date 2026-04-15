@@ -15,16 +15,17 @@ import {
 import type { Cabin } from '@/modules/cabins/domain/types';
 import { createLogger } from '@/lib/observability/logger';
 import { randomUUID } from 'crypto';
+import { MOCK_CABINS } from '@/modules/cabins/application/mockCabins';
 
 const log = createLogger({ module: 'cabinService' });
 
 export async function getPublishedCabins(): Promise<Result<Cabin[]>> {
   try {
     const cabins = await listPublishedCabins();
-    return ok(cabins);
+    return ok(cabins.length > 0 ? cabins : MOCK_CABINS);
   } catch (error) {
     log.error({ error }, 'Failed to load published cabins');
-    return fail('INTERNAL_ERROR', 'Failed to load cabins.');
+    return ok(MOCK_CABINS);
   }
 }
 
@@ -41,11 +42,14 @@ export async function getAllCabins(): Promise<Result<Cabin[]>> {
 export async function getCabinDetail(slug: string): Promise<Result<Cabin>> {
   try {
     const cabin = await getCabinBySlug(slug);
-    if (!cabin) return fail('NOT_FOUND', `Cabin "${slug}" not found.`);
-    return ok(cabin);
+    const fallback = MOCK_CABINS.find((item) => item.slug === slug);
+    if (!cabin && !fallback) return fail('NOT_FOUND', `Cabin "${slug}" not found.`);
+    return ok(cabin ?? fallback!);
   } catch (error) {
     log.error({ error, slug }, 'Failed to load cabin detail');
-    return fail('INTERNAL_ERROR', 'Failed to load cabin details.');
+    const fallback = MOCK_CABINS.find((item) => item.slug === slug);
+    if (!fallback) return fail('INTERNAL_ERROR', 'Failed to load cabin details.');
+    return ok(fallback);
   }
 }
 
