@@ -19,15 +19,12 @@ export default async function AdminCabinsPage() {
         title="Cabane"
         description={`${cabins.length} ${cabins.length === 1 ? 'cabană înregistrată' : 'cabane înregistrate'}`}
         action={
-          /* TODO: wire up cabin creation form */
-          <button
-            className="cursor-not-allowed rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white opacity-60"
-            disabled
-            title="Funcționalitate în curs de implementare"
-            aria-disabled="true"
+          <Link
+            href="/dashboard/owner/listings/new?redirectTo=/admin/cabins"
+            className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             + Adaugă cabană
-          </button>
+          </Link>
         }
       />
 
