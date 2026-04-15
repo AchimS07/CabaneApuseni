@@ -5,7 +5,9 @@ import { initializeFirebaseAnalytics } from '../lib/firebase/client';
 
 export default function FirebaseProvider() {
   useEffect(() => {
-    void initializeFirebaseAnalytics();
+    void initializeFirebaseAnalytics().catch((error) => {
+      console.error('Firebase initialization failed:', error);
+    });
   }, []);
 
   return null;
