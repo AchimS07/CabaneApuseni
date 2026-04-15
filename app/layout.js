@@ -1,3 +1,5 @@
+import FirebaseProvider from './firebase-provider';
+
 export const metadata = {
   title: 'Cabane Apuseni',
   description: 'Minimal Next.js starter'
@@ -6,7 +8,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <FirebaseProvider />
+        {children}
+      </body>
     </html>
   );
 }
