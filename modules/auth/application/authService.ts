@@ -6,6 +6,7 @@ import {
   signInWithEmail,
   registerWithEmail,
   signOutUser,
+  sendPasswordReset,
 } from '@/modules/auth/infrastructure/firebaseAuthRepository';
 import type { UserRole } from '@/modules/users/domain/types';
 
@@ -53,4 +54,8 @@ export async function register(
 export async function logout(): Promise<void> {
   await signOutUser();
   await fetch('/api/auth/session', { method: 'DELETE' });
+}
+
+export async function forgotPassword(email: string): Promise<void> {
+  await sendPasswordReset(email);
 }

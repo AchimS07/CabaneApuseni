@@ -5,6 +5,7 @@ import { getOwnerCabins } from '@/modules/cabins/application/cabinService';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TogglePublishButton } from '@/components/ui/TogglePublishButton';
+import { DeleteCabinButton } from '@/components/ui/DeleteCabinButton';
 import { Button } from '@/components/ui/Button';
 
 export const metadata: Metadata = { title: 'Cabane mele' };
@@ -104,6 +105,10 @@ export default async function OwnerListingsPage() {
                       >
                         Previzualizare ↗
                       </Link>
+                      <DeleteCabinButton
+                        cabinId={cabin.id}
+                        cabinTitle={cabin.title}
+                      />
                     </div>
                   </td>
                 </tr>

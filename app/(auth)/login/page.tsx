@@ -19,6 +19,11 @@ export default async function LoginPage({ searchParams }: Props) {
       <h1 className="mb-6 text-center text-2xl font-bold">Autentificare</h1>
       <LoginForm redirectTo={redirectTo} />
       <p className="mt-4 text-center text-sm text-gray-500">
+        <Link href="/forgot-password" className="font-medium text-indigo-600 hover:underline">
+          Ai uitat parola?
+        </Link>
+      </p>
+      <p className="mt-2 text-center text-sm text-gray-500">
         Nu ai cont?{' '}
         <Link href="/register" className="font-medium text-indigo-600 hover:underline">
           Înregistrează-te

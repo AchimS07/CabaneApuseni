@@ -128,6 +128,7 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
                 <th scope="col" className="px-4 py-3">Perioadă</th>
                 <th scope="col" className="px-4 py-3">Oaspeți</th>
                 <th scope="col" className="px-4 py-3">Total</th>
+                <th scope="col" className="px-4 py-3">Mențiuni</th>
                 <th scope="col" className="px-4 py-3">Status</th>
                 <th scope="col" className="px-4 py-3">
                   <span className="sr-only">Acțiuni</span>
@@ -148,6 +149,13 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
                   <td className="px-4 py-4 text-gray-600">{b.guestCount}</td>
                   <td className="px-4 py-4 font-medium text-indigo-700">
                     {b.totalPrice} RON
+                  </td>
+                  <td className="px-4 py-4 text-gray-500 text-xs max-w-[160px]">
+                    {b.notes ? (
+                      <span className="line-clamp-2" title={b.notes}>{b.notes}</span>
+                    ) : (
+                      <span className="text-gray-300">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-4">
                     <StatusBadge status={b.status} />

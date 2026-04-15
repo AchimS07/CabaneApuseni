@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { confirmBookingAction, rejectBookingAction } from '@/modules/bookings/actions';
 
 const GENERIC_ERROR = 'A apărut o eroare. Încearcă din nou.';
@@ -13,12 +12,13 @@ interface BookingActionButtonsProps {
 /**
  * Confirm / reject buttons for owner booking inbox.
  * Only rendered for pending bookings.
+ * Shows inline success state after each action instead of a silent refresh.
  */
 export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
-  const router = useRouter();
   const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [loadingReject, setLoadingReject] = useState(false);
   const [error, setError] = useState('');
+  const [outcome, setOutcome] = useState<'confirmed' | 'rejected' | null>(null);
 
   async function handleConfirm() {
     setLoadingConfirm(true);
@@ -29,7 +29,7 @@ export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
         setError(result.error);
         return;
       }
-      router.refresh();
+      setOutcome('confirmed');
     } catch {
       setError(GENERIC_ERROR);
     } finally {
@@ -51,12 +51,28 @@ export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
         setError(result.error);
         return;
       }
-      router.refresh();
+      setOutcome('rejected');
     } catch {
       setError(GENERIC_ERROR);
     } finally {
       setLoadingReject(false);
     }
+  }
+
+  if (outcome === 'confirmed') {
+    return (
+      <span className="text-xs font-medium text-green-700" role="status">
+        ✓ Confirmată
+      </span>
+    );
+  }
+
+  if (outcome === 'rejected') {
+    return (
+      <span className="text-xs font-medium text-red-600" role="status">
+        ✗ Refuzată
+      </span>
+    );
   }
 
   const busy = loadingConfirm || loadingReject;

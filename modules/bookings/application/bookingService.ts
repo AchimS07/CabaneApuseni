@@ -10,6 +10,7 @@ import {
   listAllBookings,
   saveBooking,
   updateBookingStatus,
+  listOverlappingBookings,
 } from '@/modules/bookings/infrastructure/firestoreBookingRepository';
 import { getCabinById } from '@/modules/cabins/infrastructure/firestoreCabinRepository';
 import { listCabinsByOwner } from '@/modules/cabins/infrastructure/firestoreCabinRepository';
@@ -43,7 +44,17 @@ export async function createBooking(
   }
 
   const nights = calcNights(parsed.data.checkIn, parsed.data.checkOut);
-  if (nights < 1) return fail('VALIDATION_ERROR', 'Check-out must be at least 1 night after check-in.');
+  if (nights < 1) return fail('VALIDATION_ERROR', 'Check-out trebuie să fie cu cel puțin 1 noapte după check-in.');
+
+  // Conflict check: ensure no overlapping active bookings for this cabin
+  const overlapping = await listOverlappingBookings(
+    parsed.data.cabinId,
+    parsed.data.checkIn,
+    parsed.data.checkOut,
+  );
+  if (overlapping.length > 0) {
+    return fail('CONFLICT', 'Cabana nu este disponibilă în perioada selectată. Te rugăm să alegi alte date.');
+  }
 
   const now = new Date().toISOString();
   const id = randomUUID();

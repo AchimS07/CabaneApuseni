@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   updateProfile,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { getClientAuth } from '@/lib/firebase/client';
 
@@ -28,4 +29,9 @@ export async function registerWithEmail(email: string, password: string, name: s
 export async function signOutUser() {
   const auth = getClientAuth();
   await signOut(auth);
+}
+
+export async function sendPasswordReset(email: string): Promise<void> {
+  const auth = getClientAuth();
+  await sendPasswordResetEmail(auth, email);
 }
