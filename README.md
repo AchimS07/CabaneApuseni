@@ -23,3 +23,14 @@ npm run dev
 ```
 
 The public Firebase client config (`NEXT_PUBLIC_*`) is pre-filled in `.env.local.example` and works without changes for the `apusenirental` project.
+
+## Quality checks
+
+Run local automated checks before opening a PR:
+
+```bash
+npm run type-check
+npm test
+```
+
+Pull requests to `main` also run these checks automatically in GitHub Actions.
