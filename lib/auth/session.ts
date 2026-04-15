@@ -5,7 +5,7 @@
  */
 import { cookies } from 'next/headers';
 import { getAdminAuth } from '@/lib/firebase/admin';
-import type { UserRole } from '@/modules/users/domain/types';
+import type { UserRole, SubscriptionTier, SubscriptionStatus } from '@/modules/users/domain/types';
 
 export const SESSION_COOKIE_NAME = '__session';
 
@@ -49,6 +49,8 @@ export async function verifySession(): Promise<SessionUser | null> {
       uid: decoded.uid,
       email: decoded.email ?? null,
       role: (decoded['role'] as UserRole | undefined) ?? 'user',
+      subscriptionTier: (decoded['subscriptionTier'] as SubscriptionTier | undefined) ?? null,
+      subscriptionStatus: (decoded['subscriptionStatus'] as SubscriptionStatus | undefined) ?? null,
     };
   } catch {
     return null;
@@ -67,4 +69,6 @@ export interface SessionUser {
   uid: string;
   email: string | null;
   role: UserRole;
+  subscriptionTier?: SubscriptionTier | null;
+  subscriptionStatus?: SubscriptionStatus | null;
 }

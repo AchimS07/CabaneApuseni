@@ -1,24 +1,40 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import RegisterForm from '@/components/forms/RegisterForm';
 
 export const metadata: Metadata = { title: 'Înregistrare proprietar' };
 
 interface Props {
-  searchParams: Promise<{ redirect?: string }>;
+  searchParams: Promise<{ redirect?: string; plan?: string }>;
 }
 
 export default async function OwnerRegisterPage({ searchParams }: Props) {
-  const { redirect } = await searchParams;
+  const { redirect: redirectParam, plan } = await searchParams;
+
+  const validatedPlan =
+    plan === 'basic' || plan === 'pro' ? (plan as 'basic' | 'pro') : null;
+
+  if (!validatedPlan) {
+    redirect('/pricing');
+  }
+
   const redirectTo =
-    redirect && redirect.startsWith('/') ? redirect : '/dashboard/owner';
+    redirectParam && redirectParam.startsWith('/') ? redirectParam : '/dashboard/owner';
 
   return (
     <>
-      <h1 className="mb-6 text-center text-2xl font-bold">Cont proprietar</h1>
+      <h1 className="mb-2 text-center text-2xl font-bold">Cont proprietar</h1>
+      <p className="mb-6 text-center text-sm text-gray-500">
+        {'Plan selectat: '}
+        <span className="font-semibold text-indigo-600">
+          {validatedPlan === 'basic' ? 'Basic — 50 RON/lună' : 'Pro — 150 RON/lună'}
+        </span>
+      </p>
       <RegisterForm
         redirectTo={redirectTo}
         role="owner"
-        submitLabel="Creează cont de proprietar"
+        plan={validatedPlan}
+        submitLabel="Creează cont și continuă la plată"
       />
       <p className="mt-4 text-center text-sm text-gray-500">
         Vrei cont de client?{' '}

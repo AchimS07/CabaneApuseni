@@ -19,6 +19,10 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == uid;
     }
 
+    function hasActiveSubscription() {
+      return isSignedIn() && request.auth.token.subscriptionStatus == 'active';
+    }
+
     // ── Users ──────────────────────────────────────────────────────────────────
     match /users/{uid} {
       // Users can read/update their own profile; admins can read all
@@ -35,9 +39,9 @@ service cloud.firestore {
         || isAdmin()
         || (isSignedIn() && resource.data.ownerId == request.auth.uid);
 
-      // Owners can create cabins for themselves; admins can create any
+      // Owners can create cabins for themselves if they have an active subscription; admins can create any
       allow create: if isAdmin()
-        || (isOwnerRole() && request.resource.data.ownerId == request.auth.uid);
+        || (isOwnerRole() && hasActiveSubscription() && request.resource.data.ownerId == request.auth.uid);
 
       // Owners can update/delete only their own cabins; admins can update/delete any
       allow update: if isAdmin()

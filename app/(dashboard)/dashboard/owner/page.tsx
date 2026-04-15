@@ -1,11 +1,12 @@
-import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { requireOwner } from '@/lib/auth/authorization';
 import { getOwnerCabins } from '@/modules/cabins/application/cabinService';
 import { getOwnerBookings } from '@/modules/bookings/application/bookingService';
+import { getProfile } from '@/modules/users/application/userService';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { SubscriptionBanner } from '@/components/ui/SubscriptionBanner';
 
 export const metadata: Metadata = { title: 'Dashboard proprietar' };
 export const dynamic = 'force-dynamic';
@@ -13,22 +14,25 @@ export const dynamic = 'force-dynamic';
 export default async function OwnerDashboardPage() {
   const session = await requireOwner();
 
-  const [cabinsResult, bookingsResult] = await Promise.all([
+  const [cabinsResult, bookingsResult, profileResult] = await Promise.all([
     getOwnerCabins(session.uid),
     getOwnerBookings(session),
+    getProfile(session.uid),
   ]);
 
   const cabins = cabinsResult.ok ? cabinsResult.data : [];
   const bookings = bookingsResult.ok ? bookingsResult.data : [];
+  const profile = profileResult.ok ? profileResult.data : null;
 
   const totalCabins = cabins.length;
   const publishedCabins = cabins.filter((c) => c.published).length;
   const pendingBookings = bookings.filter((b) => b.status === 'pending').length;
 
-  const today = new Date().toISOString().split('T')[0];
-  const upcomingStays = bookings.filter(
-    (b) => b.status === 'confirmed' && b.checkIn >= today,
-  ).length;
+  const planLabel = profile?.subscriptionTier === 'pro'
+    ? 'Pro'
+    : profile?.subscriptionTier === 'basic'
+    ? 'Basic'
+    : 'Inactiv';
 
   return (
     <section className="space-y-8">
@@ -37,8 +41,21 @@ export default async function OwnerDashboardPage() {
         description="Privire de ansamblu asupra activității tale."
       />
 
+      {/* Subscription status banner */}
+      <SubscriptionBanner
+        tier={profile?.subscriptionTier ?? null}
+        status={profile?.subscriptionStatus ?? null}
+        expiresAt={profile?.subscriptionExpiresAt ?? null}
+      />
+
       {/* KPI cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiCard
+          label="Plan activ"
+          value={planLabel}
+          icon={profile?.subscriptionTier === 'pro' ? '⭐' : profile?.subscriptionTier === 'basic' ? '📦' : '❌'}
+          variant={profile?.subscriptionStatus === 'active' ? 'success' : 'warning'}
+        />
         <KpiCard label="Cabane total" value={totalCabins} icon="🏠" />
         <KpiCard
           label="Publicate"
@@ -52,11 +69,6 @@ export default async function OwnerDashboardPage() {
           icon="⏳"
           variant={pendingBookings > 0 ? 'warning' : 'default'}
         />
-        <KpiCard
-          label="Sejururi viitoare"
-          value={upcomingStays}
-          icon="📅"
-        />
       </div>
 
       {/* Empty state when owner has no cabins */}
@@ -65,7 +77,11 @@ export default async function OwnerDashboardPage() {
           icon="🏠"
           title="Nu ai nicio cabană înregistrată"
           description="Adaugă prima ta cabană pentru a începe să primești rezervări."
-          action={{ label: '+ Adaugă cabana', href: '/dashboard/owner/listings/new' }}
+          action={
+            profile?.subscriptionStatus === 'active'
+              ? { label: '+ Adaugă cabana', href: '/dashboard/owner/listings/new' }
+              : undefined
+          }
         />
       ) : (
         /* Quick-access links */
@@ -89,16 +105,18 @@ export default async function OwnerDashboardPage() {
               title="Rezervări"
               description={
                 pendingBookings > 0
-                  ? `${pendingBookings} rezerv${pendingBookings === 1 ? 'are' : 'ări'} în așteptare`
+                  ? pendingBookings + (pendingBookings === 1 ? ' rezervare în așteptare' : ' rezervări în așteptare')
                   : 'Vezi toate rezervările'
               }
             />
-            <QuickLink
-              href="/dashboard/owner/listings/new"
-              icon="➕"
-              title="Adaugă cabana"
-              description="Înregistrează o cabană nouă."
-            />
+            {profile?.subscriptionStatus === 'active' && (
+              <QuickLink
+                href="/dashboard/owner/listings/new"
+                icon="➕"
+                title="Adaugă cabana"
+                description="Înregistrează o cabană nouă."
+              />
+            )}
           </div>
         </section>
       )}
@@ -108,7 +126,7 @@ export default async function OwnerDashboardPage() {
 
 interface KpiCardProps {
   label: string;
-  value: number;
+  value: number | string;
   icon: string;
   variant?: 'default' | 'warning' | 'success';
 }
@@ -126,10 +144,10 @@ function KpiCard({ label, value, icon, variant = 'default' }: KpiCardProps) {
   };
 
   return (
-    <div className={`rounded-xl border p-5 shadow-sm ${variantClasses[variant]}`}>
+    <div className={'rounded-xl border p-5 shadow-sm ' + variantClasses[variant]}>
       <span className="text-2xl" aria-hidden="true">{icon}</span>
       <p className="mt-2 text-sm text-gray-500">{label}</p>
-      <p className={`mt-1 text-3xl font-bold ${valueClasses[variant]}`}>{value}</p>
+      <p className={'mt-1 text-3xl font-bold ' + valueClasses[variant]}>{value}</p>
     </div>
   );
 }

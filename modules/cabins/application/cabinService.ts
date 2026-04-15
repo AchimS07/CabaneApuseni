@@ -18,6 +18,8 @@ import type { SessionUser } from '@/lib/auth/session';
 import { createLogger } from '@/lib/observability/logger';
 import { randomUUID } from 'crypto';
 import { MOCK_CABINS } from '@/modules/cabins/application/mockCabins';
+import { getProfile } from '@/modules/users/application/userService';
+import { LISTING_LIMITS } from '@/lib/subscription/plans';
 
 const log = createLogger({ module: 'cabinService' });
 
@@ -69,6 +71,29 @@ export async function createCabin(input: CabinInput, actor: SessionUser): Promis
   const parsed = cabinSchema.safeParse(input);
   if (!parsed.success) {
     return fail('VALIDATION_ERROR', 'Invalid cabin data.', parsed.error.flatten().fieldErrors as Record<string, string[]>);
+  }
+
+  // Subscription enforcement (admins bypass this check)
+  if (actor.role !== 'admin') {
+    const profileResult = await getProfile(actor.uid);
+    if (!profileResult.ok) {
+      return fail('INTERNAL_ERROR', 'Could not verify subscription status.');
+    }
+    const profile = profileResult.data;
+
+    if (profile.subscriptionStatus !== 'active') {
+      return fail('FORBIDDEN', 'Abonamentul tău nu este activ. Alege un plan pentru a putea adăuga cabane.');
+    }
+
+    const tier = profile.subscriptionTier;
+    if (!tier) {
+      return fail('FORBIDDEN', 'Abonamentul tău nu este activ.');
+    }
+
+    const ownerCabins = await listCabinsByOwner(actor.uid);
+    if (ownerCabins.length >= LISTING_LIMITS[tier]) {
+      return fail('FORBIDDEN', 'Ai atins limita de listinguri pentru planul tău. Upgradează la Pro pentru mai multe cabane.');
+    }
   }
 
   const now = new Date().toISOString();
