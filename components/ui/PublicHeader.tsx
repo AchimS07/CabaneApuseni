@@ -63,14 +63,16 @@ export function PublicHeader({ isAuthenticated, isAdmin }: PublicHeaderProps) {
 
           {isAuthenticated ? (
             <>
-              <li>
-                <Link
-                  href={isAdmin ? '/admin' : '/dashboard'}
-                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  {isAdmin ? 'Admin' : 'Tablou de bord'}
-                </Link>
-              </li>
+              {isAdmin && (
+                <li>
+                  <Link
+                    href="/admin"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    Admin
+                  </Link>
+                </li>
+              )}
               {!isAdmin && (
                 <li>
                   <Link
@@ -166,15 +168,17 @@ export function PublicHeader({ isAuthenticated, isAdmin }: PublicHeaderProps) {
 
             {isAuthenticated ? (
               <>
-                <li>
-                  <Link
-                    href={isAdmin ? '/admin' : '/dashboard'}
-                    onClick={close}
-                    className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
-                  >
-                    {isAdmin ? 'Admin' : 'Tablou de bord'}
-                  </Link>
-                </li>
+                {isAdmin && (
+                  <li>
+                    <Link
+                      href="/admin"
+                      onClick={close}
+                      className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                    >
+                      Admin
+                    </Link>
+                  </li>
+                )}
                 {!isAdmin && (
                   <li>
                     <Link
