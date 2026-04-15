@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ────────────────────────────────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.role == 'admin';
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ── Users ──────────────────────────────────────────────────────────────────
+    match /users/{uid} {
+      // Users can read/update their own profile; admins can read all
+      allow read: if isOwner(uid) || isAdmin();
+      allow create: if isOwner(uid);
+      allow update: if isOwner(uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── Cabins ─────────────────────────────────────────────────────────────────
+    match /cabins/{cabinId} {
+      // Published cabins are public; unpublished are admin-only
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ── Bookings ───────────────────────────────────────────────────────────────
+    match /bookings/{bookingId} {
+      // Users can read and create their own bookings; admins can read all
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      // Only admins can update status; users cannot modify confirmed bookings
+      allow update: if isAdmin() ||
+        (isOwner(resource.data.userId) && resource.data.status == 'pending');
+      allow delete: if isAdmin();
+    }
+
+    // ── Audit Logs ─────────────────────────────────────────────────────────────
+    match /auditLogs/{logId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
