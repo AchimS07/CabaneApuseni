@@ -26,7 +26,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (err) {
     log.error({ err }, 'Failed to create session cookie');
-    return NextResponse.json({ error: 'Failed to create session.' }, { status: 401 });
+    const isConfigError =
+      err instanceof Error && err.message.startsWith('[env] Missing or invalid');
+    return NextResponse.json(
+      { error: isConfigError ? 'Server misconfiguration.' : 'Failed to create session.' },
+      { status: isConfigError ? 500 : 401 },
+    );
   }
 }
 
