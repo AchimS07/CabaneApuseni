@@ -1,0 +1,81 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── helpers ───────────────────────────────────────────────────────────────
+    function isSignedIn()  { return request.auth != null; }
+    function uid()         { return request.auth.uid; }
+    function userRole()    { return get(/databases/$(database)/documents/users/$(uid())).data.role; }
+    function isOwnerRole() { return isSignedIn() && userRole() == 'owner'; }
+    function isGuestRole() { return isSignedIn() && userRole() == 'guest'; }
+    function isAdminRole() { return isSignedIn() && userRole() == 'admin'; }
+
+    // ── users ─────────────────────────────────────────────────────────────────
+    match /users/{userId} {
+      allow read:   if isSignedIn() && (uid() == userId || isAdminRole());
+      allow create: if isSignedIn() && uid() == userId;
+      allow update: if isSignedIn() && uid() == userId;
+    }
+
+    // ── cabins ────────────────────────────────────────────────────────────────
+    match /cabins/{cabinId} {
+      allow read:   if (resource.data.published == true && resource.data.hidden == false)
+                     || (isSignedIn() && (resource.data.ownerId == uid() || isAdminRole()));
+      allow create: if isOwnerRole() && request.resource.data.ownerId == uid();
+      allow update: if (isOwnerRole() && resource.data.ownerId == uid()) || isAdminRole();
+      allow delete: if (isOwnerRole() && resource.data.ownerId == uid()) || isAdminRole();
+    }
+
+    // ── conversations ─────────────────────────────────────────────────────────
+    match /conversations/{convId} {
+      allow read:   if isSignedIn() && (
+                      resource.data.guestId == uid() ||
+                      resource.data.ownerId == uid() ||
+                      isAdminRole()
+                    );
+      allow create: if isGuestRole() && request.resource.data.guestId == uid();
+      allow update: if isSignedIn() && (
+                      resource.data.ownerId == uid() || isAdminRole()
+                    );
+
+      match /messages/{msgId} {
+        function conv() {
+          return get(/databases/$(database)/documents/conversations/$(convId)).data;
+        }
+        allow read:   if isSignedIn() && (
+                        conv().guestId == uid() || conv().ownerId == uid() || isAdminRole()
+                      );
+        allow create: if isSignedIn() &&
+                        request.resource.data.senderId == uid() &&
+                        (conv().guestId == uid() || conv().ownerId == uid());
+        allow update: if isAdminRole();
+      }
+    }
+
+    // ── bookings ──────────────────────────────────────────────────────────────
+    match /bookings/{bookingId} {
+      allow read:   if isSignedIn() && (
+                      resource.data.guestId == uid() ||
+                      resource.data.ownerId == uid() ||
+                      isAdminRole()
+                    );
+      allow create: if isOwnerRole();
+      allow update: if isAdminRole();
+    }
+
+    // ── reviews ───────────────────────────────────────────────────────────────
+    match /reviews/{reviewId} {
+      allow read:   if resource.data.hidden == false || isAdminRole();
+      allow create: if isGuestRole() && request.resource.data.guestId == uid();
+      allow update: if isAdminRole();
+      allow delete: if isAdminRole();
+    }
+
+    // ── reports ───────────────────────────────────────────────────────────────
+    match /reports/{reportId} {
+      allow read:   if isAdminRole();
+      allow create: if isSignedIn();
+      allow update: if isAdminRole();
+    }
+  }
+}
