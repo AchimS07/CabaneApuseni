@@ -75,7 +75,13 @@ export async function createCabin(input: CabinInput, actor: SessionUser): Promis
   const id = randomUUID();
   const cabin: Cabin = { id, ownerId: actor.uid, ...parsed.data, createdAt: now, updatedAt: now };
 
-  await saveCabin(id, { ownerId: actor.uid, ...parsed.data, createdAt: now, updatedAt: now });
+  try {
+    await saveCabin(id, { ownerId: actor.uid, ...parsed.data, createdAt: now, updatedAt: now });
+  } catch (error) {
+    log.error({ error, actorUid: actor.uid }, 'Failed to save cabin');
+    return fail('INTERNAL_ERROR', 'Failed to save cabin. Please try again.');
+  }
+
   log.info({ id, actorUid: actor.uid }, 'Cabin created');
   return ok(cabin);
 }
