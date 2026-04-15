@@ -33,14 +33,6 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             </li>
             <li>
               <Link
-                href="/dashboard"
-                className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                Tablou de bord
-              </Link>
-            </li>
-            <li>
-              <Link
                 href="/dashboard/bookings"
                 className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
