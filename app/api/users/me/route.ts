@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { verifySession } from '@/lib/auth/session';
+import { getAdminAuth } from '@/lib/firebase/admin';
 import { getUserById, upsertUser } from '@/modules/users/infrastructure/firestoreUserRepository';
 
 const bodySchema = z.object({
@@ -34,6 +35,9 @@ export async function POST(req: NextRequest) {
     role: parsed.data.role,
     createdAt: existing?.createdAt ?? now,
   });
+
+  // Sync role to Firebase custom claims so session cookies include the correct role.
+  await getAdminAuth().setCustomUserClaims(session.uid, { role: parsed.data.role });
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }

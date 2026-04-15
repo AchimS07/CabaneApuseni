@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 interface PublicHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isOwner?: boolean;
 }
 
 /**
@@ -15,7 +16,7 @@ interface PublicHeaderProps {
  * Receives auth state from the server layout (no client Firebase call needed).
  * Handles mobile hamburger toggle locally.
  */
-export function PublicHeader({ isAuthenticated, isAdmin }: PublicHeaderProps) {
+export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: PublicHeaderProps) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
@@ -70,6 +71,16 @@ export function PublicHeader({ isAuthenticated, isAdmin }: PublicHeaderProps) {
                     className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     Admin
+                  </Link>
+                </li>
+              )}
+              {isOwner && !isAdmin && (
+                <li>
+                  <Link
+                    href="/dashboard/owner"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    Dashboard proprietar
                   </Link>
                 </li>
               )}
@@ -176,6 +187,17 @@ export function PublicHeader({ isAuthenticated, isAdmin }: PublicHeaderProps) {
                       className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
                     >
                       Admin
+                    </Link>
+                  </li>
+                )}
+                {isOwner && !isAdmin && (
+                  <li>
+                    <Link
+                      href="/dashboard/owner"
+                      onClick={close}
+                      className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                    >
+                      Dashboard proprietar
                     </Link>
                   </li>
                 )}
