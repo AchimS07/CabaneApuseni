@@ -25,6 +25,8 @@ export default function LoginPage() {
         code === 'auth/wrong-password'     ||
         code === 'auth/user-not-found'
           ? 'Invalid email or password.'
+          : code === 'auth/configuration-not-found'
+            ? 'Authentication is not configured for this project yet. Enable Email/Password sign-in in Firebase Console.'
           : 'Sign-in failed. Please try again.',
       );
     } finally { setLoading(false); }
