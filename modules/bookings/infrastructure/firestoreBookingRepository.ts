@@ -43,6 +43,23 @@ export async function listAllBookings(limit = 100): Promise<Booking[]> {
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Booking);
 }
 
+export async function listBookingsByCabinIds(
+  cabinIds: string[],
+  limit = 200,
+): Promise<Booking[]> {
+  if (cabinIds.length === 0) return [];
+  const db = getAdminFirestore();
+  // Firestore IN supports up to 30 values; slice defensively for MVP
+  const ids = cabinIds.slice(0, 30);
+  const snapshot = await db
+    .collection(COLLECTION)
+    .where('cabin.id', 'in', ids)
+    .orderBy('createdAt', 'desc')
+    .limit(limit)
+    .get();
+  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Booking);
+}
+
 export async function saveBooking(id: string, data: Omit<Booking, 'id'>): Promise<void> {
   const db = getAdminFirestore();
   await db.collection(COLLECTION).doc(id).set(data);

@@ -3,12 +3,14 @@
 /**
  * modules/bookings/actions.ts
  * Server Actions for booking operations.
- * Used by client components (BookingForm, CancelBookingButton).
+ * Used by client components (BookingForm, CancelBookingButton, BookingActionButtons).
  */
 import { verifySession } from '@/lib/auth/session';
 import {
   createBooking,
   cancelBooking,
+  confirmBookingForOwner,
+  rejectBookingForOwner,
 } from '@/modules/bookings/application/bookingService';
 import { revalidatePath } from 'next/cache';
 
@@ -71,5 +73,41 @@ export async function cancelBookingAction(
   }
 
   revalidatePath('/dashboard/bookings');
+  return { ok: true };
+}
+
+export type OwnerBookingActionResult =
+  | { ok: true }
+  | { ok: false; error: string };
+
+/**
+ * Owner confirms a pending booking for one of their cabins.
+ */
+export async function confirmBookingAction(
+  bookingId: string,
+): Promise<OwnerBookingActionResult> {
+  const session = await verifySession();
+  if (!session) return { ok: false, error: 'Authentication required.' };
+
+  const result = await confirmBookingForOwner(bookingId, session);
+  if (!result.ok) return { ok: false, error: result.error.message };
+
+  revalidatePath('/dashboard/owner/bookings');
+  return { ok: true };
+}
+
+/**
+ * Owner rejects (cancels) a pending booking for one of their cabins.
+ */
+export async function rejectBookingAction(
+  bookingId: string,
+): Promise<OwnerBookingActionResult> {
+  const session = await verifySession();
+  if (!session) return { ok: false, error: 'Authentication required.' };
+
+  const result = await rejectBookingForOwner(bookingId, session);
+  if (!result.ok) return { ok: false, error: result.error.message };
+
+  revalidatePath('/dashboard/owner/bookings');
   return { ok: true };
 }

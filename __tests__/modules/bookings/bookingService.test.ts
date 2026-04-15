@@ -13,7 +13,12 @@ jest.mock('@/lib/observability/logger', () => ({
 
 import * as bookingRepo from '@/modules/bookings/infrastructure/firestoreBookingRepository';
 import * as cabinRepo from '@/modules/cabins/infrastructure/firestoreCabinRepository';
-import { createBooking, cancelBooking } from '@/modules/bookings/application/bookingService';
+import {
+  createBooking,
+  cancelBooking,
+  confirmBookingForOwner,
+  rejectBookingForOwner,
+} from '@/modules/bookings/application/bookingService';
 import type { SessionUser } from '@/lib/auth/session';
 import type { Cabin } from '@/modules/cabins/domain/types';
 
@@ -135,6 +140,86 @@ describe('cancelBooking', () => {
     });
 
     const result = await cancelBooking('bk-1', mockActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('FORBIDDEN');
+  });
+});
+
+const ownerActor: SessionUser = { uid: 'owner-1', email: 'owner@example.com', role: 'owner' };
+const ownerCabin = {
+  id: 'cabin-1',
+  ownerId: 'owner-1',
+  title: 'Cabana Test',
+  slug: 'cabana-test',
+  description: 'desc',
+  location: 'loc',
+  maxGuests: 4,
+  pricePerNight: 300,
+  amenities: [],
+  imageUrls: [],
+  published: true,
+  createdAt: '2024-01-01T00:00:00Z',
+  updatedAt: '2024-01-01T00:00:00Z',
+};
+const pendingBooking = {
+  id: 'bk-2',
+  userId: 'user-1',
+  cabin: { id: 'cabin-1', title: 'Test', slug: 'test', pricePerNight: 300 },
+  checkIn: '2030-07-10',
+  checkOut: '2030-07-13',
+  guestCount: 2,
+  status: 'pending' as const,
+  totalPrice: 900,
+  createdAt: '2024-01-01T00:00:00Z',
+  updatedAt: '2024-01-01T00:00:00Z',
+};
+
+describe('confirmBookingForOwner', () => {
+  it('allows cabin owner to confirm a pending booking', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(ownerCabin);
+    jest.mocked(bookingRepo.updateBookingStatus).mockResolvedValue(undefined);
+
+    const result = await confirmBookingForOwner('bk-2', ownerActor);
+    expect(result.ok).toBe(true);
+    expect(bookingRepo.updateBookingStatus).toHaveBeenCalledWith('bk-2', 'confirmed');
+  });
+
+  it('rejects confirmation when actor does not own the cabin', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue({ ...ownerCabin, ownerId: 'other-owner' });
+
+    const result = await confirmBookingForOwner('bk-2', ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('FORBIDDEN');
+  });
+
+  it('rejects confirmation when booking is not pending', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue({ ...pendingBooking, status: 'confirmed' });
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(ownerCabin);
+
+    const result = await confirmBookingForOwner('bk-2', ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('CONFLICT');
+  });
+});
+
+describe('rejectBookingForOwner', () => {
+  it('allows cabin owner to reject a pending booking', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(ownerCabin);
+    jest.mocked(bookingRepo.updateBookingStatus).mockResolvedValue(undefined);
+
+    const result = await rejectBookingForOwner('bk-2', ownerActor);
+    expect(result.ok).toBe(true);
+    expect(bookingRepo.updateBookingStatus).toHaveBeenCalledWith('bk-2', 'cancelled');
+  });
+
+  it('rejects rejection when actor does not own the cabin', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue({ ...ownerCabin, ownerId: 'other-owner' });
+
+    const result = await rejectBookingForOwner('bk-2', ownerActor);
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error.code).toBe('FORBIDDEN');
   });

@@ -1,0 +1,89 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { confirmBookingAction, rejectBookingAction } from '@/modules/bookings/actions';
+
+interface BookingActionButtonsProps {
+  bookingId: string;
+}
+
+/**
+ * Confirm / reject buttons for owner booking inbox.
+ * Only rendered for pending bookings.
+ */
+export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
+  const router = useRouter();
+  const [loadingConfirm, setLoadingConfirm] = useState(false);
+  const [loadingReject, setLoadingReject] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleConfirm() {
+    setLoadingConfirm(true);
+    setError('');
+    try {
+      const result = await confirmBookingAction(bookingId);
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+      router.refresh();
+    } catch {
+      setError('A apărut o eroare. Încearcă din nou.');
+    } finally {
+      setLoadingConfirm(false);
+    }
+  }
+
+  async function handleReject() {
+    const confirmed = window.confirm(
+      'Ești sigur că vrei să refuzi această rezervare?',
+    );
+    if (!confirmed) return;
+
+    setLoadingReject(true);
+    setError('');
+    try {
+      const result = await rejectBookingAction(bookingId);
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+      router.refresh();
+    } catch {
+      setError('A apărut o eroare. Încearcă din nou.');
+    } finally {
+      setLoadingReject(false);
+    }
+  }
+
+  const busy = loadingConfirm || loadingReject;
+
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex gap-2">
+        <button
+          onClick={handleConfirm}
+          disabled={busy}
+          className="rounded-md border border-green-300 bg-green-50 px-3 py-1.5 text-xs font-medium text-green-700 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+          aria-label="Confirmă rezervarea"
+        >
+          {loadingConfirm ? 'Se confirmă…' : 'Confirmă'}
+        </button>
+        <button
+          onClick={handleReject}
+          disabled={busy}
+          className="rounded-md border border-red-300 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+          aria-label="Refuză rezervarea"
+        >
+          {loadingReject ? 'Se refuză…' : 'Refuză'}
+        </button>
+      </div>
+      {error && (
+        <p className="text-xs text-red-600" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
