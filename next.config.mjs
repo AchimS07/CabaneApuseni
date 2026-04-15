@@ -13,10 +13,8 @@ const nextConfig = {
     ],
   },
 
-  experimental: {
-    // Enable typed routes for safer navigation
-    typedRoutes: false,
-  },
+  // Enable typed routes for safer navigation
+  typedRoutes: false,
 };
 
 export default nextConfig;

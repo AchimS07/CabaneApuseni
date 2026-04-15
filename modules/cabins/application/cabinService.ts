@@ -19,19 +19,34 @@ import { randomUUID } from 'crypto';
 const log = createLogger({ module: 'cabinService' });
 
 export async function getPublishedCabins(): Promise<Result<Cabin[]>> {
-  const cabins = await listPublishedCabins();
-  return ok(cabins);
+  try {
+    const cabins = await listPublishedCabins();
+    return ok(cabins);
+  } catch (error) {
+    log.error({ error }, 'Failed to load published cabins');
+    return fail('INTERNAL_ERROR', 'Failed to load cabins.');
+  }
 }
 
 export async function getAllCabins(): Promise<Result<Cabin[]>> {
-  const cabins = await listAllCabins();
-  return ok(cabins);
+  try {
+    const cabins = await listAllCabins();
+    return ok(cabins);
+  } catch (error) {
+    log.error({ error }, 'Failed to load all cabins');
+    return fail('INTERNAL_ERROR', 'Failed to load cabins.');
+  }
 }
 
 export async function getCabinDetail(slug: string): Promise<Result<Cabin>> {
-  const cabin = await getCabinBySlug(slug);
-  if (!cabin) return fail('NOT_FOUND', `Cabin "${slug}" not found.`);
-  return ok(cabin);
+  try {
+    const cabin = await getCabinBySlug(slug);
+    if (!cabin) return fail('NOT_FOUND', `Cabin "${slug}" not found.`);
+    return ok(cabin);
+  } catch (error) {
+    log.error({ error, slug }, 'Failed to load cabin detail');
+    return fail('INTERNAL_ERROR', 'Failed to load cabin details.');
+  }
 }
 
 export async function createCabin(input: CabinInput, actorUid: string): Promise<Result<Cabin>> {
