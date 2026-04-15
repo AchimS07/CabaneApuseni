@@ -13,6 +13,7 @@ Then open `.env.local` and fill in the **Firebase Admin SDK** values before star
 
 | Variable | Where to find it |
 |---|---|
+| `FIREBASE_PROJECT_ID` | Firebase project id (for this repo: `apusenirental`) |
 | `FIREBASE_CLIENT_EMAIL` | Firebase Console → Project Settings → Service Accounts → Generate new private key → `client_email` |
 | `FIREBASE_PRIVATE_KEY` | Same JSON → `private_key` (replace literal newlines with `\n`) |
 | `SESSION_SECRET` | Generate with `openssl rand -hex 32` |
