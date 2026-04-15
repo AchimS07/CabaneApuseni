@@ -26,8 +26,8 @@ export async function getPublishedCabins(): Promise<Result<Cabin[]>> {
     const cabins = await listPublishedCabins();
     return ok(cabins.length > 0 ? cabins : MOCK_CABINS);
   } catch (error) {
-    log.error({ error }, 'Failed to load published cabins');
-    return fail('INTERNAL_ERROR', 'Failed to load published cabins.');
+    log.error({ error }, 'Failed to load published cabins from Firestore, falling back to mock data');
+    return ok(MOCK_CABINS);
   }
 }
 
