@@ -38,6 +38,7 @@ export async function createCabinAction(
     };
   }
 
+  revalidatePath('/cabins', 'layout');
   revalidatePath('/dashboard/owner/listings');
   return { ok: true, cabinId: result.data.id };
 }
@@ -57,6 +58,7 @@ export async function updateCabinAction(
     return { ok: false, error: result.error.message };
   }
 
+  revalidatePath('/cabins', 'layout');
   revalidatePath('/dashboard/owner/listings');
   return { ok: true };
 }
@@ -76,6 +78,7 @@ export async function togglePublishAction(
     return { ok: false, error: result.error.message };
   }
 
+  revalidatePath('/cabins', 'layout');
   revalidatePath('/dashboard/owner/listings');
   return { ok: true };
 }
@@ -94,6 +97,7 @@ export async function deleteCabinAction(
     return { ok: false, error: result.error.message };
   }
 
+  revalidatePath('/cabins', 'layout');
   revalidatePath('/dashboard/owner/listings');
   return { ok: true };
 }
