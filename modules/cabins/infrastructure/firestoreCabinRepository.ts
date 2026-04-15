@@ -26,9 +26,10 @@ export async function listCabinsByOwner(ownerId: string): Promise<Cabin[]> {
   const snapshot = await db
     .collection(COLLECTION)
     .where('ownerId', '==', ownerId)
-    .orderBy('createdAt', 'desc')
     .get();
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Cabin);
+  const cabins = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Cabin);
+  // Sort in-memory to avoid requiring a composite Firestore index.
+  return cabins.sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
 }
 
 export async function listPublishedCabins(): Promise<Cabin[]> {
