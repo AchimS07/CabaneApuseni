@@ -18,15 +18,21 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         >
           <Link
             href="/"
-            className="font-bold text-indigo-700 hover:text-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+            className="flex items-center gap-2 font-extrabold text-forest-700 hover:text-forest-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 rounded-md"
           >
+            <span
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-forest-600 text-white text-xs"
+              aria-hidden="true"
+            >
+              🏔️
+            </span>
             Cabane Apuseni
           </Link>
           <ul className="flex flex-wrap items-center gap-1 text-sm font-medium">
             <li>
               <Link
                 href="/cabins"
-                className="rounded-md px-3 py-2 text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="rounded-full px-4 py-2 text-gray-600 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
               >
                 Cabane
               </Link>
@@ -34,7 +40,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             <li>
               <Link
                 href="/dashboard/bookings"
-                className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
               >
                 Rezervările mele
               </Link>
@@ -44,7 +50,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 <li>
                   <Link
                     href="/dashboard/owner"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
                     Owner
                   </Link>
@@ -52,7 +58,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 <li>
                   <Link
                     href="/dashboard/owner/listings"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
                     Cabane mele
                   </Link>
@@ -60,7 +66,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 <li>
                   <Link
                     href="/dashboard/owner/bookings"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
                     Rezervări
                   </Link>

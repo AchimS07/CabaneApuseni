@@ -12,8 +12,9 @@ export default async function PublicLayout({ children }: { children: ReactNode }
         isAdmin={session?.role === 'admin'}
       />
       <div className="flex-1">{children}</div>
-      <footer className="border-t py-8 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Cabane Apuseni. Toate drepturile rezervate.
+      <footer className="border-t bg-gray-50 py-10 text-center text-sm text-gray-500">
+        <p className="font-semibold text-forest-700">Cabane Apuseni</p>
+        <p className="mt-1">© {new Date().getFullYear()} Cabane Apuseni. Toate drepturile rezervate.</p>
       </footer>
     </div>
   );
