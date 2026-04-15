@@ -265,7 +265,23 @@ Re-test these after any auth, Firestore, role, or layout change:
 
 ---
 
-## 9. Severity Levels
+## 9. Automated Test Strategy (PR Gate)
+Automated checks must run on every pull request targeting `main`:
+- TypeScript type check (`npm run type-check`)
+- Unit tests (`npm test -- --ci --runInBand`)
+
+Automated unit tests currently cover high-risk shared logic:
+- shared result helpers
+- booking service business rules
+- role/ownership authorization helpers
+- validation schemas for auth/booking input
+- API middleware rate-limiting behavior
+
+Manual QA from this plan remains required for integration and UX coverage that is not yet automated.
+
+---
+
+## 10. Severity Levels
 
 ### Critical
 Blocks core functionality, breaks access control, or creates unsafe release conditions.
@@ -281,7 +297,7 @@ Minor inconsistency or polish item.
 
 ---
 
-## 10. Release Blockers
+## 11. Release Blockers
 The following should block release:
 - registration does not work
 - login does not work
@@ -295,7 +311,7 @@ The following should block release:
 
 ---
 
-## 11. Exit Criteria
+## 12. Exit Criteria
 QA is complete when:
 - all critical scenarios pass
 - release blockers are resolved
@@ -305,7 +321,7 @@ QA is complete when:
 
 ---
 
-## 12. Post-MVP QA Suggestions
+## 13. Post-MVP QA Suggestions
 - add password reset coverage
 - add profile editing coverage
 - add admin CRUD coverage
