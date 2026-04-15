@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function CabinCard({ cabin }) {
   return (
     <article className="cabin-card">
@@ -12,9 +14,7 @@ export default function CabinCard({ cabin }) {
         <strong>Preț de la:</strong> {cabin.priceFrom} lei / noapte
       </p>
       <p>
-        <a href={`/cabins/${cabin.slug}`}>
-          Vezi detalii pentru {cabin.name}
-        </a>
+        <Link href={`/cabins/${cabin.slug}`}>Vezi detalii</Link>
       </p>
     </article>
   );

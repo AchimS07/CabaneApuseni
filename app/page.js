@@ -1,13 +1,9 @@
+import Link from 'next/link';
 import CabinList from './components/CabinList';
 import { cabins } from './data/cabins';
 
 export const metadata = {
-  title: 'Acasă',
-  description:
-    'Alege o cabană în Apuseni după locație, capacitate și buget. Găsește rapid locul potrivit pentru următoarea escapadă.',
-  alternates: {
-    canonical: '/'
-  }
+  title: 'Acasă'
 };
 
 export default function HomePage() {
@@ -15,8 +11,8 @@ export default function HomePage() {
     <>
       <header className="site-header">
         <nav aria-label="Navigație principală">
-          <a href="/">Cabane Apuseni</a>
-          <a href="#cabins">Vezi cabanele disponibile</a>
+          <Link href="/">Cabane Apuseni</Link>
+          <Link href="#cabins">Vezi cabanele disponibile</Link>
         </nav>
       </header>
 
@@ -28,7 +24,7 @@ export default function HomePage() {
             restrânse, cu peisaje montane și acces rapid la trasee.
           </p>
           <p className="cta-group">
-            <a href="#cabins">Explorează cabanele</a>
+            <Link href="#cabins">Explorează cabanele</Link>
             <a href="mailto:rezervari@cabaneapuseni.ro">
               Trimite o cerere de rezervare
             </a>

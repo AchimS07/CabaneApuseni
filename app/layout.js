@@ -1,7 +1,13 @@
 import './globals.css';
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'https://cabaneapuseni.ro');
+
 export const metadata = {
-  metadataBase: new URL('https://cabaneapuseni.ro'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'Cabane Apuseni',
     template: '%s | Cabane Apuseni'
