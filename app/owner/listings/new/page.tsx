@@ -1,8 +1,5 @@
-'use client';
-
-import { useState, type FormEvent, type ChangeEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { redirect } from 'next/navigation';
+export default function NewListingPage() { redirect('/dashboard'); }
 import Link from 'next/link';
 import { useRequireRole } from '@/lib/hooks/useRequireRole';
 import { uploadCabinPhoto } from '@/lib/storage';

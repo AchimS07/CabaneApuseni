@@ -1,13 +1,12 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { useState, useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { useRequireRole } from '@/lib/hooks/useRequireRole';
-import {
-  getPendingReports, hideAndActionReport, actionReport,
-  type Report, type FirebaseTimestamp,
-} from '@/lib/firestore';
+/**
+ * Legacy moderation page.
+ * Redirects to the canonical admin dashboard.
+ */
+export default function ModerationPage() {
+  redirect('/admin');
+}
 
 interface ReportWithPreview extends Report {
   contentPreview: string;

@@ -1,9 +1,12 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRequireRole } from '@/lib/hooks/useRequireRole';
-import { getUserConversations, type Conversation } from '@/lib/firestore';
+/**
+ * Legacy messages page.
+ * Redirects to the canonical dashboard.
+ */
+export default function MessagesPage() {
+  redirect('/dashboard');
+}
 
 export default function MessagesPage() {
   const { profile, loading: authLoading } = useRequireRole(['owner', 'guest', 'admin']);

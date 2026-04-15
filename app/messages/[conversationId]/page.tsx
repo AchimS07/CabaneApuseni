@@ -1,9 +1,8 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { useParams } from 'next/navigation';
-import Link from 'next/link';
-import { useRequireRole } from '@/lib/hooks/useRequireRole';
-import ConversationThread from '@/components/ConversationThread';
+export default function ConversationPage() {
+  redirect('/dashboard');
+}
 
 export default function ConversationPage() {
   const params = useParams<{ conversationId: string }>();

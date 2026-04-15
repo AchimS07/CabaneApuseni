@@ -1,13 +1,8 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { useState, useEffect, type FormEvent, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { useRequireRole } from '@/lib/hooks/useRequireRole';
-import { createReview, getBookingReview, getCabin, type Cabin } from '@/lib/firestore';
-import StarRating from '@/components/StarRating';
+export default function NewReviewPage() {
+  redirect('/dashboard');
+}
 
 function NewReviewContent() {
   const router      = useRouter();

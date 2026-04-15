@@ -1,10 +1,12 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRequireRole } from '@/lib/hooks/useRequireRole';
-import { getOwnerCabins, updateCabin, type Cabin } from '@/lib/firestore';
+/**
+ * Legacy owner listings page.
+ * Redirects to the canonical dashboard.
+ */
+export default function OwnerListingsPage() {
+  redirect('/dashboard');
+}
 
 export default function OwnerListingsPage() {
   const { profile, loading: authLoading } = useRequireRole('owner');

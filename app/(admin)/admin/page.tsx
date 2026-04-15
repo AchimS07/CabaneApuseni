@@ -1,6 +1,8 @@
 import { requireAdmin } from '@/lib/auth/authorization';
 import { getAllCabins } from '@/modules/cabins/application/cabinService';
 import { getAllBookings } from '@/modules/bookings/application/bookingService';
+import { SectionHeader } from '@/components/ui/SectionHeader';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Admin – Tablou de bord' };
@@ -19,35 +21,117 @@ export default async function AdminPage() {
   const pendingCount = bookingsResult.ok
     ? bookingsResult.data.filter((b) => b.status === 'pending').length
     : 0;
+  const confirmedCount = bookingsResult.ok
+    ? bookingsResult.data.filter((b) => b.status === 'confirmed').length
+    : 0;
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold">Tablou de bord</h1>
+      <SectionHeader
+        title="Tablou de bord"
+        description="Privire de ansamblu asupra platformei."
+      />
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard label="Cabane" value={cabinCount} />
-        <StatCard label="Rezervări totale" value={bookingCount} />
-        <StatCard label="În așteptare" value={pendingCount} highlight />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiCard
+          label="Cabane"
+          value={cabinCount}
+          icon="🏠"
+          href="/admin/cabins"
+        />
+        <KpiCard
+          label="Rezervări totale"
+          value={bookingCount}
+          icon="📅"
+        />
+        <KpiCard
+          label="În așteptare"
+          value={pendingCount}
+          icon="⏳"
+          highlight={pendingCount > 0}
+          variant="warning"
+        />
+        <KpiCard
+          label="Confirmate"
+          value={confirmedCount}
+          icon="✅"
+          variant="success"
+        />
       </div>
+
+      {/* Quick-access links */}
+      <section className="mt-10" aria-labelledby="quick-access-heading">
+        <h2
+          id="quick-access-heading"
+          className="mb-4 text-lg font-semibold text-gray-900"
+        >
+          Acces rapid
+        </h2>
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href="/admin/cabins"
+            className="rounded-md border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            Gestionează cabane
+          </Link>
+          <Link
+            href="/"
+            className="rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
+          >
+            Vizualizează site-ul public
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
 
-function StatCard({
-  label,
-  value,
-  highlight,
-}: {
+interface KpiCardProps {
   label: string;
   value: number;
+  icon: string;
+  href?: string;
   highlight?: boolean;
-}) {
-  return (
+  variant?: 'default' | 'warning' | 'success';
+}
+
+function KpiCard({ label, value, icon, href, variant = 'default' }: KpiCardProps) {
+  const variantClasses = {
+    default: 'border-gray-200 bg-white',
+    warning: 'border-yellow-200 bg-yellow-50',
+    success: 'border-green-200 bg-green-50',
+  };
+
+  const valueClasses = {
+    default: 'text-gray-900',
+    warning: 'text-yellow-800',
+    success: 'text-green-800',
+  };
+
+  const content = (
     <div
-      className={`rounded-xl border p-6 shadow-sm ${highlight ? 'border-yellow-300 bg-yellow-50' : ''}`}
+      className={`rounded-xl border p-5 shadow-sm transition ${variantClasses[variant]} ${href ? 'hover:shadow-md' : ''}`}
     >
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="mt-1 text-3xl font-bold">{value}</p>
+      <span className="text-2xl" aria-hidden="true">
+        {icon}
+      </span>
+      <p className="mt-2 text-sm text-gray-500">{label}</p>
+      <p className={`mt-1 text-3xl font-bold ${valueClasses[variant]}`}>
+        {value}
+      </p>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className="focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-xl"
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }

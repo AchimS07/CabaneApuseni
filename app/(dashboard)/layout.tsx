@@ -8,19 +8,39 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b bg-white px-4 py-3">
-        <nav className="mx-auto flex max-w-5xl items-center justify-between">
-          <Link href="/" className="font-bold text-indigo-700">
+      <header className="border-b bg-white px-4 py-3 shadow-sm">
+        <nav
+          className="mx-auto flex max-w-5xl items-center justify-between"
+          aria-label="Navigare tablou de bord"
+        >
+          <Link
+            href="/"
+            className="font-bold text-indigo-700 hover:text-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+          >
             Cabane Apuseni
           </Link>
-          <ul className="flex gap-4 text-sm font-medium">
+          <ul className="flex flex-wrap items-center gap-1 text-sm font-medium">
             <li>
-              <Link href="/dashboard" className="text-gray-700 hover:text-indigo-700">
+              <Link
+                href="/cabins"
+                className="rounded-md px-3 py-2 text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Cabane
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/dashboard"
+                className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
                 Tablou de bord
               </Link>
             </li>
             <li>
-              <Link href="/dashboard/bookings" className="text-gray-700 hover:text-indigo-700">
+              <Link
+                href="/dashboard/bookings"
+                className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
                 Rezervările mele
               </Link>
             </li>
@@ -31,6 +51,9 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         </nav>
       </header>
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">{children}</main>
+      <footer className="border-t py-6 text-center text-xs text-gray-400">
+        © {new Date().getFullYear()} Cabane Apuseni
+      </footer>
     </div>
   );
 }
