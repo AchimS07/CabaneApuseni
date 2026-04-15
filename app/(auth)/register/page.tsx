@@ -16,6 +16,12 @@ export default async function RegisterPage({ searchParams }: Props) {
     <>
       <h1 className="mb-6 text-center text-2xl font-bold">Cont nou</h1>
       <RegisterForm redirectTo={redirectTo} />
+      <p className="mt-4 text-center text-sm text-gray-600">
+        Ai o cabană?{' '}
+        <a href="/register/owner" className="font-medium text-indigo-600 hover:underline">
+          Înregistrează-te ca proprietar
+        </a>
+      </p>
       <p className="mt-4 text-center text-sm text-gray-500">
         Ai deja cont?{' '}
         <a href="/login" className="font-medium text-indigo-600 hover:underline">

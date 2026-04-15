@@ -2,9 +2,12 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { requireAuth } from '@/lib/auth/authorization';
 import { LogoutButton } from '@/components/ui/LogoutButton';
+import { getProfile } from '@/modules/users/application/userService';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
-  await requireAuth();
+  const session = await requireAuth();
+  const profileResult = await getProfile(session.uid);
+  const role = profileResult.ok ? profileResult.data.role : session.role;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -44,6 +47,16 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 Rezervările mele
               </Link>
             </li>
+            {role === 'owner' && (
+              <li>
+                <Link
+                  href="/dashboard/owner"
+                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  Owner
+                </Link>
+              </li>
+            )}
             <li>
               <LogoutButton />
             </li>

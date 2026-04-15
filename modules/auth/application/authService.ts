@@ -7,6 +7,7 @@ import {
   registerWithEmail,
   signOutUser,
 } from '@/modules/auth/infrastructure/firebaseAuthRepository';
+import type { UserRole } from '@/modules/users/domain/types';
 
 async function exchangeTokenForCookie(idToken: string): Promise<void> {
   const res = await fetch('/api/auth/session', {
@@ -25,9 +26,28 @@ export async function login(email: string, password: string): Promise<void> {
   await exchangeTokenForCookie(idToken);
 }
 
-export async function register(email: string, password: string, name: string): Promise<void> {
+async function syncProfile(name: string, email: string, role: Extract<UserRole, 'user' | 'owner'>): Promise<void> {
+  const res = await fetch('/api/users/me', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, role }),
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error((body as { error?: string }).error ?? 'Failed to save user profile');
+  }
+}
+
+export async function register(
+  email: string,
+  password: string,
+  name: string,
+  role: Extract<UserRole, 'user' | 'owner'> = 'user',
+): Promise<void> {
   const { idToken } = await registerWithEmail(email, password, name);
   await exchangeTokenForCookie(idToken);
+  await syncProfile(name, email, role);
 }
 
 export async function logout(): Promise<void> {

@@ -10,13 +10,18 @@ export default async function DashboardPage() {
   const session = await requireAuth();
   const profileResult = await getProfile(session.uid);
   const name = profileResult.ok ? profileResult.data.name : session.email ?? 'Utilizator';
+  const role = profileResult.ok ? profileResult.data.role : session.role;
 
   return (
     <div>
       <h1 className="mb-1 text-2xl font-bold text-gray-900">
         Bine ai revenit, {name}!
       </h1>
-      <p className="mb-8 text-gray-500">Gestionează rezervările și contul tău.</p>
+      <p className="mb-8 text-gray-500">
+        {role === 'owner'
+          ? 'Gestionează profilul de proprietar și activitatea contului.'
+          : 'Gestionează rezervările și contul tău.'}
+      </p>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Link
@@ -60,6 +65,26 @@ export default async function DashboardPage() {
             Explorează →
           </span>
         </Link>
+
+        {role === 'owner' && (
+          <Link
+            href="/dashboard/owner"
+            className="group flex flex-col rounded-xl border bg-white p-6 shadow-sm transition hover:border-indigo-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            <span className="mb-3 text-3xl" aria-hidden="true">
+              🧑‍💼
+            </span>
+            <h2 className="text-lg font-semibold text-gray-900 group-hover:text-indigo-700">
+              Dashboard proprietar
+            </h2>
+            <p className="mt-1 text-sm text-gray-500">
+              Vezi statusul contului de proprietar și următorii pași.
+            </p>
+            <span className="mt-4 text-sm font-medium text-indigo-600 group-hover:underline">
+              Deschide dashboard →
+            </span>
+          </Link>
+        )}
       </div>
     </div>
   );
