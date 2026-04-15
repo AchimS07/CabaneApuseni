@@ -2,7 +2,7 @@
  * modules/users/domain/types.ts
  */
 
-export type UserRole = 'user' | 'admin';
+export type UserRole = 'user' | 'owner' | 'admin';
 
 export interface UserProfile {
   uid: string;

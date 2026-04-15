@@ -6,12 +6,19 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { register } from '@/modules/auth/application/authService';
 import { registerSchema } from '@/lib/validation/schemas';
+import type { UserRole } from '@/modules/users/domain/types';
 
 interface RegisterFormProps {
   redirectTo?: string;
+  role?: Extract<UserRole, 'user' | 'owner'>;
+  submitLabel?: string;
 }
 
-export default function RegisterForm({ redirectTo = '/dashboard' }: RegisterFormProps) {
+export default function RegisterForm({
+  redirectTo = '/dashboard',
+  role = 'user',
+  submitLabel = 'Creează cont',
+}: RegisterFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState('');
@@ -41,7 +48,7 @@ export default function RegisterForm({ redirectTo = '/dashboard' }: RegisterForm
 
     setLoading(true);
     try {
-      await register(parsed.data.email, parsed.data.password, parsed.data.name);
+      await register(parsed.data.email, parsed.data.password, parsed.data.name, role);
       router.push(redirectTo);
       router.refresh();
     } catch (err) {
@@ -95,7 +102,7 @@ export default function RegisterForm({ redirectTo = '/dashboard' }: RegisterForm
       />
 
       <Button type="submit" loading={loading} className="mt-2 w-full">
-        Creează cont
+        {submitLabel}
       </Button>
     </form>
   );

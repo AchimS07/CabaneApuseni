@@ -31,6 +31,7 @@ export async function requireAdmin(): Promise<SessionUser> {
  */
 export function hasRole(user: SessionUser, role: UserRole): boolean {
   if (role === 'user') return true;
+  if (role === 'owner') return user.role === 'owner' || user.role === 'admin';
   if (role === 'admin') return user.role === 'admin';
   return false;
 }
