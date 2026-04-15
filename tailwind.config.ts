@@ -8,7 +8,29 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: [
+          'Inter',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+        ],
+      },
       colors: {
+        // AirBnb-inspired brand palette
+        brand: {
+          DEFAULT: '#FF385C',
+          dark: '#E31C5F',
+          light: '#FF5A5F',
+        },
+        // Semantic text tokens
+        'text-primary': '#222222',
+        'text-secondary': '#717171',
+        // Legacy forest/earth palette (kept for backward compat)
         forest: {
           50:  '#f0faf4',
           100: '#d7f0e1',
@@ -35,6 +57,11 @@ const config: Config = {
           900: '#5c3523',
           950: '#311a10',
         },
+      },
+      boxShadow: {
+        card: '0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05)',
+        'card-hover': '0 2px 4px rgba(0,0,0,0.10), 0 8px 24px rgba(0,0,0,0.09)',
+        nav: '0 1px 0 rgba(0,0,0,0.08)',
       },
     },
   },
