@@ -65,6 +65,7 @@ export default async function BookingsPage({ searchParams }: Props) {
                 <th className="px-4 py-3 font-medium">{t('period')}</th>
                 <th className="px-4 py-3 font-medium">{t('guests')}</th>
                 <th className="px-4 py-3 font-medium">{t('total')}</th>
+                <th className="px-4 py-3 font-medium">Mențiuni</th>
                 <th className="px-4 py-3 font-medium">{t('status')}</th>
                 <th className="px-4 py-3 font-medium">
                   <span className="sr-only">{t('actions')}</span>
@@ -89,6 +90,13 @@ export default async function BookingsPage({ searchParams }: Props) {
                   <td className="px-4 py-4 text-gray-600">{b.guestCount}</td>
                   <td className="px-4 py-4 font-medium text-forest-700">
                     {b.totalPrice} RON
+                  </td>
+                  <td className="px-4 py-4 text-gray-500 text-xs max-w-[160px]">
+                    {b.notes ? (
+                      <span className="line-clamp-2" title={b.notes}>{b.notes}</span>
+                    ) : (
+                      <span className="text-gray-300">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-4">
                     <StatusBadge status={b.status} />

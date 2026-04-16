@@ -6,6 +6,7 @@ import { getProfile } from '@/modules/users/application/userService';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TogglePublishButton } from '@/components/ui/TogglePublishButton';
+import { DeleteCabinButton } from '@/components/ui/DeleteCabinButton';
 import { Button } from '@/components/ui/Button';
 import { LISTING_LIMITS } from '@/lib/subscription/plans';
 import { getTranslations } from 'next-intl/server';
@@ -180,6 +181,10 @@ export default async function OwnerListingsPage() {
                       >
                         {t('preview')}
                       </Link>
+                      <DeleteCabinButton
+                        cabinId={cabin.id}
+                        cabinTitle={cabin.title}
+                      />
                     </div>
                   </td>
                 </tr>

@@ -34,6 +34,14 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           <ul className="flex flex-wrap items-center gap-1 text-sm font-medium">
             <li>
               <Link
+                href="/dashboard"
+                className="rounded-md px-3 py-2 text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Acasă
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/cabins"
                 className="rounded-md px-3 py-2 text-gray-600 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
               >
@@ -86,6 +94,14 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 </li>
               </>
             )}
+            <li>
+              <Link
+                href="/dashboard/profile"
+                className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Profil
+              </Link>
+            </li>
             <li>
               <LogoutButton />
             </li>

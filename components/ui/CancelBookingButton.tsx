@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { cancelBookingAction } from '@/modules/bookings/actions';
 import { useTranslations } from 'next-intl';
 
@@ -11,13 +10,13 @@ interface CancelBookingButtonProps {
 
 /**
  * Button that cancels a booking after a browser confirmation prompt.
- * Calls the cancelBookingAction server action and refreshes the page on success.
+ * Shows a success message on completion; shows an error if it fails.
  */
 export function CancelBookingButton({ bookingId }: CancelBookingButtonProps) {
-  const router = useRouter();
   const t = useTranslations('myBookings');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   async function handleCancel() {
     const confirmed = window.confirm(t('confirmCancel'));
@@ -31,13 +30,20 @@ export function CancelBookingButton({ bookingId }: CancelBookingButtonProps) {
         setError(result.error);
         return;
       }
-      // Server action revalidates the path; refresh the router to show updated state.
-      router.refresh();
+      setSuccess(true);
     } catch {
       setError(t('cancelError'));
     } finally {
       setLoading(false);
     }
+  }
+
+  if (success) {
+    return (
+      <span className="text-xs font-medium text-green-700" role="status">
+        ✓ Anulată
+      </span>
+    );
   }
 
   return (

@@ -60,6 +60,24 @@ export async function listBookingsByCabinIds(
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Booking);
 }
 
+export async function listOverlappingBookings(
+  cabinId: string,
+  checkIn: string,
+  checkOut: string,
+): Promise<Booking[]> {
+  const db = getAdminFirestore();
+  // Fetch all active (pending or confirmed) bookings for this cabin and check overlap in memory.
+  // Firestore doesn't support two range filters on different fields without a composite index.
+  const snapshot = await db
+    .collection(COLLECTION)
+    .where('cabin.id', '==', cabinId)
+    .where('status', 'in', ['pending', 'confirmed'])
+    .get();
+  const all = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Booking);
+  // Two ranges [a, b) and [c, d) overlap when a < d && c < b
+  return all.filter((b) => b.checkIn < checkOut && b.checkOut > checkIn);
+}
+
 export async function saveBooking(id: string, data: Omit<Booking, 'id'>): Promise<void> {
   const db = getAdminFirestore();
   await db.collection(COLLECTION).doc(id).set(data);
