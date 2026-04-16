@@ -3,18 +3,21 @@ import Link from 'next/link';
 import { requireAuth } from '@/lib/auth/authorization';
 import { LogoutButton } from '@/components/ui/LogoutButton';
 import { getProfile } from '@/modules/users/application/userService';
+import { getTranslations } from 'next-intl/server';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const session = await requireAuth();
   const profileResult = await getProfile(session.uid);
   const role = profileResult.ok ? profileResult.data.role : session.role;
+  const t = await getTranslations('nav');
 
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b bg-white px-4 py-3 shadow-sm">
         <nav
           className="mx-auto flex max-w-5xl items-center justify-between"
-          aria-label="Navigare tablou de bord"
+          aria-label={t('mainNav')}
         >
           <Link
             href="/"
@@ -34,7 +37,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 href="/cabins"
                 className="rounded-full px-4 py-2 text-gray-600 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
               >
-                Cabane
+                {t('cabins')}
               </Link>
             </li>
             {role !== 'owner' && (
@@ -43,7 +46,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                   href="/dashboard/bookings"
                   className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                 >
-                  Rezervările mele
+                  {t('myBookings')}
                 </Link>
               </li>
             )}
@@ -54,7 +57,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                     href="/dashboard/owner"
                     className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
-                    Owner
+                    {t('owner')}
                   </Link>
                 </li>
                 <li>
@@ -62,7 +65,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                     href="/dashboard/owner/listings"
                     className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
-                    Cabane mele
+                    {t('myListings')}
                   </Link>
                 </li>
                 <li>
@@ -70,13 +73,16 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                     href="/dashboard/owner/bookings"
                     className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
-                    Rezervări
+                    {t('bookings')}
                   </Link>
                 </li>
               </>
             )}
             <li>
               <LogoutButton />
+            </li>
+            <li>
+              <LanguageSwitcher />
             </li>
           </ul>
         </nav>

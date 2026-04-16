@@ -5,8 +5,13 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { CancelBookingButton } from '@/components/ui/CancelBookingButton';
 import type { Metadata } from 'next';
 import type { BookingStatus } from '@/modules/bookings/domain/types';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Rezervările mele' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('myBookings');
+  return { title: t('metaTitle') };
+}
+
 export const dynamic = 'force-dynamic';
 
 /** Statuses that can still be cancelled by the user */
@@ -24,10 +29,11 @@ export default async function BookingsPage({ searchParams }: Props) {
   ]);
   const bookings = result.ok ? result.data : [];
   const showSuccess = params.success === '1';
+  const t = await getTranslations('myBookings');
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold">Rezervările mele</h1>
+      <h1 className="mb-6 text-2xl font-bold">{t('title')}</h1>
 
       {/* Success notification after a new booking */}
       {showSuccess && (
@@ -38,8 +44,7 @@ export default async function BookingsPage({ searchParams }: Props) {
         >
           <span aria-hidden="true" className="mt-0.5 shrink-0 text-base">✅</span>
           <p>
-            <strong>Rezervare trimisă cu succes!</strong> Vei fi contactat pentru
-            confirmare.
+            <strong>{t('successTitle')}</strong> {t('successMessage')}
           </p>
         </div>
       )}
@@ -47,22 +52,22 @@ export default async function BookingsPage({ searchParams }: Props) {
       {bookings.length === 0 ? (
         <EmptyState
           icon="📅"
-          title="Nu ai nicio rezervare"
-          description="Explorează cabanele disponibile și fă prima ta rezervare."
-          action={{ label: 'Explorează cabane', href: '/cabins' }}
+          title={t('emptyTitle')}
+          description={t('emptyDescription')}
+          action={{ label: t('exploreCabins'), href: '/cabins' }}
         />
       ) : (
         <div className="overflow-x-auto rounded-xl border">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-left text-gray-600">
               <tr>
-                <th className="px-4 py-3 font-medium">Cabană</th>
-                <th className="px-4 py-3 font-medium">Perioadă</th>
-                <th className="px-4 py-3 font-medium">Oaspeți</th>
-                <th className="px-4 py-3 font-medium">Total</th>
-                <th className="px-4 py-3 font-medium">Status</th>
+                <th className="px-4 py-3 font-medium">{t('cabin')}</th>
+                <th className="px-4 py-3 font-medium">{t('period')}</th>
+                <th className="px-4 py-3 font-medium">{t('guests')}</th>
+                <th className="px-4 py-3 font-medium">{t('total')}</th>
+                <th className="px-4 py-3 font-medium">{t('status')}</th>
                 <th className="px-4 py-3 font-medium">
-                  <span className="sr-only">Acțiuni</span>
+                  <span className="sr-only">{t('actions')}</span>
                 </th>
               </tr>
             </thead>

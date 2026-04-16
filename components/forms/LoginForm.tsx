@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { login } from '@/modules/auth/application/authService';
 import { loginSchema } from '@/lib/validation/schemas';
+import { useTranslations } from 'next-intl';
 
 interface LoginFormProps {
   redirectTo?: string;
@@ -13,6 +14,7 @@ interface LoginFormProps {
 
 export default function LoginForm({ redirectTo = '/dashboard' }: LoginFormProps) {
   const router = useRouter();
+  const t = useTranslations('auth');
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
@@ -42,7 +44,7 @@ export default function LoginForm({ redirectTo = '/dashboard' }: LoginFormProps)
       router.refresh();
     } catch (err) {
       setGlobalError(
-        err instanceof Error ? err.message : 'Autentificare eșuată. Verificați credențialele.',
+        err instanceof Error ? err.message : t('loginFailed'),
       );
     } finally {
       setLoading(false);
@@ -58,7 +60,7 @@ export default function LoginForm({ redirectTo = '/dashboard' }: LoginFormProps)
       )}
 
       <Input
-        label="Email"
+        label={t('email')}
         name="email"
         type="email"
         autoComplete="email"
@@ -66,7 +68,7 @@ export default function LoginForm({ redirectTo = '/dashboard' }: LoginFormProps)
         error={fieldErrors.email}
       />
       <Input
-        label="Parolă"
+        label={t('password')}
         name="password"
         type="password"
         autoComplete="current-password"
@@ -75,7 +77,7 @@ export default function LoginForm({ redirectTo = '/dashboard' }: LoginFormProps)
       />
 
       <Button type="submit" loading={loading} className="mt-2 w-full">
-        Autentificare
+        {t('loginButton')}
       </Button>
     </form>
   );

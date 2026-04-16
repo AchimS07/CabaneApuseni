@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import type { Cabin } from '@/modules/cabins/domain/types';
 import { AvailableCabinsMap } from './AvailableCabinsMap';
+import { useTranslations } from 'next-intl';
 
 type View = 'list' | 'map';
 
@@ -13,6 +14,7 @@ interface Props {
 
 export function CabinsViewSwitcher({ cabins }: Props) {
   const [view, setView] = useState<View>('list');
+  const t = useTranslations('cabinsList');
 
   return (
     <>
@@ -41,7 +43,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
               clipRule="evenodd"
             />
           </svg>
-          Listă
+          {t('viewList')}
         </button>
         <button
           type="button"
@@ -66,7 +68,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
               clipRule="evenodd"
             />
           </svg>
-          Hartă
+          {t('viewMap')}
         </button>
       </div>
 
@@ -77,14 +79,14 @@ export function CabinsViewSwitcher({ cabins }: Props) {
       {view === 'list' && (
         <ul
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          aria-label="Lista cabane disponibile"
+          aria-label={t('listAriaLabel')}
         >
           {cabins.map((cabin) => (
             <li key={cabin.id}>
               <Link
                 href={`/cabins/${cabin.slug}`}
                 className="group block overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                aria-label={`${cabin.title}, ${cabin.location}, ${cabin.pricePerNight} RON pe noapte`}
+                aria-label={`${cabin.title}, ${cabin.location}, ${cabin.pricePerNight} RON ${t('perNight')}`}
               >
                 {cabin.imageUrls[0] ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -113,14 +115,14 @@ export function CabinsViewSwitcher({ cabins }: Props) {
                   <div className="mt-3 flex items-center justify-between">
                     <p className="font-semibold text-indigo-700">
                       {cabin.pricePerNight}{' '}
-                      <span className="text-xs font-normal text-gray-500">RON / noapte</span>
+                      <span className="text-xs font-normal text-gray-500">RON {t('perNight')}</span>
                     </p>
                     <span className="text-xs text-gray-400">
                       👥 max {cabin.maxGuests}
                     </span>
                   </div>
                   <span className="mt-3 inline-block text-sm font-medium text-indigo-600 group-hover:underline">
-                    Vezi detalii →
+                    {t('viewDetails')}
                   </span>
                 </div>
               </Link>

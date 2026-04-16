@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { logout } from '@/modules/auth/application/authService';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 interface PublicHeaderProps {
   isAuthenticated: boolean;
@@ -17,6 +19,7 @@ interface PublicHeaderProps {
  */
 export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: PublicHeaderProps) {
   const router = useRouter();
+  const t = useTranslations('nav');
   const [menuOpen, setMenuOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
@@ -38,7 +41,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
     <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur-sm">
       <nav
         className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6"
-        aria-label="Navigare principală"
+        aria-label={t('mainNav')}
       >
         {/* Logo */}
         <Link
@@ -62,7 +65,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               href="/cabins"
               className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
             >
-              Cabane
+              {t('cabins')}
             </Link>
           </li>
           <li>
@@ -70,7 +73,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               href="/#pricing"
               className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              Prețuri
+              {t('pricing')}
             </Link>
           </li>
 
@@ -82,7 +85,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     href="/admin"
                     className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
-                    Admin
+                    {t('admin')}
                   </Link>
                 </li>
               )}
@@ -92,7 +95,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     href="/dashboard/owner"
                     className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
-                    Dashboard proprietar
+                    {t('ownerDashboard')}
                   </Link>
                 </li>
               )}
@@ -102,7 +105,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     href="/dashboard/bookings"
                     className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
-                    Rezervările mele
+                    {t('myBookings')}
                   </Link>
                 </li>
               )}
@@ -112,7 +115,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   disabled={loggingOut}
                   className="rounded-full px-4 py-2 text-red-600 transition hover:bg-red-50 hover:text-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-50"
                 >
-                  {loggingOut ? 'Se deconectează…' : 'Deconectare'}
+                  {loggingOut ? t('loggingOut') : t('logout')}
                 </button>
               </li>
             </>
@@ -123,7 +126,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   href="/login"
                   className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                 >
-                  Autentificare
+                  {t('signIn')}
                 </Link>
               </li>
               <li>
@@ -131,11 +134,15 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   href="/register"
                   className="btn-primary py-2 px-5 text-sm"
                 >
-                  Înregistrare
+                  {t('register')}
                 </Link>
               </li>
             </>
           )}
+
+          <li>
+            <LanguageSwitcher />
+          </li>
         </ul>
 
         {/* Mobile hamburger */}
@@ -144,7 +151,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
           onClick={() => setMenuOpen((o) => !o)}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
-          aria-label={menuOpen ? 'Închide meniu' : 'Deschide meniu'}
+          aria-label={menuOpen ? t('closeMenu') : t('openMenu')}
         >
           <svg
             className="h-5 w-5"
@@ -185,7 +192,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 onClick={close}
                 className="block rounded-xl px-3 py-2.5 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700"
               >
-                Cabane
+                {t('cabins')}
               </Link>
             </li>
             <li>
@@ -194,7 +201,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 onClick={close}
                 className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
               >
-                Prețuri
+                {t('pricing')}
               </Link>
             </li>
 
@@ -207,7 +214,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={close}
                       className="block rounded-xl px-3 py-2.5 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700"
                     >
-                      Admin
+                      {t('admin')}
                     </Link>
                   </li>
                 )}
@@ -218,7 +225,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={close}
                       className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
                     >
-                      Dashboard proprietar
+                      {t('ownerDashboard')}
                     </Link>
                   </li>
                 )}
@@ -229,7 +236,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={close}
                       className="block rounded-xl px-3 py-2.5 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700"
                     >
-                      Rezervările mele
+                      {t('myBookings')}
                     </Link>
                   </li>
                 )}
@@ -239,7 +246,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     disabled={loggingOut}
                     className="block w-full rounded-xl px-3 py-2.5 text-left text-red-600 transition hover:bg-red-50 disabled:opacity-50"
                   >
-                    {loggingOut ? 'Se deconectează…' : 'Deconectare'}
+                    {loggingOut ? t('loggingOut') : t('logout')}
                   </button>
                 </li>
               </>
@@ -251,7 +258,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     onClick={close}
                     className="block rounded-xl px-3 py-2.5 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700"
                   >
-                    Autentificare
+                    {t('signIn')}
                   </Link>
                 </li>
                 <li className="pt-1">
@@ -260,11 +267,15 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     onClick={close}
                     className="btn-primary block w-full text-center py-2.5"
                   >
-                    Înregistrare
+                    {t('register')}
                   </Link>
                 </li>
               </>
             )}
+
+            <li className="pt-2 border-t mt-1">
+              <LanguageSwitcher />
+            </li>
           </ul>
         </div>
       )}

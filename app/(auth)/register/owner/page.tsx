@@ -2,8 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import RegisterForm from '@/components/forms/RegisterForm';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Înregistrare proprietar' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('auth');
+  return { title: t('ownerRegisterTitle') };
+}
 
 interface Props {
   searchParams: Promise<{ redirect?: string; plan?: string }>;
@@ -11,6 +15,7 @@ interface Props {
 
 export default async function OwnerRegisterPage({ searchParams }: Props) {
   const { redirect: redirectParam, plan } = await searchParams;
+  const t = await getTranslations('auth');
 
   const validatedPlan =
     plan === 'basic' || plan === 'pro' ? (plan as 'basic' | 'pro') : null;
@@ -24,29 +29,29 @@ export default async function OwnerRegisterPage({ searchParams }: Props) {
 
   return (
     <>
-      <h1 className="mb-2 text-center text-2xl font-bold">Cont proprietar</h1>
+      <h1 className="mb-2 text-center text-2xl font-bold">{t('ownerRegisterTitle')}</h1>
       <p className="mb-6 text-center text-sm text-gray-500">
-        {'Plan selectat: '}
+        {t('selectedPlan')}{': '}
         <span className="font-semibold text-indigo-600">
-          {validatedPlan === 'basic' ? 'Basic — 50 RON/lună' : 'Pro — 150 RON/lună'}
+          {validatedPlan === 'basic' ? t('planBasic') : t('planPro')}
         </span>
       </p>
       <RegisterForm
         redirectTo={redirectTo}
         role="owner"
         plan={validatedPlan}
-        submitLabel="Creează cont și continuă la plată"
+        submitLabel={t('createOwnerAccountAndPay')}
       />
       <p className="mt-4 text-center text-sm text-gray-500">
-        Vrei cont de client?{' '}
+        {t('wantClientAccount')}{' '}
         <Link href="/register" className="font-medium text-forest-600 hover:underline">
-          Înregistrare standard
+          {t('standardRegister')}
         </Link>
       </p>
       <p className="mt-4 text-center text-sm text-gray-500">
-        Ai deja cont?{' '}
+        {t('haveAccount')}{' '}
         <Link href="/login" className="font-medium text-forest-600 hover:underline">
-          Autentifică-te
+          {t('signInLink')}
         </Link>
       </p>
     </>
