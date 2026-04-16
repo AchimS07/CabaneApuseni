@@ -18,6 +18,7 @@ import {
 interface PublicHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isOwner?: boolean;
 }
 
 type ActiveField = 'location' | 'checkin' | 'checkout' | 'guests' | null;
@@ -30,7 +31,7 @@ type ActiveField = 'location' | 'checkin' | 'checkout' | 'guests' | null;
  * – Sticky with shadow on scroll
  * – Fully accessible keyboard navigation
  */
-export function PublicHeader({ isAuthenticated, isAdmin }: PublicHeaderProps) {
+export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: PublicHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -562,7 +563,19 @@ export function PublicHeader({ isAuthenticated, isAdmin }: PublicHeaderProps) {
                       Admin
                     </Link>
                   </li>
-                ) : (
+                )}
+                {isOwner && !isAdmin && (
+                  <li>
+                    <Link
+                      href="/dashboard/owner"
+                      onClick={closeMobile}
+                      className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
+                    >
+                      Dashboard proprietar
+                    </Link>
+                  </li>
+                )}
+                {!isAdmin && !isOwner && (
                   <>
                     <li>
                       <Link

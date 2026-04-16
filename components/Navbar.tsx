@@ -2,13 +2,24 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { signOut } from '@/lib/auth';
+
+function navLinkClass(pathname: string, href: string, mobile = false): string {
+  const exact = href === '/';
+  const active = exact ? pathname === href : pathname.startsWith(href);
+  const base = mobile ? 'text-sm py-1' : 'text-sm transition-colors';
+  if (active) {
+    return `${base} text-white font-semibold underline underline-offset-4 decoration-earth-400`;
+  }
+  return `${base} text-forest-100 hover:text-white`;
+}
 
 export default function Navbar() {
   const { user, profile, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
@@ -37,21 +48,21 @@ export default function Navbar() {
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-forest-100 hover:text-white text-sm transition-colors">
+            <Link href="/" className={navLinkClass(pathname, '/')}>
               Browse
             </Link>
             {profile?.role === 'owner' && (
-              <Link href="/owner/listings" className="text-forest-100 hover:text-white text-sm transition-colors">
+              <Link href="/owner/listings" className={navLinkClass(pathname, '/owner/listings')}>
                 My Listings
               </Link>
             )}
             {profile && (
-              <Link href="/messages" className="text-forest-100 hover:text-white text-sm transition-colors">
+              <Link href="/messages" className={navLinkClass(pathname, '/messages')}>
                 Messages
               </Link>
             )}
             {profile?.role === 'admin' && (
-              <Link href="/admin/moderation" className="text-forest-100 hover:text-white text-sm transition-colors">
+              <Link href="/admin/moderation" className={navLinkClass(pathname, '/admin/moderation')}>
                 Moderation
               </Link>
             )}
@@ -61,7 +72,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             {!loading && !user && (
               <>
-                <Link href="/auth/login" className="text-forest-100 hover:text-white text-sm transition-colors">
+                <Link href="/auth/login" className={navLinkClass(pathname, '/auth/login')}>
                   Sign In
                 </Link>
                 <Link href="/auth/register" className="bg-earth-600 hover:bg-earth-700 text-white text-sm px-3 py-1.5 rounded-lg transition-colors">
@@ -104,20 +115,20 @@ export default function Navbar() {
         {/* Mobile menu */}
         {menuOpen && (
           <div id="mobile-menu" className="md:hidden py-4 border-t border-forest-700 flex flex-col gap-3">
-            <Link href="/"                className="text-forest-100 hover:text-white text-sm py-1" onClick={() => setMenuOpen(false)}>Browse</Link>
+            <Link href="/"                className={navLinkClass(pathname, '/', true)} onClick={() => setMenuOpen(false)}>Browse</Link>
             {profile?.role === 'owner' && (
-              <Link href="/owner/listings" className="text-forest-100 hover:text-white text-sm py-1" onClick={() => setMenuOpen(false)}>My Listings</Link>
+              <Link href="/owner/listings" className={navLinkClass(pathname, '/owner/listings', true)} onClick={() => setMenuOpen(false)}>My Listings</Link>
             )}
             {profile && (
-              <Link href="/messages"       className="text-forest-100 hover:text-white text-sm py-1" onClick={() => setMenuOpen(false)}>Messages</Link>
+              <Link href="/messages"       className={navLinkClass(pathname, '/messages', true)} onClick={() => setMenuOpen(false)}>Messages</Link>
             )}
             {profile?.role === 'admin' && (
-              <Link href="/admin/moderation" className="text-forest-100 hover:text-white text-sm py-1" onClick={() => setMenuOpen(false)}>Moderation</Link>
+              <Link href="/admin/moderation" className={navLinkClass(pathname, '/admin/moderation', true)} onClick={() => setMenuOpen(false)}>Moderation</Link>
             )}
             {!loading && !user && (
               <>
-                <Link href="/auth/login"    className="text-forest-100 hover:text-white text-sm py-1" onClick={() => setMenuOpen(false)}>Sign In</Link>
-                <Link href="/auth/register" className="text-forest-100 hover:text-white text-sm py-1" onClick={() => setMenuOpen(false)}>Register</Link>
+                <Link href="/auth/login"    className={navLinkClass(pathname, '/auth/login', true)} onClick={() => setMenuOpen(false)}>Sign In</Link>
+                <Link href="/auth/register" className={navLinkClass(pathname, '/auth/register', true)} onClick={() => setMenuOpen(false)}>Register</Link>
               </>
             )}
             {!loading && user && (

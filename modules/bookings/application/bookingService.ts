@@ -105,6 +105,8 @@ export async function cancelBooking(id: string, actor: SessionUser): Promise<Res
 }
 
 export async function confirmBooking(id: string, actor: SessionUser): Promise<Result<void>> {
+  if (actor.role !== 'admin') return fail('FORBIDDEN', 'Access denied.');
+
   const booking = await getBookingById(id);
   if (!booking) return fail('NOT_FOUND', 'Booking not found.');
 
