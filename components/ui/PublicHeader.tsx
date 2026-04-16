@@ -61,6 +61,14 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               Cabane
             </Link>
           </li>
+          <li>
+            <Link
+              href="/#pricing"
+              className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Prețuri
+            </Link>
+          </li>
 
           {isAuthenticated ? (
             <>
@@ -174,6 +182,15 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
               >
                 Cabane
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/#pricing"
+                onClick={close}
+                className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+              >
+                Prețuri
               </Link>
             </li>
 
