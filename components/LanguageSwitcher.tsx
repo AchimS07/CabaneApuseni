@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { setLocale } from '@/lib/i18n/setLocale';
 import { locales, type Locale } from '@/i18n/config';
 
@@ -9,11 +10,13 @@ export function LanguageSwitcher() {
   const t = useTranslations('languageSwitcher');
   const locale = useLocale();
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   function handleChange(next: Locale) {
     if (next === locale) return;
-    startTransition(() => {
-      setLocale(next);
+    startTransition(async () => {
+      await setLocale(next);
+      router.refresh();
     });
   }
 
