@@ -2625,5 +2625,496 @@ export default function ModerationPage() {
 }
 `);
 
+
+// ─────────────────────────────────────────────────────────────────────────────
+// lib/subscription/plans.ts  (subscription feature flags and plan constants)
+// ─────────────────────────────────────────────────────────────────────────────
+write('lib/subscription/plans.ts', `/**
+ * lib/subscription/plans.ts
+ * Subscription tier definitions, limits, and plan metadata.
+ * Safe to import in both server and shared code.
+ */
+
+export type SubscriptionTier = 'basic' | 'pro';
+
+export const LISTING_LIMITS: Record<SubscriptionTier, number> = { basic: 1, pro: 5 };
+export const PHOTO_LIMITS: Record<SubscriptionTier, number> = { basic: 5, pro: 15 };
+
+export interface Plan {
+  id: SubscriptionTier;
+  name: string;
+  priceRon: number;
+  stripePriceIdEnvKey: string;
+  listingLimit: number;
+  photoLimit: number;
+  features: { label: string; included: boolean }[];
+  recommended?: boolean;
+}
+
+export const PLANS: Plan[] = [
+  {
+    id: 'basic',
+    name: 'Basic',
+    priceRon: 50,
+    stripePriceIdEnvKey: 'STRIPE_BASIC_PRICE_ID',
+    listingLimit: 1,
+    photoLimit: 5,
+    features: [
+      { label: '1 caban\\u0103 activ\\u0103', included: true },
+      { label: '5 fotografii per listing', included: true },
+      { label: 'Plasare standard \\u00een c\\u0103utare', included: true },
+      { label: 'Badge "Recomandat"', included: false },
+      { label: 'Analiz\\u0103 rezerv\\u0103ri', included: false },
+      { label: 'Suport prioritar', included: false },
+    ],
+  },
+  {
+    id: 'pro',
+    name: 'Pro',
+    priceRon: 150,
+    stripePriceIdEnvKey: 'STRIPE_PRO_PRICE_ID',
+    listingLimit: 5,
+    photoLimit: 15,
+    recommended: true,
+    features: [
+      { label: '5 cabane active', included: true },
+      { label: '15 fotografii per listing', included: true },
+      { label: 'Plasare boosted \\u00een c\\u0103utare', included: true },
+      { label: 'Badge "Recomandat"', included: true },
+      { label: 'Analiz\\u0103 rezerv\\u0103ri', included: true },
+      { label: 'Suport prioritar', included: true },
+    ],
+  },
+];
+
+export function getTierFromStripePrice(priceId: string): SubscriptionTier | null {
+  if (priceId === process.env.STRIPE_BASIC_PRICE_ID) return 'basic';
+  if (priceId === process.env.STRIPE_PRO_PRICE_ID) return 'pro';
+  return null;
+}
+`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// lib/stripe/client.ts  (server-only Stripe singleton)
+// ─────────────────────────────────────────────────────────────────────────────
+write('lib/stripe/client.ts', `/**
+ * lib/stripe/client.ts
+ * Server-only Stripe singleton. Never import in Client Components.
+ */
+import Stripe from 'stripe';
+import { getServerEnv } from '@/lib/env';
+
+let _stripe: Stripe | undefined;
+
+export function getStripe(): Stripe {
+  if (_stripe) return _stripe;
+  const env = getServerEnv();
+  if (!env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY is not configured. Add it to your .env.local file.');
+  }
+  _stripe = new Stripe(env.STRIPE_SECRET_KEY, {
+    apiVersion: '2025-03-31.basil' as Stripe.LatestApiVersion,
+  });
+  return _stripe;
+}
+`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// app/(public)/pricing/page.tsx  (public pricing page)
+// ─────────────────────────────────────────────────────────────────────────────
+write('app/(public)/pricing/page.tsx', `/**
+ * app/(public)/pricing/page.tsx
+ */
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { PLANS } from '@/lib/subscription/plans';
+
+export const metadata: Metadata = { title: 'Pre\\u021buri \\u2013 Cabane Apuseni' };
+
+export default function PricingPage() {
+  return (
+    <main className="mx-auto max-w-4xl px-4 py-16">
+      <div className="mb-12 text-center">
+        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
+          Alege planul t\\u0103u
+        </h1>
+        <p className="mt-3 text-lg text-gray-500">
+          Listeaz\\u0103-\\u021bi cabana \\u015fi prime\\u015fte rezerv\\u0103ri prin Cabane Apuseni.
+        </p>
+      </div>
+
+      <div className="grid gap-8 sm:grid-cols-2">
+        {PLANS.map((plan) => (
+          <article
+            key={plan.id}
+            className={
+              'relative flex flex-col rounded-2xl border p-8 shadow-sm' +
+              (plan.recommended
+                ? ' border-indigo-500 bg-white ring-2 ring-indigo-500'
+                : ' border-gray-200 bg-white')
+            }
+            aria-label={'Plan ' + plan.name}
+          >
+            {plan.recommended && (
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                <span className="rounded-full bg-indigo-600 px-4 py-1 text-xs font-semibold text-white">
+                  Recomandat
+                </span>
+              </div>
+            )}
+
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-gray-900">{plan.name}</h2>
+              <div className="mt-3 flex items-end gap-1">
+                <span className="text-4xl font-extrabold text-gray-900">{plan.priceRon}</span>
+                <span className="mb-1 text-lg font-medium text-gray-500">RON</span>
+                <span className="mb-1 text-sm text-gray-400">/lun\\u0103</span>
+              </div>
+            </div>
+
+            <ul className="mb-8 flex-1 space-y-3" aria-label={'Func\\u021bionalit\\u0103\\u021bi plan ' + plan.name}>
+              {plan.features.map((f, i) => (
+                <li key={i} className="flex items-center gap-3 text-sm">
+                  <span
+                    aria-hidden="true"
+                    className={f.included ? 'text-green-500' : 'text-gray-300'}
+                  >
+                    {f.included ? '\\u2713' : '\\u2717'}
+                  </span>
+                  <span className={f.included ? 'text-gray-700' : 'text-gray-400'}>
+                    {f.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href={'/register/owner?plan=' + plan.id}
+              className={
+                'block rounded-lg px-6 py-3 text-center text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2' +
+                (plan.recommended
+                  ? ' bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500'
+                  : ' bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-700')
+              }
+            >
+              {'\\u00ancepe cu ' + plan.name}
+            </Link>
+          </article>
+        ))}
+      </div>
+
+      <p className="mt-10 text-center text-sm text-gray-500">
+        Ai deja un cont?{' '}
+        <Link href="/login" className="font-medium text-indigo-600 hover:underline">
+          Autentific\\u0103-te
+        </Link>{' '}
+        \\u015fi gestioneaz\\u0103-\\u021bi abonamentul din dashboard.
+      </p>
+    </main>
+  );
+}
+`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// app/api/subscriptions/checkout/route.ts
+// ─────────────────────────────────────────────────────────────────────────────
+write('app/api/subscriptions/checkout/route.ts', `/**
+ * app/api/subscriptions/checkout/route.ts
+ * Creates a Stripe Checkout Session for owner subscriptions.
+ */
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { verifySession } from '@/lib/auth/session';
+import { getUserById, upsertUser } from '@/modules/users/infrastructure/firestoreUserRepository';
+import { getStripe } from '@/lib/stripe/client';
+import { createLogger } from '@/lib/observability/logger';
+
+const log = createLogger({ module: 'subscriptions/checkout' });
+
+const bodySchema = z.object({
+  plan: z.enum(['basic', 'pro']),
+});
+
+export async function POST(req: NextRequest) {
+  const session = await verifySession();
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const json = await req.json().catch(() => null);
+  const parsed = bodySchema.safeParse(json);
+  if (!parsed.success) {
+    return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
+  }
+
+  const { plan } = parsed.data;
+  const priceId =
+    plan === 'basic'
+      ? process.env.STRIPE_BASIC_PRICE_ID
+      : process.env.STRIPE_PRO_PRICE_ID;
+
+  if (!priceId) {
+    log.error({ plan }, 'Stripe price ID not configured');
+    return NextResponse.json({ error: 'Plan not configured.' }, { status: 500 });
+  }
+
+  try {
+    const stripe = getStripe();
+    const profile = await getUserById(session.uid);
+    let customerId = profile?.stripeCustomerId;
+
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: session.email ?? undefined,
+        metadata: { uid: session.uid },
+      });
+      customerId = customer.id;
+      await upsertUser(session.uid, { stripeCustomerId: customerId });
+    }
+
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+    const checkoutSession = await stripe.checkout.sessions.create({
+      mode: 'subscription',
+      customer: customerId,
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: appUrl + '/dashboard/owner?subscription=success',
+      cancel_url: appUrl + '/pricing',
+      metadata: { uid: session.uid, plan },
+      subscription_data: { metadata: { uid: session.uid } },
+    });
+
+    log.info({ uid: session.uid, plan }, 'Checkout session created');
+    return NextResponse.json({ url: checkoutSession.url });
+  } catch (error) {
+    log.error({ error, uid: session.uid }, 'Failed to create checkout session');
+    return NextResponse.json(
+      { error: 'Failed to create checkout session.' },
+      { status: 500 },
+    );
+  }
+}
+`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// app/api/subscriptions/webhook/route.ts
+// ─────────────────────────────────────────────────────────────────────────────
+write('app/api/subscriptions/webhook/route.ts', `/**
+ * app/api/subscriptions/webhook/route.ts
+ * Stripe webhook handler. Processes subscription lifecycle events.
+ * Uses raw body for signature verification — must run in Node.js runtime.
+ */
+import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
+import { getStripe } from '@/lib/stripe/client';
+import {
+  activateSubscription,
+  renewSubscription,
+  deactivateSubscription,
+  markSubscriptionPastDue,
+} from '@/modules/users/application/subscriptionService';
+import type { SubscriptionTier } from '@/lib/subscription/plans';
+import { createLogger } from '@/lib/observability/logger';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+const log = createLogger({ module: 'subscriptions/webhook' });
+
+export async function POST(req: NextRequest) {
+  const rawBody = await req.text();
+  const signature = req.headers.get('stripe-signature') ?? '';
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET ?? '';
+
+  if (!webhookSecret) {
+    log.error({}, 'STRIPE_WEBHOOK_SECRET not configured');
+    return NextResponse.json({ error: 'Webhook secret not configured.' }, { status: 500 });
+  }
+
+  const stripe = getStripe();
+  let event: Stripe.Event;
+
+  try {
+    event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+  } catch (err) {
+    log.warn({ err }, 'Webhook signature verification failed');
+    return NextResponse.json({ error: 'Invalid signature.' }, { status: 400 });
+  }
+
+  try {
+    switch (event.type) {
+      case 'checkout.session.completed': {
+        const cs = event.data.object as Stripe.Checkout.Session;
+        const uid = cs.metadata?.uid;
+        const tier = cs.metadata?.plan as SubscriptionTier | undefined;
+        const rawSub = cs.subscription;
+        const rawCust = cs.customer;
+        const subscriptionId = rawSub
+          ? typeof rawSub === 'string' ? rawSub : (rawSub as Stripe.Subscription).id
+          : null;
+        const customerId = rawCust
+          ? typeof rawCust === 'string' ? rawCust : (rawCust as Stripe.Customer).id
+          : null;
+        if (uid && tier && subscriptionId && customerId) {
+          await activateSubscription(uid, tier, subscriptionId, customerId);
+        }
+        break;
+      }
+
+      case 'invoice.paid': {
+        const inv = event.data.object as Stripe.Invoice;
+        const rawSub = inv.subscription;
+        const subscriptionId = rawSub
+          ? typeof rawSub === 'string' ? rawSub : (rawSub as Stripe.Subscription).id
+          : null;
+        if (subscriptionId) {
+          const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+          const uid = subscription.metadata?.uid;
+          if (uid) await renewSubscription(uid);
+        }
+        break;
+      }
+
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as Stripe.Subscription;
+        const uid = subscription.metadata?.uid;
+        if (uid) await deactivateSubscription(uid);
+        break;
+      }
+
+      case 'invoice.payment_failed': {
+        const inv = event.data.object as Stripe.Invoice;
+        const rawSub = inv.subscription;
+        const subscriptionId = rawSub
+          ? typeof rawSub === 'string' ? rawSub : (rawSub as Stripe.Subscription).id
+          : null;
+        if (subscriptionId) {
+          const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+          const uid = subscription.metadata?.uid;
+          if (uid) await markSubscriptionPastDue(uid);
+        }
+        break;
+      }
+
+      default:
+        log.debug({ type: event.type }, 'Unhandled Stripe event type');
+    }
+  } catch (error) {
+    log.error({ error, eventType: event.type }, 'Error handling webhook event');
+    // Return 200 anyway — Stripe should not retry transient errors logged server-side
+  }
+
+  return NextResponse.json({ received: true });
+}
+`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// app/api/subscriptions/portal/route.ts
+// ─────────────────────────────────────────────────────────────────────────────
+write('app/api/subscriptions/portal/route.ts', `/**
+ * app/api/subscriptions/portal/route.ts
+ * Creates a Stripe Customer Portal session so owners can manage their subscription.
+ */
+import { NextRequest, NextResponse } from 'next/server';
+import { verifySession } from '@/lib/auth/session';
+import { getUserById } from '@/modules/users/infrastructure/firestoreUserRepository';
+import { getStripe } from '@/lib/stripe/client';
+import { createLogger } from '@/lib/observability/logger';
+
+const log = createLogger({ module: 'subscriptions/portal' });
+
+export async function POST(_req: NextRequest) {
+  const session = await verifySession();
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const profile = await getUserById(session.uid);
+  if (!profile?.stripeCustomerId) {
+    return NextResponse.json({ error: 'No subscription found.' }, { status: 404 });
+  }
+
+  try {
+    const stripe = getStripe();
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: profile.stripeCustomerId,
+      return_url: appUrl + '/dashboard/owner',
+    });
+
+    return NextResponse.json({ url: portalSession.url });
+  } catch (error) {
+    log.error({ error, uid: session.uid }, 'Failed to create billing portal session');
+    return NextResponse.json(
+      { error: 'Failed to open billing portal.' },
+      { status: 500 },
+    );
+  }
+}
+`);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// app/api/admin/subscriptions/route.ts
+// ─────────────────────────────────────────────────────────────────────────────
+write('app/api/admin/subscriptions/route.ts', `/**
+ * app/api/admin/subscriptions/route.ts
+ * Admin override endpoint to manually activate or deactivate a user's subscription.
+ */
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { verifySession } from '@/lib/auth/session';
+import {
+  activateSubscription,
+  deactivateSubscription,
+} from '@/modules/users/application/subscriptionService';
+import { createLogger } from '@/lib/observability/logger';
+
+const log = createLogger({ module: 'admin/subscriptions' });
+
+const bodySchema = z.object({
+  uid: z.string().min(1),
+  tier: z.enum(['basic', 'pro']).optional(),
+  status: z.enum(['active', 'cancelled']),
+});
+
+export async function PATCH(req: NextRequest) {
+  const session = await verifySession();
+  if (!session || session.role !== 'admin') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
+  const json = await req.json().catch(() => null);
+  const parsed = bodySchema.safeParse(json);
+  if (!parsed.success) {
+    return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
+  }
+
+  const { uid, tier, status } = parsed.data;
+
+  if (status === 'active') {
+    if (!tier) {
+      return NextResponse.json(
+        { error: 'tier is required when activating a subscription.' },
+        { status: 400 },
+      );
+    }
+    const result = await activateSubscription(uid, tier, 'admin-override', 'admin-override');
+    if (!result.ok) {
+      return NextResponse.json({ error: result.error.message }, { status: 500 });
+    }
+    log.info({ adminUid: session.uid, targetUid: uid, tier }, 'Admin activated subscription');
+    return NextResponse.json({ ok: true });
+  }
+
+  const result = await deactivateSubscription(uid);
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error.message }, { status: 500 });
+  }
+  log.info({ adminUid: session.uid, targetUid: uid }, 'Admin deactivated subscription');
+  return NextResponse.json({ ok: true });
+}
+`);
+
 console.log('\n\u2705  Done! Run \`npm run dev\` to start the development server.\n');
 console.log('   Remember to copy .env.local.example \u2192 .env.local and fill in your Firebase credentials.\n');

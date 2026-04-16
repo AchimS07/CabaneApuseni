@@ -83,6 +83,9 @@ describe('POST /api/users/me', () => {
       role: 'user',
       createdAt: '2024-01-01T00:00:00Z',
       updatedAt: '2024-01-01T00:00:00Z',
+      subscriptionTier: null,
+      subscriptionStatus: null,
+      subscriptionExpiresAt: null,
     });
     mockUpsert.mockResolvedValue(undefined);
 

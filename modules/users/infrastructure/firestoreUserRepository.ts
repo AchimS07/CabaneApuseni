@@ -27,3 +27,15 @@ export async function listUsers(limit = 50): Promise<UserProfile[]> {
   const snapshot = await db.collection(COLLECTION).orderBy('createdAt', 'desc').limit(limit).get();
   return snapshot.docs.map((doc) => ({ uid: doc.id, ...doc.data() }) as UserProfile);
 }
+
+export async function getUserByStripeCustomerId(customerId: string): Promise<UserProfile | null> {
+  const db = getAdminFirestore();
+  const snapshot = await db
+    .collection(COLLECTION)
+    .where('stripeCustomerId', '==', customerId)
+    .limit(1)
+    .get();
+  if (snapshot.empty) return null;
+  const doc = snapshot.docs[0]!;
+  return { uid: doc.id, ...doc.data() } as UserProfile;
+}
