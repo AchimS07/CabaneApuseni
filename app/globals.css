@@ -68,4 +68,13 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Custom shadow utilities — defined here so @apply works in both Tailwind v3 and v4 */
+  .shadow-card {
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-card-hover {
+    box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.14);
+  }
 }
