@@ -169,47 +169,31 @@
       "f7": "Exclusive premium cabin offers",
       "f8": "Personal concierge service"
     },
-    "starter": {
-      "name": "Starter",
-      "price": "0 RON",
-      "description": "List your first cabin and discover the platform.",
-      "cta": "List for free",
+    "basic": {
+      "name": "Basic",
+      "price": "50 RON",
+      "description": "List your first cabin and start receiving bookings.",
+      "cta": "Choose Basic",
       "f1": "1 active cabin",
-      "f2": "Availability calendar",
-      "f3": "Booking management",
-      "f4": "Basic statistics",
-      "f5": "Standard 12% commission",
-      "f6": "Priority placement in searches",
-      "f7": "Advanced statistics",
-      "f8": "Dedicated support"
+      "f2": "5 photos per listing",
+      "f3": "Standard placement in search",
+      "f4": "Booking management",
+      "f5": "\"Recommended\" badge",
+      "f6": "Booking analytics",
+      "f7": "Priority support"
     },
     "pro": {
       "name": "Pro",
-      "price": "99 RON",
+      "price": "150 RON",
       "description": "For owners with multiple cabins.",
       "cta": "Choose Pro",
-      "f1": "Up to 5 active cabins",
-      "f2": "Availability calendar",
-      "f3": "Booking management",
-      "f4": "Advanced statistics",
-      "f5": "Reduced 8% commission",
-      "f6": "Priority placement in searches",
-      "f7": "\"Verified owner\" badge",
-      "f8": "Dedicated support"
-    },
-    "business": {
-      "name": "Business",
-      "price": "249 RON",
-      "description": "The complete solution for large portfolios.",
-      "cta": "Choose Business",
-      "f1": "Unlimited cabins",
-      "f2": "Availability calendar",
-      "f3": "Booking management",
-      "f4": "Advanced statistics + reports",
-      "f5": "Minimum 5% commission",
-      "f6": "Priority & featured placement",
-      "f7": "\"Verified owner\" badge",
-      "f8": "Dedicated support & account manager"
+      "f1": "5 active cabins",
+      "f2": "15 photos per listing",
+      "f3": "Boosted placement in search",
+      "f4": "Booking management",
+      "f5": "\"Recommended\" badge",
+      "f6": "Booking analytics",
+      "f7": "Priority support"
     }
   },
   "cabin": {
