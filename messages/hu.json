@@ -169,47 +169,31 @@
       "f7": "Exkluzív prémium kabin ajánlatok",
       "f8": "Személyes concierge szolgálat"
     },
-    "starter": {
-      "name": "Starter",
-      "price": "0 RON",
-      "description": "Listázza első kabinját és fedezze fel a platformot.",
-      "cta": "Ingyenes listázás",
+    "basic": {
+      "name": "Basic",
+      "price": "50 RON",
+      "description": "Listázza első kabinját és kezdjen foglalásokat kapni.",
+      "cta": "Basic választása",
       "f1": "1 aktív kabin",
-      "f2": "Elérhetőségi naptár",
-      "f3": "Foglaláskezelés",
-      "f4": "Alapstatisztikák",
-      "f5": "Normál 12% jutalék",
-      "f6": "Elsőbbségi elhelyezés a keresésekben",
-      "f7": "Fejlett statisztikák",
-      "f8": "Dedikált támogatás"
+      "f2": "5 fotó listánként",
+      "f3": "Normál elhelyezés a keresésekben",
+      "f4": "Foglaláskezelés",
+      "f5": "\"Ajánlott\" jelvény",
+      "f6": "Foglalási analitika",
+      "f7": "Elsőbbségi támogatás"
     },
     "pro": {
       "name": "Pro",
-      "price": "99 RON",
+      "price": "150 RON",
       "description": "Több kabinnal rendelkező tulajdonosoknak.",
       "cta": "Pro választása",
-      "f1": "Legfeljebb 5 aktív kabin",
-      "f2": "Elérhetőségi naptár",
-      "f3": "Foglaláskezelés",
-      "f4": "Fejlett statisztikák",
-      "f5": "Csökkentett 8% jutalék",
-      "f6": "Elsőbbségi elhelyezés a keresésekben",
-      "f7": "'Ellenőrzött tulajdonos' jelvény",
-      "f8": "Dedikált támogatás"
-    },
-    "business": {
-      "name": "Business",
-      "price": "249 RON",
-      "description": "A teljes megoldás nagy portfóliókhoz.",
-      "cta": "Business választása",
-      "f1": "Korlátlan kabin",
-      "f2": "Elérhetőségi naptár",
-      "f3": "Foglaláskezelés",
-      "f4": "Fejlett statisztikák + jelentések",
-      "f5": "Minimum 5% jutalék",
-      "f6": "Elsőbbségi és kiemelt elhelyezés",
-      "f7": "'Ellenőrzött tulajdonos' jelvény",
-      "f8": "Dedikált támogatás & account manager"
+      "f1": "5 aktív kabin",
+      "f2": "15 fotó listánként",
+      "f3": "Kiemelt elhelyezés a keresésekben",
+      "f4": "Foglaláskezelés",
+      "f5": "\"Ajánlott\" jelvény",
+      "f6": "Foglalási analitika",
+      "f7": "Elsőbbségi támogatás"
     }
   },
   "cabin": {

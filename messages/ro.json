@@ -169,47 +169,31 @@
       "f7": "Oferte exclusive cabane premium",
       "f8": "Serviciu concierge personal"
     },
-    "starter": {
-      "name": "Starter",
-      "price": "0 lei",
-      "description": "Listează prima ta cabană și descoperă platforma.",
-      "cta": "Listează gratuit",
+    "basic": {
+      "name": "Basic",
+      "price": "50 lei",
+      "description": "Listează prima ta cabană și începe să primești rezervări.",
+      "cta": "Alege Basic",
       "f1": "1 cabană activă",
-      "f2": "Calendar disponibilitate",
-      "f3": "Gestionare rezervări",
-      "f4": "Statistici de bază",
-      "f5": "Comision standard 12%",
-      "f6": "Plasare prioritară în căutări",
-      "f7": "Statistici avansate",
-      "f8": "Suport dedicat"
+      "f2": "5 fotografii per listing",
+      "f3": "Plasare standard în căutări",
+      "f4": "Gestionare rezervări",
+      "f5": "Badge \"Recomandat\"",
+      "f6": "Analiză rezervări",
+      "f7": "Suport prioritar"
     },
     "pro": {
       "name": "Pro",
-      "price": "99 lei",
+      "price": "150 lei",
       "description": "Pentru proprietarii cu mai multe cabane.",
       "cta": "Alege Pro",
-      "f1": "Până la 5 cabane active",
-      "f2": "Calendar disponibilitate",
-      "f3": "Gestionare rezervări",
-      "f4": "Statistici avansate",
-      "f5": "Comision redus 8%",
-      "f6": "Plasare prioritară în căutări",
-      "f7": "Insignă 'Proprietar verificat'",
-      "f8": "Suport dedicat"
-    },
-    "business": {
-      "name": "Business",
-      "price": "249 lei",
-      "description": "Soluția completă pentru portofolii mari.",
-      "cta": "Alege Business",
-      "f1": "Cabane nelimitate",
-      "f2": "Calendar disponibilitate",
-      "f3": "Gestionare rezervări",
-      "f4": "Statistici avansate + rapoarte",
-      "f5": "Comision minim 5%",
-      "f6": "Plasare prioritară & featured",
-      "f7": "Insigna 'Proprietar verificat'",
-      "f8": "Suport dedicat & account manager"
+      "f1": "5 cabane active",
+      "f2": "15 fotografii per listing",
+      "f3": "Plasare boosted în căutări",
+      "f4": "Gestionare rezervări",
+      "f5": "Badge \"Recomandat\"",
+      "f6": "Analiză rezervări",
+      "f7": "Suport prioritar"
     }
   },
   "cabin": {

@@ -71,22 +71,21 @@ export function PricingTabs() {
 
   const ownerPlans: PricingCardProps[] = [
     {
-      name: t('starter.name'),
-      price: t('starter.price'),
+      name: t('basic.name'),
+      price: t('basic.price'),
       period: t('period'),
-      description: t('starter.description'),
+      description: t('basic.description'),
       features: [
-        { text: t('starter.f1'), included: true },
-        { text: t('starter.f2'), included: true },
-        { text: t('starter.f3'), included: true },
-        { text: t('starter.f4'), included: true },
-        { text: t('starter.f5'), included: true },
-        { text: t('starter.f6'), included: false },
-        { text: t('starter.f7'), included: false },
-        { text: t('starter.f8'), included: false },
+        { text: t('basic.f1'), included: true },
+        { text: t('basic.f2'), included: true },
+        { text: t('basic.f3'), included: true },
+        { text: t('basic.f4'), included: true },
+        { text: t('basic.f5'), included: false },
+        { text: t('basic.f6'), included: false },
+        { text: t('basic.f7'), included: false },
       ],
-      ctaLabel: t('starter.cta'),
-      ctaHref: '/register?role=owner',
+      ctaLabel: t('basic.cta'),
+      ctaHref: '/register/owner?plan=basic',
     },
     {
       name: t('pro.name'),
@@ -101,30 +100,11 @@ export function PricingTabs() {
         { text: t('pro.f5'), included: true },
         { text: t('pro.f6'), included: true },
         { text: t('pro.f7'), included: true },
-        { text: t('pro.f8'), included: false },
       ],
       ctaLabel: t('pro.cta'),
-      ctaHref: '/register?role=owner&plan=pro',
+      ctaHref: '/register/owner?plan=pro',
       highlighted: true,
-      badge: t('mostPopular'),
-    },
-    {
-      name: t('business.name'),
-      price: t('business.price'),
-      period: t('period'),
-      description: t('business.description'),
-      features: [
-        { text: t('business.f1'), included: true },
-        { text: t('business.f2'), included: true },
-        { text: t('business.f3'), included: true },
-        { text: t('business.f4'), included: true },
-        { text: t('business.f5'), included: true },
-        { text: t('business.f6'), included: true },
-        { text: t('business.f7'), included: true },
-        { text: t('business.f8'), included: true },
-      ],
-      ctaLabel: t('business.cta'),
-      ctaHref: '/register?role=owner&plan=business',
+      badge: t('recommended'),
     },
   ];
 
@@ -174,7 +154,11 @@ export function PricingTabs() {
         aria-label={
           audience === 'clients' ? t('touristsTabLabel') : t('ownersTabLabel')
         }
-        className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+        className={
+          audience === 'owners'
+            ? 'mx-auto grid max-w-3xl gap-8 sm:grid-cols-2'
+            : 'grid gap-8 sm:grid-cols-2 lg:grid-cols-3'
+        }
       >
         {plans.map((plan) => (
           <PricingCard key={plan.name} {...plan} />
