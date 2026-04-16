@@ -5,7 +5,7 @@ import {
   type User,
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from './firebase';
+import { getClientAuth, getClientFirestore } from '@/lib/firebase/client';
 
 export type UserRole = 'owner' | 'guest' | 'admin';
 
@@ -22,8 +22,8 @@ export async function signUp(
   displayName: string,
   role: 'owner' | 'guest',
 ): Promise<User> {
-  const { user } = await createUserWithEmailAndPassword(auth, email, password);
-  await setDoc(doc(db, 'users', user.uid), {
+  const { user } = await createUserWithEmailAndPassword(getClientAuth(), email, password);
+  await setDoc(doc(getClientFirestore(), 'users', user.uid), {
     uid: user.uid,
     email,
     displayName,
@@ -34,10 +34,10 @@ export async function signUp(
 }
 
 export async function signIn(email: string, password: string): Promise<User> {
-  const { user } = await signInWithEmailAndPassword(auth, email, password);
+  const { user } = await signInWithEmailAndPassword(getClientAuth(), email, password);
   return user;
 }
 
 export async function signOut(): Promise<void> {
-  await firebaseSignOut(auth);
+  await firebaseSignOut(getClientAuth());
 }
