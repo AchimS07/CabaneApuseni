@@ -4,6 +4,7 @@ import { useState, useId, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createBookingAction } from '@/modules/bookings/actions';
 import { StarIcon, CalendarIcon, UsersIcon } from '@/components/ui/Icons';
+import { useTranslations } from 'next-intl';
 
 interface BookingFormProps {
   cabin: {
@@ -102,14 +103,14 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
     }
 
     const errs: Record<string, string> = {};
-    if (!checkIn) errs.checkIn = 'Selectează data de check-in.';
-    if (!checkOut) errs.checkOut = 'Selectează data de check-out.';
+    if (!checkIn) errs.checkIn = t('errors.checkInRequired');
+    if (!checkOut) errs.checkOut = t('errors.checkOutRequired');
     if (checkIn && checkOut && new Date(checkOut) <= new Date(checkIn)) {
-      errs.checkOut = 'Check-out trebuie să fie după check-in.';
+      errs.checkOut = t('errors.checkOutAfterCheckIn');
     }
-    if (guestCount < 1) errs.guestCount = 'Minim 1 oaspete.';
+    if (guestCount < 1) errs.guestCount = t('errors.minOneGuest');
     if (guestCount > cabin.maxGuests) {
-      errs.guestCount = `Maximum ${cabin.maxGuests} oaspeți pentru această cabană.`;
+      errs.guestCount = t('errors.maxGuests', { max: cabin.maxGuests });
     }
     if (Object.keys(errs).length > 0) {
       setFieldErrors(errs);

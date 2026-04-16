@@ -3,8 +3,13 @@ import { getProfile } from '@/modules/users/application/userService';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { WishlistSection } from '@/components/WishlistSection';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Tablou de bord' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('dashboard');
+  return { title: t('title') };
+}
+
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
@@ -12,16 +17,15 @@ export default async function DashboardPage() {
   const profileResult = await getProfile(session.uid);
   const name = profileResult.ok ? profileResult.data.name : session.email ?? 'Utilizator';
   const role = profileResult.ok ? profileResult.data.role : session.role;
+  const t = await getTranslations('dashboard');
 
   return (
     <div>
       <h1 className="mb-1 text-2xl font-bold text-gray-900">
-        Bine ai revenit, {name}!
+        {t('welcomeBack', { name })}
       </h1>
       <p className="mb-8 text-gray-500">
-        {role === 'owner'
-          ? 'Gestionează profilul de proprietar și activitatea contului.'
-          : 'Gestionează rezervările și contul tău.'}
+        {role === 'owner' ? t('subtitleOwner') : t('subtitleUser')}
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -31,13 +35,11 @@ export default async function DashboardPage() {
         >
           <span className="mb-3 text-3xl" aria-hidden="true">📅</span>
           <h2 className="text-lg font-semibold text-gray-900 group-hover:text-brand">
-            Rezervările mele
+            {t('myBookings')}
           </h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Vezi și gestionează rezervările tale active.
-          </p>
+          <p className="mt-1 text-sm text-gray-500">{t('myBookingsDesc')}</p>
           <span className="mt-4 text-sm font-medium text-brand group-hover:underline">
-            Vezi rezervări →
+            {t('viewBookings')}
           </span>
         </Link>
 
@@ -47,13 +49,11 @@ export default async function DashboardPage() {
         >
           <span className="mb-3 text-3xl" aria-hidden="true">🏔️</span>
           <h2 className="text-lg font-semibold text-gray-900 group-hover:text-brand">
-            Caută cabane
+            {t('searchCabins')}
           </h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Explorează cabane disponibile și rezervă.
-          </p>
+          <p className="mt-1 text-sm text-gray-500">{t('searchCabinsDesc')}</p>
           <span className="mt-4 text-sm font-medium text-brand group-hover:underline">
-            Explorează →
+            {t('explore')}
           </span>
         </Link>
 
@@ -64,13 +64,11 @@ export default async function DashboardPage() {
           >
             <span className="mb-3 text-3xl" aria-hidden="true">🧑‍💼</span>
             <h2 className="text-lg font-semibold text-gray-900 group-hover:text-brand">
-              Dashboard proprietar
+              {t('ownerDashboard')}
             </h2>
-            <p className="mt-1 text-sm text-gray-500">
-              Vezi statusul contului de proprietar și următorii pași.
-            </p>
+            <p className="mt-1 text-sm text-gray-500">{t('ownerDashboardDesc')}</p>
             <span className="mt-4 text-sm font-medium text-brand group-hover:underline">
-              Deschide dashboard →
+              {t('openDashboard')}
             </span>
           </Link>
         )}

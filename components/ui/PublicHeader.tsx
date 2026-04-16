@@ -14,6 +14,8 @@ import {
   UsersIcon,
   ChevronDownIcon,
 } from './Icons';
+import { useTranslations } from 'next-intl';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 interface PublicHeaderProps {
   isAuthenticated: boolean;
@@ -33,6 +35,7 @@ type ActiveField = 'location' | 'checkin' | 'checkout' | 'guests' | null;
  */
 export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: PublicHeaderProps) {
   const router = useRouter();
+  const t = useTranslations('nav');
   const pathname = usePathname();
 
   // Scroll shadow
@@ -407,6 +410,11 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
             Devino gazdă
           </Link>
 
+          {/* Language switcher */}
+          <div className="hidden md:block">
+            <LanguageSwitcher />
+          </div>
+
           {/* Profile pill */}
           <div ref={profileRef} className="relative hidden md:block">
             <button
@@ -632,6 +640,9 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               </>
             )}
           </ul>
+          <div className="mt-2 px-4 pb-2">
+            <LanguageSwitcher />
+          </div>
         </nav>
       )}
     </header>

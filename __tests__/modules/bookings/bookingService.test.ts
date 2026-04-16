@@ -19,6 +19,9 @@ import {
   confirmBooking,
   confirmBookingForOwner,
   rejectBookingForOwner,
+  getUserBookings,
+  getAllBookings,
+  getOwnerBookings,
 } from '@/modules/bookings/application/bookingService';
 import type { SessionUser } from '@/lib/auth/session';
 import type { Cabin } from '@/modules/cabins/domain/types';
@@ -98,6 +101,30 @@ describe('createBooking', () => {
   it('fails validation for past check-in date', async () => {
     const result = await createBooking(
       { cabinId: 'cabin-1', checkIn: '2020-01-01', checkOut: '2020-01-03', guestCount: 1 },
+      mockActor,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('fails with NOT_FOUND when cabin does not exist', async () => {
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(null);
+
+    const result = await createBooking(
+      { cabinId: 'unknown-cabin', checkIn: '2030-07-10', checkOut: '2030-07-13', guestCount: 1 },
+      mockActor,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('NOT_FOUND');
+  });
+
+  it('fails with VALIDATION_ERROR when check-in and check-out are the same day', async () => {
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(mockCabin);
+
+    const result = await createBooking(
+      { cabinId: 'cabin-1', checkIn: '2030-07-10', checkOut: '2030-07-10', guestCount: 1 },
       mockActor,
     );
 
@@ -248,5 +275,185 @@ describe('confirmBooking (admin-only)', () => {
     const result = await confirmBooking('bk-2', mockActor);
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error.code).toBe('FORBIDDEN');
+  });
+
+  it('returns NOT_FOUND when booking does not exist', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(null);
+
+    const result = await confirmBooking('nonexistent', adminActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('NOT_FOUND');
+  });
+});
+
+describe('cancelBooking — edge cases', () => {
+  it('returns NOT_FOUND when booking does not exist', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(null);
+
+    const result = await cancelBooking('nonexistent', mockActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('NOT_FOUND');
+  });
+
+  it('returns CONFLICT when booking is already cancelled', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue({
+      ...pendingBooking,
+      id: 'bk-3',
+      userId: 'user-1',
+      status: 'cancelled' as const,
+    });
+
+    const result = await cancelBooking('bk-3', mockActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('CONFLICT');
+  });
+
+  it('allows admin to cancel any booking', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue({
+      ...pendingBooking,
+      id: 'bk-4',
+      userId: 'other-user',
+    });
+    jest.mocked(bookingRepo.updateBookingStatus).mockResolvedValue(undefined);
+
+    const result = await cancelBooking('bk-4', adminActor);
+    expect(result.ok).toBe(true);
+  });
+});
+
+describe('confirmBookingForOwner — edge cases', () => {
+  it('returns NOT_FOUND when booking does not exist', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(null);
+
+    const result = await confirmBookingForOwner('nonexistent', ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('NOT_FOUND');
+  });
+
+  it('returns NOT_FOUND when cabin does not exist', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(null);
+
+    const result = await confirmBookingForOwner('bk-2', ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('NOT_FOUND');
+  });
+
+  it('allows admin to confirm booking on any cabin', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue({ ...ownerCabin, ownerId: 'someone-else' });
+    jest.mocked(bookingRepo.updateBookingStatus).mockResolvedValue(undefined);
+
+    const result = await confirmBookingForOwner('bk-2', adminActor);
+    expect(result.ok).toBe(true);
+  });
+});
+
+describe('rejectBookingForOwner — edge cases', () => {
+  it('returns NOT_FOUND when booking does not exist', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(null);
+
+    const result = await rejectBookingForOwner('nonexistent', ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('NOT_FOUND');
+  });
+
+  it('returns CONFLICT when booking is not in pending state', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue({
+      ...pendingBooking,
+      status: 'confirmed' as const,
+    });
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(ownerCabin);
+
+    const result = await rejectBookingForOwner('bk-2', ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('CONFLICT');
+  });
+
+  it('returns NOT_FOUND when cabin does not exist', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(null);
+
+    const result = await rejectBookingForOwner('bk-2', ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('NOT_FOUND');
+  });
+
+  it('allows admin to reject booking on any cabin', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue({ ...ownerCabin, ownerId: 'someone-else' });
+    jest.mocked(bookingRepo.updateBookingStatus).mockResolvedValue(undefined);
+
+    const result = await rejectBookingForOwner('bk-2', adminActor);
+    expect(result.ok).toBe(true);
+  });
+});
+
+describe('getUserBookings', () => {
+  it('returns bookings for the authenticated user', async () => {
+    jest.mocked(bookingRepo.listBookingsByUser).mockResolvedValue([pendingBooking]);
+
+    const result = await getUserBookings(mockActor);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0]!.userId).toBe('user-1');
+    }
+    expect(bookingRepo.listBookingsByUser).toHaveBeenCalledWith('user-1');
+  });
+
+  it('returns an empty array when user has no bookings', async () => {
+    jest.mocked(bookingRepo.listBookingsByUser).mockResolvedValue([]);
+
+    const result = await getUserBookings(mockActor);
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data).toHaveLength(0);
+  });
+});
+
+describe('getAllBookings', () => {
+  it('returns all bookings', async () => {
+    jest.mocked(bookingRepo.listAllBookings).mockResolvedValue([pendingBooking]);
+
+    const result = await getAllBookings();
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data).toHaveLength(1);
+  });
+
+  it('returns an empty array when there are no bookings', async () => {
+    jest.mocked(bookingRepo.listAllBookings).mockResolvedValue([]);
+
+    const result = await getAllBookings();
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data).toHaveLength(0);
+  });
+});
+
+describe('getOwnerBookings', () => {
+  it('returns bookings for all cabins owned by the actor', async () => {
+    jest.mocked(cabinRepo.listCabinsByOwner).mockResolvedValue([ownerCabin]);
+    jest.mocked(bookingRepo.listBookingsByCabinIds).mockResolvedValue([pendingBooking]);
+
+    const result = await getOwnerBookings(ownerActor);
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data).toHaveLength(1);
+    expect(bookingRepo.listBookingsByCabinIds).toHaveBeenCalledWith(['cabin-1']);
+  });
+
+  it('returns an empty array when the owner has no cabins', async () => {
+    jest.mocked(cabinRepo.listCabinsByOwner).mockResolvedValue([]);
+    jest.mocked(bookingRepo.listBookingsByCabinIds).mockResolvedValue([]);
+
+    const result = await getOwnerBookings(ownerActor);
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data).toHaveLength(0);
+  });
+
+  it('returns INTERNAL_ERROR when repo throws', async () => {
+    jest.mocked(cabinRepo.listCabinsByOwner).mockRejectedValue(new Error('Firestore error'));
+
+    const result = await getOwnerBookings(ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('INTERNAL_ERROR');
   });
 });

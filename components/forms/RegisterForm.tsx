@@ -7,19 +7,23 @@ import { Input } from '@/components/ui/Input';
 import { register } from '@/modules/auth/application/authService';
 import { registerSchema } from '@/lib/validation/schemas';
 import type { UserRole } from '@/modules/users/domain/types';
+import { useTranslations } from 'next-intl';
 
 interface RegisterFormProps {
   redirectTo?: string;
   role?: Extract<UserRole, 'user' | 'owner'>;
   submitLabel?: string;
+  plan?: 'basic' | 'pro';
 }
 
 export default function RegisterForm({
   redirectTo = '/dashboard',
   role = 'user',
-  submitLabel = 'Creează cont',
+  submitLabel,
+  plan,
 }: RegisterFormProps) {
   const router = useRouter();
+  const t = useTranslations('auth');
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string | undefined>>({});
@@ -49,11 +53,25 @@ export default function RegisterForm({
     setLoading(true);
     try {
       await register(parsed.data.email, parsed.data.password, parsed.data.name, role);
-      router.push(redirectTo);
-      router.refresh();
+
+      if (plan) {
+        const res = await fetch('/api/subscriptions/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan }),
+        });
+        const data = (await res.json()) as { url?: string; error?: string };
+        if (!res.ok || !data.url) {
+          throw new Error(data.error ?? 'Failed to create checkout session.');
+        }
+        router.push(data.url);
+      } else {
+        router.push(redirectTo);
+        router.refresh();
+      }
     } catch (err) {
       setGlobalError(
-        err instanceof Error ? err.message : 'Înregistrare eșuată. Încercați din nou.',
+        err instanceof Error ? err.message : t('registerFailed'),
       );
     } finally {
       setLoading(false);
@@ -69,7 +87,7 @@ export default function RegisterForm({
       )}
 
       <Input
-        label="Nume complet"
+        label={t('fullName')}
         name="name"
         type="text"
         autoComplete="name"
@@ -77,7 +95,7 @@ export default function RegisterForm({
         error={fieldErrors.name}
       />
       <Input
-        label="Email"
+        label={t('email')}
         name="email"
         type="email"
         autoComplete="email"
@@ -85,7 +103,7 @@ export default function RegisterForm({
         error={fieldErrors.email}
       />
       <Input
-        label="Parolă"
+        label={t('password')}
         name="password"
         type="password"
         autoComplete="new-password"
@@ -93,7 +111,7 @@ export default function RegisterForm({
         error={fieldErrors.password}
       />
       <Input
-        label="Confirmă parola"
+        label={t('confirmPassword')}
         name="confirmPassword"
         type="password"
         autoComplete="new-password"
@@ -102,7 +120,7 @@ export default function RegisterForm({
       />
 
       <Button type="submit" loading={loading} className="mt-2 w-full">
-        {submitLabel}
+        {submitLabel ?? t('registerButton')}
       </Button>
     </form>
   );

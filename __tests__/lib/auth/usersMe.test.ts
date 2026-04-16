@@ -11,6 +11,12 @@ jest.mock('@/modules/users/infrastructure/firestoreUserRepository', () => ({
   getUserById: jest.fn(),
   upsertUser: jest.fn(),
 }));
+jest.mock('@/lib/firebase/admin', () => ({
+  getAdminAuth: jest.fn().mockReturnValue({
+    setCustomUserClaims: jest.fn().mockResolvedValue(undefined),
+  }),
+  getAdminFirestore: jest.fn(),
+}));
 
 import { NextRequest } from 'next/server';
 import * as sessionModule from '@/lib/auth/session';
@@ -83,6 +89,9 @@ describe('POST /api/users/me', () => {
       role: 'user',
       createdAt: '2024-01-01T00:00:00Z',
       updatedAt: '2024-01-01T00:00:00Z',
+      subscriptionTier: null,
+      subscriptionStatus: null,
+      subscriptionExpiresAt: null,
     });
     mockUpsert.mockResolvedValue(undefined);
 
