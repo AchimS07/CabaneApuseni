@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { verifySession } from '@/lib/auth/session';
+import { getAdminAuth } from '@/lib/firebase/admin';
 import { getUserById, upsertUser } from '@/modules/users/infrastructure/firestoreUserRepository';
 
 const bodySchema = z.object({
   name: z.string().min(2),
   email: z.string().email().optional(),
   role: z.enum(['user', 'owner']).default('user'),
+  plan: z.enum(['gratuit', 'explorer', 'premium', 'starter', 'pro', 'business']).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -32,8 +34,12 @@ export async function POST(req: NextRequest) {
     email,
     name: parsed.data.name,
     role: parsed.data.role,
+    plan: parsed.data.plan,
     createdAt: existing?.createdAt ?? now,
   });
+
+  // Sync role to Firebase custom claims so session cookies include the correct role.
+  await getAdminAuth().setCustomUserClaims(session.uid, { role: parsed.data.role });
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }

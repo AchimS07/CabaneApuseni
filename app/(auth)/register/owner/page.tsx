@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import RegisterForm from '@/components/forms/RegisterForm';
 
 export const metadata: Metadata = { title: 'Înregistrare proprietar' };
@@ -22,15 +23,15 @@ export default async function OwnerRegisterPage({ searchParams }: Props) {
       />
       <p className="mt-4 text-center text-sm text-gray-500">
         Vrei cont de client?{' '}
-        <a href="/register" className="font-medium text-forest-600 hover:underline">
+        <Link href="/register" className="font-medium text-forest-600 hover:underline">
           Înregistrare standard
-        </a>
+        </Link>
       </p>
       <p className="mt-4 text-center text-sm text-gray-500">
         Ai deja cont?{' '}
-        <a href="/login" className="font-medium text-forest-600 hover:underline">
+        <Link href="/login" className="font-medium text-forest-600 hover:underline">
           Autentifică-te
-        </a>
+        </Link>
       </p>
     </>
   );

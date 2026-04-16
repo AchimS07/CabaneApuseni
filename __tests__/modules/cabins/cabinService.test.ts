@@ -15,7 +15,9 @@ import {
   editCabin,
   removeCabin,
   getOwnerCabins,
+  getPublishedCabins,
 } from '@/modules/cabins/application/cabinService';
+import { MOCK_CABINS } from '@/modules/cabins/application/mockCabins';
 import type { SessionUser } from '@/lib/auth/session';
 import type { Cabin } from '@/modules/cabins/domain/types';
 
@@ -157,5 +159,40 @@ describe('getOwnerCabins', () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) expect(result.data).toHaveLength(0);
+  });
+});
+
+describe('getPublishedCabins', () => {
+  it('returns published cabins from Firestore when available', async () => {
+    jest.mocked(cabinRepo.listPublishedCabins).mockResolvedValue([mockCabin]);
+
+    const result = await getPublishedCabins();
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0]!.id).toBe('cabin-1');
+    }
+  });
+
+  it('falls back to MOCK_CABINS when Firestore throws', async () => {
+    jest.mocked(cabinRepo.listPublishedCabins).mockRejectedValue(new Error('Firestore unavailable'));
+
+    const result = await getPublishedCabins();
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.data).toEqual(MOCK_CABINS);
+      expect(result.data.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('falls back to MOCK_CABINS when Firestore returns empty list', async () => {
+    jest.mocked(cabinRepo.listPublishedCabins).mockResolvedValue([]);
+
+    const result = await getPublishedCabins();
+
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data).toEqual(MOCK_CABINS);
   });
 });

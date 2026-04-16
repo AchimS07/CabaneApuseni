@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import LoginForm from '@/components/forms/LoginForm';
 
 export const metadata: Metadata = { title: 'Autentificare' };
@@ -19,9 +20,9 @@ export default async function LoginPage({ searchParams }: Props) {
       <LoginForm redirectTo={redirectTo} />
       <p className="mt-4 text-center text-sm text-gray-500">
         Nu ai cont?{' '}
-        <a href="/register" className="font-medium text-forest-600 hover:underline">
+        <Link href="/register" className="font-medium text-forest-600 hover:underline">
           Înregistrează-te
-        </a>
+        </Link>
       </p>
     </>
   );

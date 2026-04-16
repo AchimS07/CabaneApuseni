@@ -36,14 +36,16 @@ export default async function OwnerListingsPage() {
         </div>
       )}
 
-      {cabins.length === 0 ? (
+      {result.ok && cabins.length === 0 && (
         <EmptyState
           icon="🏠"
           title="Nu ai nicio cabană"
           description="Adaugă prima ta cabană pentru a începe să primești rezervări."
           action={{ label: '+ Adaugă cabana', href: '/dashboard/owner/listings/new' }}
         />
-      ) : (
+      )}
+
+      {result.ok && cabins.length > 0 && (
         <div className="overflow-x-auto rounded-xl border">
           <table className="w-full text-sm" aria-label="Cabane mele">
             <thead className="bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
