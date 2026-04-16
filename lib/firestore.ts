@@ -15,11 +15,20 @@ import {
   writeBatch,
   arrayUnion,
   arrayRemove,
+  type Firestore,
   type DocumentData,
   type QueryDocumentSnapshot,
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { getClientFirestore } from '@/lib/firebase/client';
 import type { UserRole } from './auth';
+
+// Lazy proxy — getClientFirestore() is called on first property access (client-side),
+// not at module evaluation time, so SSR never triggers the env-var check.
+const db = new Proxy({} as Firestore, {
+  get(_target, prop) {
+    return (getClientFirestore() as unknown as Record<string | symbol, unknown>)[prop];
+  },
+});
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 

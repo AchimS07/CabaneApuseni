@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { onAuthStateChanged, type User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { getClientAuth } from '@/lib/firebase/client';
 import { getUserProfile, type UserProfile } from '@/lib/firestore';
 
 export interface AuthContextValue {
@@ -33,7 +33,7 @@ export default function Providers({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(getClientAuth(), async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
         try {
