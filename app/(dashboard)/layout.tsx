@@ -21,7 +21,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         >
           <Link
             href="/"
-            className="flex items-center gap-2 font-extrabold text-forest-700 hover:text-forest-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 rounded-md"
+            className="font-bold text-brand hover:text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand rounded"
           >
             <span
               className="flex h-7 w-7 items-center justify-center rounded-full bg-forest-600 text-white text-xs"
@@ -35,7 +35,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             <li>
               <Link
                 href="/cabins"
-                className="rounded-full px-4 py-2 text-gray-600 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
+                className="rounded-md px-3 py-2 text-gray-600 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
               >
                 {t('cabins')}
               </Link>
@@ -44,18 +44,26 @@ export default async function DashboardLayout({ children }: { children: ReactNod
               <li>
                 <Link
                   href="/dashboard/bookings"
-                  className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
+                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
                 >
                   {t('myBookings')}
                 </Link>
               </li>
             )}
+            <li>
+              <Link
+                href="/dashboard"
+                className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
+              >
+                Favorite
+              </Link>
+            </li>
             {role === 'owner' && (
               <>
                 <li>
                   <Link
                     href="/dashboard/owner"
-                    className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
                   >
                     {t('owner')}
                   </Link>
@@ -63,7 +71,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 <li>
                   <Link
                     href="/dashboard/owner/listings"
-                    className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
                   >
                     {t('myListings')}
                   </Link>
@@ -71,7 +79,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 <li>
                   <Link
                     href="/dashboard/owner/bookings"
-                    className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
                   >
                     {t('bookings')}
                   </Link>
