@@ -561,7 +561,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
             </li>
             {isAuthenticated ? (
               <>
-                {isAdmin ? (
+                {isAdmin && (
                   <li>
                     <Link
                       href="/admin"
