@@ -14,14 +14,14 @@ export default async function AdminLayout({ children }: { children: ReactNode })
           className="flex items-center justify-between"
           aria-label="Navigare admin"
         >
-          <Link href="/admin" className="font-bold text-indigo-700">
+          <Link href="/admin" className="font-bold text-forest-700">
             Admin
           </Link>
           <ul className="flex items-center gap-3 text-sm font-medium">
             <li>
               <Link
                 href="/admin"
-                className="text-gray-700 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                className="text-gray-700 transition hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 rounded-md"
               >
                 Tablou de bord
               </Link>
@@ -29,7 +29,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <li>
               <Link
                 href="/admin/cabins"
-                className="text-gray-700 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                className="text-gray-700 transition hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 rounded-md"
               >
                 Cabane
               </Link>
@@ -47,7 +47,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         <aside className="hidden w-56 shrink-0 border-r bg-gray-50 px-4 py-6 lg:block">
           <Link
             href="/admin"
-            className="mb-6 block text-lg font-bold text-indigo-700 hover:text-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+            className="mb-6 block text-lg font-bold text-forest-700 hover:text-forest-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 rounded-md"
           >
             Admin
           </Link>
@@ -56,7 +56,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               <li>
                 <Link
                   href="/admin"
-                  className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="block rounded-xl px-3 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                 >
                   Tablou de bord
                 </Link>
@@ -64,7 +64,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               <li>
                 <Link
                   href="/admin/cabins"
-                  className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="block rounded-xl px-3 py-2 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                 >
                   Cabane
                 </Link>

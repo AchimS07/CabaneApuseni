@@ -12,9 +12,8 @@ interface PublicHeaderProps {
 }
 
 /**
- * Site-wide public header.
- * Receives auth state from the server layout (no client Firebase call needed).
- * Handles mobile hamburger toggle locally.
+ * Site-wide public header — Airbnb-inspired design.
+ * White background, forest-green brand color, pill-shaped CTA.
  */
 export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: PublicHeaderProps) {
   const router = useRouter();
@@ -36,18 +35,23 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-white/90 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur-sm">
       <nav
-        className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3"
+        className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6"
         aria-label="Navigare principală"
       >
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-lg font-bold text-indigo-700 hover:text-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded"
+          className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-forest-700 hover:text-forest-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 focus-visible:ring-offset-2 rounded-md"
           onClick={close}
         >
-          <span aria-hidden="true">🏔️</span>
+          <span
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-forest-600 text-white text-sm"
+            aria-hidden="true"
+          >
+            🏔️
+          </span>
           <span>Cabane Apuseni</span>
         </Link>
 
@@ -56,7 +60,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
           <li>
             <Link
               href="/cabins"
-              className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
             >
               Cabane
             </Link>
@@ -76,7 +80,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 <li>
                   <Link
                     href="/admin"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
                     Admin
                   </Link>
@@ -96,7 +100,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 <li>
                   <Link
                     href="/dashboard/bookings"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                   >
                     Rezervările mele
                   </Link>
@@ -106,7 +110,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 <button
                   onClick={handleLogout}
                   disabled={loggingOut}
-                  className="rounded-md px-3 py-2 text-red-600 hover:bg-red-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
+                  className="rounded-full px-4 py-2 text-red-600 transition hover:bg-red-50 hover:text-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-50"
                 >
                   {loggingOut ? 'Se deconectează…' : 'Deconectare'}
                 </button>
@@ -117,7 +121,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               <li>
                 <Link
                   href="/login"
-                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="rounded-full px-4 py-2 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500"
                 >
                   Autentificare
                 </Link>
@@ -125,7 +129,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               <li>
                 <Link
                   href="/register"
-                  className="rounded-md bg-indigo-600 px-3 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="btn-primary py-2 px-5 text-sm"
                 >
                   Înregistrare
                 </Link>
@@ -136,7 +140,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
 
         {/* Mobile hamburger */}
         <button
-          className="rounded-md p-2 text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 md:hidden"
+          className="rounded-full p-2 text-gray-600 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 md:hidden"
           onClick={() => setMenuOpen((o) => !o)}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
@@ -172,14 +176,14 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="border-t bg-white px-4 py-3 md:hidden"
+          className="border-t border-gray-100 bg-white px-4 py-3 md:hidden"
         >
           <ul className="flex flex-col gap-1 text-sm font-medium">
             <li>
               <Link
                 href="/cabins"
                 onClick={close}
-                className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                className="block rounded-xl px-3 py-2.5 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700"
               >
                 Cabane
               </Link>
@@ -201,7 +205,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     <Link
                       href="/admin"
                       onClick={close}
-                      className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                      className="block rounded-xl px-3 py-2.5 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700"
                     >
                       Admin
                     </Link>
@@ -223,7 +227,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     <Link
                       href="/dashboard/bookings"
                       onClick={close}
-                      className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                      className="block rounded-xl px-3 py-2.5 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700"
                     >
                       Rezervările mele
                     </Link>
@@ -233,7 +237,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   <button
                     onClick={handleLogout}
                     disabled={loggingOut}
-                    className="block w-full rounded-md px-3 py-2 text-left text-red-600 hover:bg-red-50 disabled:opacity-50"
+                    className="block w-full rounded-xl px-3 py-2.5 text-left text-red-600 transition hover:bg-red-50 disabled:opacity-50"
                   >
                     {loggingOut ? 'Se deconectează…' : 'Deconectare'}
                   </button>
@@ -245,16 +249,16 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   <Link
                     href="/login"
                     onClick={close}
-                    className="block rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+                    className="block rounded-xl px-3 py-2.5 text-gray-700 transition hover:bg-forest-50 hover:text-forest-700"
                   >
                     Autentificare
                   </Link>
                 </li>
-                <li>
+                <li className="pt-1">
                   <Link
                     href="/register"
                     onClick={close}
-                    className="block rounded-md bg-indigo-600 px-3 py-2 text-white hover:bg-indigo-700"
+                    className="btn-primary block w-full text-center py-2.5"
                   >
                     Înregistrare
                   </Link>

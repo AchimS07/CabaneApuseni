@@ -163,14 +163,14 @@ function QuickLink({ href, icon, title, description }: QuickLinkProps) {
   return (
     <Link
       href={href}
-      className="group flex flex-col rounded-xl border bg-white p-6 shadow-sm transition hover:border-indigo-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      className="group flex flex-col rounded-xl border bg-white p-6 shadow-sm transition hover:border-forest-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 focus-visible:ring-offset-2"
     >
       <span className="mb-3 text-3xl" aria-hidden="true">{icon}</span>
-      <h3 className="text-base font-semibold text-gray-900 group-hover:text-indigo-700">
+      <h3 className="text-base font-semibold text-gray-900 group-hover:text-forest-700">
         {title}
       </h3>
       <p className="mt-1 text-sm text-gray-500">{description}</p>
-      <span className="mt-4 text-sm font-medium text-indigo-600 group-hover:underline">
+      <span className="mt-4 text-sm font-medium text-forest-600 group-hover:underline">
         Deschide →
       </span>
     </Link>

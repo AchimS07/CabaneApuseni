@@ -82,7 +82,7 @@ export default async function BookingsPage({ searchParams }: Props) {
                     </span>
                   </td>
                   <td className="px-4 py-4 text-gray-600">{b.guestCount}</td>
-                  <td className="px-4 py-4 font-medium text-indigo-700">
+                  <td className="px-4 py-4 font-medium text-forest-700">
                     {b.totalPrice} RON
                   </td>
                   <td className="px-4 py-4">

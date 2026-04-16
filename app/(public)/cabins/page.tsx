@@ -15,13 +15,18 @@ export default async function CabinsPage() {
   const cabins = result.ok ? result.data : [];
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-12">
-      <h1 className="mb-2 text-3xl font-bold text-gray-900">Cabane disponibile</h1>
-      <p className="mb-8 text-gray-500">
-        {cabins.length > 0
-          ? `${cabins.length} ${cabins.length === 1 ? 'cabană disponibilă' : 'cabane disponibile'}`
-          : 'Căutăm cabane pentru tine…'}
-      </p>
+    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      {/* Page header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+          Cabane disponibile
+        </h1>
+        <p className="mt-1 text-gray-500">
+          {cabins.length > 0
+            ? `${cabins.length} ${cabins.length === 1 ? 'cabană disponibilă' : 'cabane disponibile'} în Munții Apuseni`
+            : 'Căutăm cabane pentru tine…'}
+        </p>
+      </div>
 
       {!result.ok && (
         <div
