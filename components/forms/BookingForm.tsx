@@ -126,9 +126,9 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
   }
 
   return (
-    <div className="rounded-xl border bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-card">
       <p className="text-2xl font-bold text-gray-900">
-        {cabin.pricePerNight}{' '}
+        <span className="text-forest-700">{cabin.pricePerNight}</span>{' '}
         <span className="text-base font-normal text-gray-500">{t('pricePerNight')}</span>
       </p>
 
@@ -197,8 +197,8 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             }
             aria-invalid={!!fieldErrors.guestCount}
             className={[
-              'rounded-md border px-3 py-2 text-sm shadow-sm transition',
-              'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
+              'rounded-xl border px-3 py-2 text-sm shadow-sm transition',
+              'focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500',
               fieldErrors.guestCount
                 ? 'border-red-400 focus:ring-red-400'
                 : 'border-gray-300',
@@ -230,13 +230,13 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder={t('notesPlaceholder')}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm transition placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="rounded-xl border border-gray-300 px-3 py-2 text-sm shadow-sm transition placeholder:text-gray-400 focus:border-forest-500 focus:outline-none focus:ring-2 focus:ring-forest-500"
           />
         </div>
 
         {/* Price breakdown */}
         {nights > 0 && (
-          <div className="rounded-lg bg-indigo-50 px-4 py-3 text-sm">
+          <div className="rounded-xl bg-forest-50 px-4 py-3 text-sm">
             <div className="flex justify-between text-gray-700">
               <span>
                 {cabin.pricePerNight} RON × {nights}{' '}

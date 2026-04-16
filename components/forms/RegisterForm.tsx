@@ -13,12 +13,14 @@ interface RegisterFormProps {
   redirectTo?: string;
   role?: Extract<UserRole, 'user' | 'owner'>;
   submitLabel?: string;
+  plan?: 'basic' | 'pro';
 }
 
 export default function RegisterForm({
   redirectTo = '/dashboard',
   role = 'user',
   submitLabel,
+  plan,
 }: RegisterFormProps) {
   const router = useRouter();
   const t = useTranslations('auth');
@@ -51,8 +53,22 @@ export default function RegisterForm({
     setLoading(true);
     try {
       await register(parsed.data.email, parsed.data.password, parsed.data.name, role);
-      router.push(redirectTo);
-      router.refresh();
+
+      if (plan) {
+        const res = await fetch('/api/subscriptions/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan }),
+        });
+        const data = (await res.json()) as { url?: string; error?: string };
+        if (!res.ok || !data.url) {
+          throw new Error(data.error ?? 'Failed to create checkout session.');
+        }
+        router.push(data.url);
+      } else {
+        router.push(redirectTo);
+        router.refresh();
+      }
     } catch (err) {
       setGlobalError(
         err instanceof Error ? err.message : t('registerFailed'),

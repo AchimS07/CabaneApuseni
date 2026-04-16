@@ -55,7 +55,8 @@
       "booking": {
         "title": "Easy booking",
         "description": "Real-time availability, instant confirmation."
-      }
+      },
+      "subtitle": "Everything you need for the perfect mountain getaway."
     },
     "howItWorks": {
       "heading": "How does it work?",
@@ -268,7 +269,11 @@
     "ownerRegisterTitle": "Owner Account",
     "createOwnerAccount": "Create owner account",
     "wantClientAccount": "Want a client account?",
-    "standardRegister": "Standard registration"
+    "standardRegister": "Standard registration",
+    "selectedPlan": "Selected plan",
+    "planBasic": "Basic — 50 RON/month",
+    "planPro": "Pro — 150 RON/month",
+    "createOwnerAccountAndPay": "Create account and continue to payment"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -326,7 +331,13 @@
     "allBookings": "View all bookings",
     "addNewCabin": "Add cabin",
     "addNewCabinDesc": "Register a new cabin.",
-    "open": "Open →"
+    "open": "Open →",
+    "planActive": "Active plan",
+    "planInactive": "Inactive",
+    "noSubscriptionCTA": "Choose a plan",
+    "noSubscriptionMsg": "to publish cabins.",
+    "addNewCabinCTA": "+ Add cabin",
+    "openArrow": "Open →"
   },
   "ownerListings": {
     "title": "My cabins",
@@ -353,7 +364,18 @@
     "publishing": "Saving…",
     "publishCabin": "Publish cabin",
     "unpublishCabin": "Unpublish cabin",
-    "toggleError": "An error occurred. Please try again."
+    "toggleError": "An error occurred. Please try again.",
+    "noSubscription": "Your subscription is not active.",
+    "choosePlan": "Choose a plan",
+    "noSubscriptionSuffix": "to publish cabins.",
+    "atLimitPrefix": "You've reached the limit of",
+    "atLimitCabana": "cabin",
+    "atLimitCabane": "cabins",
+    "atLimitSuffix": "for your plan.",
+    "upgradeLink": "Upgrade to Pro",
+    "upgradeSuffix": "for 5 active cabins.",
+    "subscriptionRequired": "Subscription is not active",
+    "limitReached": "You've reached your plan's limit"
   },
   "ownerBookings": {
     "title": "Cabin bookings",

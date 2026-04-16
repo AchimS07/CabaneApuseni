@@ -55,7 +55,8 @@
       "booking": {
         "title": "Egyszerű foglalás",
         "description": "Valós idejű elérhetőség, azonnali megerősítés."
-      }
+      },
+      "subtitle": "Minden, amire szüksége van a tökéletes hegyvidéki tartózkodáshoz."
     },
     "howItWorks": {
       "heading": "Hogyan működik?",
@@ -268,7 +269,11 @@
     "ownerRegisterTitle": "Tulajdonosi fiók",
     "createOwnerAccount": "Tulajdonosi fiók létrehozása",
     "wantClientAccount": "Ügyfélfiókot szeretne?",
-    "standardRegister": "Normál regisztráció"
+    "standardRegister": "Normál regisztráció",
+    "selectedPlan": "Kiválasztott csomag",
+    "planBasic": "Alap — 50 RON/hó",
+    "planPro": "Pro — 150 RON/hó",
+    "createOwnerAccountAndPay": "Fiók létrehozása és folytatás a fizetéshez"
   },
   "dashboard": {
     "title": "Irányítópult",
@@ -326,7 +331,13 @@
     "allBookings": "Összes foglalás megtekintése",
     "addNewCabin": "Kabin hozzáadása",
     "addNewCabinDesc": "Új kabin regisztrálása.",
-    "open": "Megnyitás →"
+    "open": "Megnyitás →",
+    "planActive": "Aktív csomag",
+    "planInactive": "Inaktív",
+    "noSubscriptionCTA": "Válasszon csomagot",
+    "noSubscriptionMsg": "a szállások közzétételéhez.",
+    "addNewCabinCTA": "+ Szállás hozzáadása",
+    "openArrow": "Megnyitás →"
   },
   "ownerListings": {
     "title": "Kabinjaim",
@@ -353,7 +364,18 @@
     "publishing": "Mentés…",
     "publishCabin": "Kabin közzététele",
     "unpublishCabin": "Kabin visszavonása",
-    "toggleError": "Hiba történt. Kérjük próbálja újra."
+    "toggleError": "Hiba történt. Kérjük próbálja újra.",
+    "noSubscription": "Az előfizetése nem aktív.",
+    "choosePlan": "Válasszon csomagot",
+    "noSubscriptionSuffix": "a szállások közzétételéhez.",
+    "atLimitPrefix": "Elérte a",
+    "atLimitCabana": "szállás",
+    "atLimitCabane": "szállás",
+    "atLimitSuffix": "korlátját a csomagjában.",
+    "upgradeLink": "Frissítés Pro-ra",
+    "upgradeSuffix": "5 aktív szálláshoz.",
+    "subscriptionRequired": "Az előfizetés nem aktív",
+    "limitReached": "Elérte a csomag korlátját"
   },
   "ownerBookings": {
     "title": "Kabinfoglalások",

@@ -25,7 +25,7 @@ export default async function LoginPage({ searchParams }: Props) {
       <LoginForm redirectTo={redirectTo} />
       <p className="mt-4 text-center text-sm text-gray-500">
         {t('noAccount')}{' '}
-        <Link href="/register" className="font-medium text-indigo-600 hover:underline">
+        <Link href="/register" className="font-medium text-forest-600 hover:underline">
           {t('signUpLink')}
         </Link>
       </p>

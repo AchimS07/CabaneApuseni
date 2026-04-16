@@ -24,13 +24,13 @@ export default async function RegisterPage({ searchParams }: Props) {
       <RegisterForm redirectTo={redirectTo} />
       <p className="mt-4 text-center text-sm text-gray-600">
         {t('haveACabin')}{' '}
-        <Link href="/register/owner" className="font-medium text-indigo-600 hover:underline">
+        <Link href="/register/owner" className="font-medium text-forest-600 hover:underline">
           {t('registerAsOwner')}
         </Link>
       </p>
       <p className="mt-4 text-center text-sm text-gray-500">
         {t('haveAccount')}{' '}
-        <Link href="/login" className="font-medium text-indigo-600 hover:underline">
+        <Link href="/login" className="font-medium text-forest-600 hover:underline">
           {t('signInLink')}
         </Link>
       </p>

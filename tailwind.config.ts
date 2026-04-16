@@ -9,6 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Primary brand — forest green (replaces indigo throughout the app)
+        primary: {
+          50:  '#f0faf4',
+          100: '#d7f0e1',
+          200: '#b2e0c6',
+          300: '#7dcba4',
+          400: '#4aaf7e',
+          500: '#2d8f64',
+          600: '#207050',
+          700: '#1a5c42',
+          800: '#164a36',
+          900: '#123d2c',
+          950: '#0a2219',
+        },
         forest: {
           50:  '#f0faf4',
           100: '#d7f0e1',
@@ -35,6 +49,17 @@ const config: Config = {
           900: '#5c3523',
           950: '#311a10',
         },
+      },
+      fontFamily: {
+        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
+      borderRadius: {
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+      },
+      boxShadow: {
+        card: '0 2px 12px 0 rgba(0,0,0,0.08)',
+        'card-hover': '0 6px 24px 0 rgba(0,0,0,0.14)',
       },
     },
   },

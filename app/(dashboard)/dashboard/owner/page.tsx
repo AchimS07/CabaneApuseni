@@ -1,11 +1,12 @@
-import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { requireOwner } from '@/lib/auth/authorization';
 import { getOwnerCabins } from '@/modules/cabins/application/cabinService';
 import { getOwnerBookings } from '@/modules/bookings/application/bookingService';
+import { getProfile } from '@/modules/users/application/userService';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { SubscriptionBanner } from '@/components/ui/SubscriptionBanner';
 import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -19,22 +20,25 @@ export default async function OwnerDashboardPage() {
   const session = await requireOwner();
   const t = await getTranslations('ownerDashboard');
 
-  const [cabinsResult, bookingsResult] = await Promise.all([
+  const [cabinsResult, bookingsResult, profileResult] = await Promise.all([
     getOwnerCabins(session.uid),
     getOwnerBookings(session),
+    getProfile(session.uid),
   ]);
 
   const cabins = cabinsResult.ok ? cabinsResult.data : [];
   const bookings = bookingsResult.ok ? bookingsResult.data : [];
+  const profile = profileResult.ok ? profileResult.data : null;
 
   const totalCabins = cabins.length;
   const publishedCabins = cabins.filter((c) => c.published).length;
   const pendingBookings = bookings.filter((b) => b.status === 'pending').length;
 
-  const today = new Date().toISOString().split('T')[0];
-  const upcomingStays = bookings.filter(
-    (b) => b.status === 'confirmed' && b.checkIn >= today,
-  ).length;
+  const planLabel = profile?.subscriptionTier === 'pro'
+    ? 'Pro'
+    : profile?.subscriptionTier === 'basic'
+    ? 'Basic'
+    : t('planInactive');
 
   const bookingsDesc = pendingBookings > 0
     ? t('bookingsPendingDesc', {
@@ -50,8 +54,21 @@ export default async function OwnerDashboardPage() {
         description={t('description')}
       />
 
+      {/* Subscription status banner */}
+      <SubscriptionBanner
+        tier={profile?.subscriptionTier ?? null}
+        status={profile?.subscriptionStatus ?? null}
+        expiresAt={profile?.subscriptionExpiresAt ?? null}
+      />
+
       {/* KPI cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiCard
+          label={t('planActive')}
+          value={planLabel}
+          icon={profile?.subscriptionTier === 'pro' ? '⭐' : profile?.subscriptionTier === 'basic' ? '📦' : '❌'}
+          variant={profile?.subscriptionStatus === 'active' ? 'success' : 'warning'}
+        />
         <KpiCard label={t('totalCabins')} value={totalCabins} icon="🏠" />
         <KpiCard
           label={t('published')}
@@ -65,11 +82,6 @@ export default async function OwnerDashboardPage() {
           icon="⏳"
           variant={pendingBookings > 0 ? 'warning' : 'default'}
         />
-        <KpiCard
-          label={t('upcomingStays')}
-          value={upcomingStays}
-          icon="📅"
-        />
       </div>
 
       {/* Empty state when owner has no cabins */}
@@ -78,7 +90,11 @@ export default async function OwnerDashboardPage() {
           icon="🏠"
           title={t('noCabinsTitle')}
           description={t('noCabinsDesc')}
-          action={{ label: t('addCabin'), href: '/dashboard/owner/listings/new' }}
+          action={
+            profile?.subscriptionStatus === 'active'
+              ? { label: t('addCabin'), href: '/dashboard/owner/listings/new' }
+              : undefined
+          }
         />
       ) : (
         /* Quick-access links */
@@ -104,13 +120,15 @@ export default async function OwnerDashboardPage() {
               description={bookingsDesc}
               openLabel={t('open')}
             />
-            <QuickLink
-              href="/dashboard/owner/listings/new"
-              icon="➕"
-              title={t('addNewCabin')}
-              description={t('addNewCabinDesc')}
-              openLabel={t('open')}
-            />
+            {profile?.subscriptionStatus === 'active' && (
+              <QuickLink
+                href="/dashboard/owner/listings/new"
+                icon="➕"
+                title={t('addNewCabin')}
+                description={t('addNewCabinDesc')}
+                openLabel={t('open')}
+              />
+            )}
           </div>
         </section>
       )}
@@ -120,7 +138,7 @@ export default async function OwnerDashboardPage() {
 
 interface KpiCardProps {
   label: string;
-  value: number;
+  value: number | string;
   icon: string;
   variant?: 'default' | 'warning' | 'success';
 }
@@ -138,10 +156,10 @@ function KpiCard({ label, value, icon, variant = 'default' }: KpiCardProps) {
   };
 
   return (
-    <div className={`rounded-xl border p-5 shadow-sm ${variantClasses[variant]}`}>
+    <div className={'rounded-xl border p-5 shadow-sm ' + variantClasses[variant]}>
       <span className="text-2xl" aria-hidden="true">{icon}</span>
       <p className="mt-2 text-sm text-gray-500">{label}</p>
-      <p className={`mt-1 text-3xl font-bold ${valueClasses[variant]}`}>{value}</p>
+      <p className={'mt-1 text-3xl font-bold ' + valueClasses[variant]}>{value}</p>
     </div>
   );
 }
@@ -158,14 +176,14 @@ function QuickLink({ href, icon, title, description, openLabel }: QuickLinkProps
   return (
     <Link
       href={href}
-      className="group flex flex-col rounded-xl border bg-white p-6 shadow-sm transition hover:border-indigo-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      className="group flex flex-col rounded-xl border bg-white p-6 shadow-sm transition hover:border-forest-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 focus-visible:ring-offset-2"
     >
       <span className="mb-3 text-3xl" aria-hidden="true">{icon}</span>
-      <h3 className="text-base font-semibold text-gray-900 group-hover:text-indigo-700">
+      <h3 className="text-base font-semibold text-gray-900 group-hover:text-forest-700">
         {title}
       </h3>
       <p className="mt-1 text-sm text-gray-500">{description}</p>
-      <span className="mt-4 text-sm font-medium text-indigo-600 group-hover:underline">
+      <span className="mt-4 text-sm font-medium text-forest-600 group-hover:underline">
         {openLabel}
       </span>
     </Link>

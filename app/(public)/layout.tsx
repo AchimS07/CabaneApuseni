@@ -27,8 +27,9 @@ export default async function PublicLayout({ children }: { children: ReactNode }
         isOwner={isOwner}
       />
       <div className="flex-1">{children}</div>
-      <footer className="border-t py-8 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Cabane Apuseni. {t('allRightsReserved')}
+      <footer className="border-t bg-gray-50 py-10 text-center text-sm text-gray-500">
+        <p className="font-semibold text-forest-700">{t('siteName')}</p>
+        <p className="mt-1">© {new Date().getFullYear()} Cabane Apuseni. {t('allRightsReserved')}</p>
       </footer>
     </div>
   );

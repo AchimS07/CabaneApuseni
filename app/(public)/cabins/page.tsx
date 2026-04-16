@@ -24,9 +24,11 @@ export default async function CabinsPage() {
     : t('searching');
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-12">
-      <h1 className="mb-2 text-3xl font-bold text-gray-900">{t('title')}</h1>
-      <p className="mb-8 text-gray-500">{subtitle}</p>
+    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">{t('title')}</h1>
+        <p className="mt-1 text-gray-500">{subtitle}</p>
+      </div>
 
       {!result.ok && (
         <div
