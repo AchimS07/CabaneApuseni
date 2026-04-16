@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import { confirmBookingAction, rejectBookingAction } from '@/modules/bookings/actions';
-
-const GENERIC_ERROR = 'A apărut o eroare. Încearcă din nou.';
+import { useTranslations } from 'next-intl';
 
 interface BookingActionButtonsProps {
   bookingId: string;
@@ -15,6 +14,7 @@ interface BookingActionButtonsProps {
  * Shows inline success state after each action instead of a silent refresh.
  */
 export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
+  const t = useTranslations('ownerBookings');
   const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [loadingReject, setLoadingReject] = useState(false);
   const [error, setError] = useState('');
@@ -31,16 +31,14 @@ export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
       }
       setOutcome('confirmed');
     } catch {
-      setError(GENERIC_ERROR);
+      setError(t('actionError'));
     } finally {
       setLoadingConfirm(false);
     }
   }
 
   async function handleReject() {
-    const confirmed = window.confirm(
-      'Ești sigur că vrei să refuzi această rezervare?',
-    );
+    const confirmed = window.confirm(t('confirmReject'));
     if (!confirmed) return;
 
     setLoadingReject(true);
@@ -53,7 +51,7 @@ export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
       }
       setOutcome('rejected');
     } catch {
-      setError(GENERIC_ERROR);
+      setError(t('actionError'));
     } finally {
       setLoadingReject(false);
     }
@@ -84,17 +82,17 @@ export function BookingActionButtons({ bookingId }: BookingActionButtonsProps) {
           onClick={handleConfirm}
           disabled={busy}
           className="rounded-md border border-green-300 bg-green-50 px-3 py-1.5 text-xs font-medium text-green-700 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-          aria-label="Confirmă rezervarea"
+          aria-label={t('confirmBooking')}
         >
-          {loadingConfirm ? 'Se confirmă…' : 'Confirmă'}
+          {loadingConfirm ? t('confirming') : t('confirm')}
         </button>
         <button
           onClick={handleReject}
           disabled={busy}
           className="rounded-md border border-red-300 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-          aria-label="Refuză rezervarea"
+          aria-label={t('rejectBooking')}
         >
-          {loadingReject ? 'Se refuză…' : 'Refuză'}
+          {loadingReject ? t('rejecting') : t('reject')}
         </button>
       </div>
       {error && (

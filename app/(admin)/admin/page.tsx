@@ -4,12 +4,18 @@ import { getAllBookings } from '@/modules/bookings/application/bookingService';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Admin – Tablou de bord' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('adminDashboard');
+  return { title: t('metaTitle') };
+}
+
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPage() {
   await requireAdmin();
+  const t = await getTranslations('adminDashboard');
 
   const [cabinsResult, bookingsResult] = await Promise.all([
     getAllCabins(),
@@ -28,25 +34,25 @@ export default async function AdminPage() {
   return (
     <div>
       <SectionHeader
-        title="Tablou de bord"
-        description="Privire de ansamblu asupra platformei."
+        title={t('title')}
+        description={t('description')}
       />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
-          label="Cabane"
+          label={t('cabins')}
           value={cabinCount}
           icon="🏠"
           href="/admin/cabins"
         />
         <KpiCard
-          label="Rezervări totale"
+          label={t('totalBookings')}
           value={bookingCount}
           icon="📅"
           href="/admin/bookings"
         />
         <KpiCard
-          label="În așteptare"
+          label={t('pending')}
           value={pendingCount}
           icon="⏳"
           highlight={pendingCount > 0}
@@ -54,7 +60,7 @@ export default async function AdminPage() {
           href="/admin/bookings?status=pending"
         />
         <KpiCard
-          label="Confirmate"
+          label={t('confirmed')}
           value={confirmedCount}
           icon="✅"
           variant="success"
@@ -68,14 +74,14 @@ export default async function AdminPage() {
           id="quick-access-heading"
           className="mb-4 text-lg font-semibold text-gray-900"
         >
-          Acces rapid
+          {t('quickAccess')}
         </h2>
         <div className="flex flex-wrap gap-3">
           <Link
             href="/admin/cabins"
             className="rounded-md border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            Gestionează cabane
+            {t('manageCabins')}
           </Link>
           <Link
             href="/admin/bookings"
@@ -87,7 +93,7 @@ export default async function AdminPage() {
             href="/"
             className="rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
-            Vizualizează site-ul public
+            {t('viewPublicSite')}
           </Link>
         </div>
       </section>

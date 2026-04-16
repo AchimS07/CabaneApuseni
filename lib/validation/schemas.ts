@@ -65,6 +65,11 @@ export const updateProfileSchema = z.object({
   avatarUrl: z.string().url('URL invalid pentru avatar').optional(),
 });
 
+// ─── Subscriptions ────────────────────────────────────────────────────────────
+
+export const subscriptionTierSchema = z.enum(['basic', 'pro']);
+export type SubscriptionTierInput = z.infer<typeof subscriptionTierSchema>;
+
 // ─── Exported types ───────────────────────────────────────────────────────────
 
 export type LoginInput = z.infer<typeof loginSchema>;

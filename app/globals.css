@@ -1,4 +1,139 @@
 /* app/globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --color-brand: #FF385C;
+    --color-brand-dark: #E31C5F;
+    --color-text-primary: #222222;
+    --color-text-secondary: #717171;
+    --color-border: #DDDDDD;
+    --color-surface: #F7F7F7;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, sans-serif;
+    color: #222222;
+  }
+
+  /* Thin scrollbar for category filter strips */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #dddddd transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #dddddd;
+    border-radius: 999px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* Cabin card hover transition */
+  .cabin-card-image {
+    @apply transition-transform duration-300 ease-in-out;
+  }
+  .cabin-card:hover .cabin-card-image {
+    @apply scale-105;
+  }
+
+  /* Brand button */
+  .btn-brand {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-6 py-3
+           text-base font-semibold text-white shadow-sm transition
+           hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-brand focus-visible:ring-offset-2
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Pill / chip */
+  .filter-pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white
+           px-4 py-2 text-sm font-medium text-[#222222] transition
+           hover:border-gray-800 focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-brand;
+  }
+  .filter-pill-active {
+    @apply border-gray-800 bg-gray-900 text-white hover:border-gray-700 hover:bg-gray-800;
+  }
+
+  /* ── Forest-green primary buttons ─────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           rounded-full bg-forest-600 px-6 py-3
+           text-sm font-semibold text-white
+           shadow-sm transition
+           hover:bg-forest-700
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 focus-visible:ring-offset-2
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2
+           rounded-full border border-gray-300 bg-white px-6 py-3
+           text-sm font-semibold text-gray-800
+           shadow-sm transition
+           hover:border-gray-400 hover:bg-gray-50
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* ── Cards ─────────────────────────────────────────────────── */
+  .card {
+    @apply rounded-2xl bg-white shadow-card;
+  }
+
+  .card-hover {
+    @apply transition-shadow hover:shadow-card-hover;
+  }
+
+  /* ── Section headings ──────────────────────────────────────── */
+  .section-title {
+    @apply text-2xl font-bold text-gray-900 sm:text-3xl;
+  }
+
+  /* ── Listing card ──────────────────────────────────────────── */
+  .listing-card {
+    @apply group block overflow-hidden rounded-2xl bg-white
+           shadow-card transition-shadow hover:shadow-card-hover
+           focus:outline-none focus-visible:ring-2
+           focus-visible:ring-forest-500 focus-visible:ring-offset-2;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar cross-browser (no plugin needed) */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Custom shadow utilities */
+  .shadow-card {
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-card-hover {
+    box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.14);
+  }
+}

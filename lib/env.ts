@@ -20,6 +20,12 @@ const serverSchema = z.object({
   FIREBASE_CLIENT_EMAIL: z.string().email(),
   FIREBASE_PRIVATE_KEY: z.string().min(1),
   SESSION_SECRET: z.string().min(32),
+  // Stripe — optional with empty-string default so non-Stripe routes never throw.
+  // The getStripe() singleton validates these are non-empty before constructing the client.
+  STRIPE_SECRET_KEY: z.string().optional().default(''),
+  STRIPE_WEBHOOK_SECRET: z.string().optional().default(''),
+  STRIPE_BASIC_PRICE_ID: z.string().optional().default(''),
+  STRIPE_PRO_PRICE_ID: z.string().optional().default(''),
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -77,5 +83,9 @@ export function getServerEnv(): ServerEnv {
     FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
     FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
     SESSION_SECRET: process.env.SESSION_SECRET,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    STRIPE_BASIC_PRICE_ID: process.env.STRIPE_BASIC_PRICE_ID,
+    STRIPE_PRO_PRICE_ID: process.env.STRIPE_PRO_PRICE_ID,
   }, 'server');
 }

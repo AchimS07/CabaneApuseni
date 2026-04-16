@@ -4,6 +4,10 @@ import { verifySession } from '@/lib/auth/session';
 import BookingForm from '@/components/forms/BookingForm';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { PhotoGrid } from '@/components/ui/PhotoGrid';
+import { WishlistButton } from '@/components/ui/WishlistButton';
+import { MapPinIcon, UsersIcon, StarIcon, ArrowLeftIcon, ShareIcon } from '@/components/ui/Icons';
+import ReportButton from '@/components/ReportButton';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -22,6 +26,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+/** Maps common amenity names to emojis for a richer icon grid */
+const AMENITY_EMOJIS: Record<string, string> = {
+  'wi-fi': '📶',
+  'wifi': '📶',
+  'parcare': '🚗',
+  'bucătărie': '🍳',
+  'bucătărie utilată': '🍳',
+  'șemineu': '🔥',
+  'foc': '🔥',
+  'saună': '🛁',
+  'jacuzzi': '🛁',
+  'jacuzzi exterior': '🛁',
+  'ciubăr': '🪣',
+  'grătar': '🍖',
+  'terasă': '🪑',
+  'smart tv': '📺',
+  'tv': '📺',
+  'încălzire centrală': '🌡️',
+  'self check-in': '🔑',
+  'animale acceptate': '🐾',
+  'piscină': '🏊',
+  'vedere munte': '⛰️',
+  'internet': '📶',
+};
+
+function amenityEmoji(name: string): string {
+  return AMENITY_EMOJIS[name.toLowerCase()] ?? '✓';
+}
+
 export default async function CabinDetailPage({ params }: Props) {
   const { slug } = await params;
 
@@ -33,63 +66,84 @@ export default async function CabinDetailPage({ params }: Props) {
   if (!result.ok) notFound();
   const cabin = result.data;
 
+  const SHOW_AMENITIES = 6;
+  const extraAmenities = cabin.amenities.length > SHOW_AMENITIES
+    ? cabin.amenities.length - SHOW_AMENITIES
+    : 0;
+
   return (
-    <main className="mx-auto max-w-5xl px-4 py-12">
-      {/* Back link */}
-      <Link
-        href="/cabins"
-        className="mb-6 inline-flex items-center gap-1 text-sm text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
-      >
-        ← Înapoi la cabane
-      </Link>
+    <div className="mx-auto max-w-7xl px-4 pb-24 pt-6 sm:px-6 lg:px-8">
 
-      {/* Hero image */}
-      {cabin.imageUrls[0] ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={cabin.imageUrls[0]}
-          alt={cabin.title}
-          className="mb-8 h-72 w-full rounded-2xl object-cover sm:h-96"
-        />
-      ) : (
-        <div
-          className="mb-8 flex h-72 items-center justify-center rounded-2xl bg-indigo-50 text-7xl sm:h-96"
-          aria-hidden="true"
+      {/* ── Top nav row ── */}
+      <div className="mb-4 flex items-center justify-between">
+        <Link
+          href="/cabins"
+          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
-          🏔️
+          <ArrowLeftIcon size={16} aria-hidden="true" />
+          Înapoi la cabane
+        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 underline transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            aria-label="Distribuie"
+          >
+            <ShareIcon size={16} aria-hidden="true" />
+            Distribuie
+          </button>
+          <WishlistButton
+            cabinId={cabin.id}
+            cabinSlug={cabin.slug}
+            iconSize={18}
+            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 underline transition hover:bg-gray-100"
+          />
         </div>
-      )}
+      </div>
 
-      {/* Two-column layout: details + booking form */}
-      <div className="lg:grid lg:grid-cols-[1fr_360px] lg:gap-10">
-        {/* ── Left column: cabin details ── */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">{cabin.title}</h1>
+      {/* ── Title (above photo grid on desktop) ── */}
+      <h1 className="mb-4 text-2xl font-bold text-gray-900 sm:text-3xl">{cabin.title}</h1>
 
-          <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-gray-500">
-            <span className="flex items-center gap-1">
-              <span aria-hidden="true">📍</span>
+      {/* ── Photo grid ── */}
+      <PhotoGrid images={cabin.imageUrls} altPrefix={cabin.title} />
+
+      {/* ── Two-column layout ── */}
+      <div className="mt-10 lg:grid lg:grid-cols-[1fr_380px] lg:gap-14">
+
+        {/* ── Left column ── */}
+        <div className="min-w-0">
+
+          {/* Sub-title row */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-gray-200 pb-6 text-sm text-gray-500">
+            <span className="flex items-center gap-1.5">
+              <MapPinIcon size={15} className="text-gray-400" aria-hidden="true" />
               {cabin.location}
             </span>
+            <span className="flex items-center gap-1.5">
+              <UsersIcon size={15} className="text-gray-400" aria-hidden="true" />
+              Max. {cabin.maxGuests} {cabin.maxGuests === 1 ? 'persoană' : 'persoane'}
+            </span>
             <span className="flex items-center gap-1">
-              <span aria-hidden="true">👥</span>
-              Capacitate: {cabin.maxGuests}{' '}
-              {cabin.maxGuests === 1 ? 'persoană' : 'persoane'}
+              <StarIcon size={13} className="text-[#222]" aria-hidden="true" />
+              <span className="font-medium text-[#222]">Nou</span>
             </span>
           </div>
 
-          <p className="mt-3 text-xl font-semibold text-indigo-700">
-            {cabin.pricePerNight} RON{' '}
-            <span className="text-base font-normal text-gray-500">/ noapte</span>
-          </p>
+          {/* Host row */}
+          <div className="flex items-center gap-3 border-b border-gray-200 py-6">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand text-white text-lg font-bold">
+              {cabin.title.charAt(0)}
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-gray-900">Cabane Apuseni</p>
+              <p className="text-xs text-gray-500">Gazdă de 1 an</p>
+            </div>
+          </div>
 
           {/* Description */}
-          <section aria-labelledby="description-heading" className="mt-6">
-            <h2
-              id="description-heading"
-              className="mb-2 text-lg font-semibold text-gray-900"
-            >
-              Descriere
+          <section aria-labelledby="description-heading" className="border-b border-gray-200 py-8">
+            <h2 id="description-heading" className="mb-4 text-xl font-semibold text-gray-900">
+              Despre această cabană
             </h2>
             <p className="leading-relaxed text-gray-700 whitespace-pre-wrap">
               {cabin.description}
@@ -98,53 +152,48 @@ export default async function CabinDetailPage({ params }: Props) {
 
           {/* Amenities */}
           {cabin.amenities.length > 0 && (
-            <section aria-labelledby="amenities-heading" className="mt-8">
-              <h2
-                id="amenities-heading"
-                className="mb-3 text-lg font-semibold text-gray-900"
-              >
-                Dotări
+            <section aria-labelledby="amenities-heading" className="border-b border-gray-200 py-8">
+              <h2 id="amenities-heading" className="mb-5 text-xl font-semibold text-gray-900">
+                Ce oferă această cabană
               </h2>
-              <ul className="flex flex-wrap gap-2">
-                {cabin.amenities.map((a) => (
-                  <li
-                    key={a}
-                    className="rounded-full bg-indigo-50 px-3 py-1 text-sm text-indigo-700"
-                  >
-                    {a}
-                  </li>
-                ))}
-              </ul>
+              <AmenitiesGrid
+                amenities={cabin.amenities}
+                showAll={SHOW_AMENITIES}
+              />
             </section>
           )}
 
-          {/* Additional images */}
-          {cabin.imageUrls.length > 1 && (
-            <section aria-labelledby="gallery-heading" className="mt-8">
-              <h2
-                id="gallery-heading"
-                className="mb-3 text-lg font-semibold text-gray-900"
-              >
-                Galerie foto
-              </h2>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {cabin.imageUrls.slice(1).map((url, i) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={url}
-                    src={url}
-                    alt={`${cabin.title} – imagine ${i + 2}`}
-                    className="h-40 w-full rounded-lg object-cover"
-                  />
-                ))}
-              </div>
-            </section>
-          )}
+          {/* Map section */}
+          <section aria-labelledby="map-heading" className="py-8">
+            <h2 id="map-heading" className="mb-5 text-xl font-semibold text-gray-900">
+              Unde te afli
+            </h2>
+            <p className="mb-4 flex items-center gap-1.5 text-sm font-medium text-gray-700">
+              <MapPinIcon size={15} className="text-gray-400" aria-hidden="true" />
+              {cabin.location}, Munții Apuseni
+            </p>
+            <div className="overflow-hidden rounded-2xl border border-gray-200">
+              <iframe
+                title={`Harta pentru ${cabin.title}`}
+                src={`https://www.google.com/maps?q=${encodeURIComponent(`${cabin.location}, Apuseni, Romania`)}&output=embed`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-72 w-full border-0 sm:h-96"
+              />
+            </div>
+          </section>
+
+          {/* Report & legal */}
+          <div className="border-t border-gray-200 pt-6">
+            {session && (
+              <ReportButton contentType="listing" contentId={cabin.id} />
+            )}
+          </div>
         </div>
 
-        {/* ── Right column: booking form ── */}
+        {/* ── Right column: sticky booking widget ── */}
         <aside aria-label="Formular de rezervare" className="mt-10 lg:mt-0">
-          <div className="lg:sticky lg:top-24">
+          <div className="lg:sticky lg:top-28">
             <BookingForm
               cabin={{
                 id: cabin.id,
@@ -157,6 +206,40 @@ export default async function CabinDetailPage({ params }: Props) {
           </div>
         </aside>
       </div>
-    </main>
+    </div>
   );
 }
+
+// ── Amenities grid sub-component ─────────────────────────────────────────────
+
+interface AmenitiesGridProps {
+  amenities: string[];
+  showAll: number;
+}
+
+function AmenitiesGrid({ amenities, showAll }: AmenitiesGridProps) {
+  const visible = amenities.slice(0, showAll);
+  const extra = amenities.length > showAll ? amenities.length - showAll : 0;
+
+  return (
+    <div>
+      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {visible.map((a) => (
+          <li key={a} className="flex items-center gap-3 text-sm text-gray-700">
+            <span className="text-xl leading-none" aria-hidden="true">{amenityEmoji(a)}</span>
+            {a}
+          </li>
+        ))}
+      </ul>
+      {extra > 0 && (
+        <button
+          type="button"
+          className="mt-5 rounded-xl border border-gray-900 px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        >
+          Afișează toate dotările (+{extra})
+        </button>
+      )}
+    </div>
+  );
+}
+

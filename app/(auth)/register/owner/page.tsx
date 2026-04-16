@@ -1,36 +1,57 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import RegisterForm from '@/components/forms/RegisterForm';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Înregistrare proprietar' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('auth');
+  return { title: t('ownerRegisterTitle') };
+}
 
 interface Props {
-  searchParams: Promise<{ redirect?: string }>;
+  searchParams: Promise<{ redirect?: string; plan?: string }>;
 }
 
 export default async function OwnerRegisterPage({ searchParams }: Props) {
-  const { redirect } = await searchParams;
+  const { redirect: redirectParam, plan } = await searchParams;
+  const t = await getTranslations('auth');
+
+  const validatedPlan =
+    plan === 'basic' || plan === 'pro' ? (plan as 'basic' | 'pro') : null;
+
+  if (!validatedPlan) {
+    redirect('/pricing');
+  }
+
   const redirectTo =
-    redirect && redirect.startsWith('/') ? redirect : '/dashboard/owner';
+    redirectParam && redirectParam.startsWith('/') ? redirectParam : '/dashboard/owner';
 
   return (
     <>
-      <h1 className="mb-6 text-center text-2xl font-bold">Cont proprietar</h1>
+      <h1 className="mb-2 text-center text-2xl font-bold">{t('ownerRegisterTitle')}</h1>
+      <p className="mb-6 text-center text-sm text-gray-500">
+        {t('selectedPlan')}{': '}
+        <span className="font-semibold text-indigo-600">
+          {validatedPlan === 'basic' ? t('planBasic') : t('planPro')}
+        </span>
+      </p>
       <RegisterForm
         redirectTo={redirectTo}
         role="owner"
-        submitLabel="Creează cont de proprietar"
+        plan={validatedPlan}
+        submitLabel={t('createOwnerAccountAndPay')}
       />
       <p className="mt-4 text-center text-sm text-gray-500">
-        Vrei cont de client?{' '}
-        <Link href="/register" className="font-medium text-indigo-600 hover:underline">
-          Înregistrare standard
+        {t('wantClientAccount')}{' '}
+        <Link href="/register" className="font-medium text-forest-600 hover:underline">
+          {t('standardRegister')}
         </Link>
       </p>
       <p className="mt-4 text-center text-sm text-gray-500">
-        Ai deja cont?{' '}
-        <Link href="/login" className="font-medium text-indigo-600 hover:underline">
-          Autentifică-te
+        {t('haveAccount')}{' '}
+        <Link href="/login" className="font-medium text-forest-600 hover:underline">
+          {t('signInLink')}
         </Link>
       </p>
     </>

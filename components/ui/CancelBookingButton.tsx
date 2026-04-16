@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { cancelBookingAction } from '@/modules/bookings/actions';
+import { useTranslations } from 'next-intl';
 
 interface CancelBookingButtonProps {
   bookingId: string;
@@ -12,14 +13,13 @@ interface CancelBookingButtonProps {
  * Shows a success message on completion; shows an error if it fails.
  */
 export function CancelBookingButton({ bookingId }: CancelBookingButtonProps) {
+  const t = useTranslations('myBookings');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
   async function handleCancel() {
-    const confirmed = window.confirm(
-      'Ești sigur că vrei să anulezi această rezervare?',
-    );
+    const confirmed = window.confirm(t('confirmCancel'));
     if (!confirmed) return;
 
     setLoading(true);
@@ -32,7 +32,7 @@ export function CancelBookingButton({ bookingId }: CancelBookingButtonProps) {
       }
       setSuccess(true);
     } catch {
-      setError('A apărut o eroare. Încearcă din nou.');
+      setError(t('cancelError'));
     } finally {
       setLoading(false);
     }
@@ -52,9 +52,9 @@ export function CancelBookingButton({ bookingId }: CancelBookingButtonProps) {
         onClick={handleCancel}
         disabled={loading}
         className="rounded-md border border-red-300 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-        aria-label="Anulează rezervarea"
+        aria-label={t('cancelBooking')}
       >
-        {loading ? 'Se anulează…' : 'Anulează'}
+        {loading ? t('cancelling') : t('cancel')}
       </button>
       {error && (
         <p className="mt-1 text-xs text-red-600" role="alert">

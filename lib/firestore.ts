@@ -13,6 +13,8 @@ import {
   onSnapshot,
   serverTimestamp,
   writeBatch,
+  arrayUnion,
+  arrayRemove,
   type DocumentData,
   type QueryDocumentSnapshot,
 } from 'firebase/firestore';
@@ -26,6 +28,8 @@ export interface UserProfile {
   role: UserRole;
   displayName: string;
   email: string;
+  /** Array of cabin IDs the user has saved to their wishlist */
+  wishlistedCabins?: string[];
 }
 
 export interface Cabin {
@@ -376,4 +380,28 @@ export async function hideAndActionReport(
   batch.update(doc(db, collName, contentId), { hidden: true });
   batch.update(doc(db, 'reports', reportId), { status: 'actioned' });
   await batch.commit();
+}
+
+// ── Wishlist ──────────────────────────────────────────────────────────────────
+
+/**
+ * Returns the list of cabin IDs the user has wishlisted.
+ */
+export async function getWishlistedCabins(uid: string): Promise<string[]> {
+  const snap = await getDoc(doc(db, 'users', uid));
+  if (!snap.exists()) return [];
+  return (snap.data() as UserProfile).wishlistedCabins ?? [];
+}
+
+/**
+ * Adds or removes a cabin from the user's wishlist using atomic Firestore operations.
+ */
+export async function toggleWishlistCabin(
+  uid: string,
+  cabinId: string,
+  add: boolean,
+): Promise<void> {
+  await updateDoc(doc(db, 'users', uid), {
+    wishlistedCabins: add ? arrayUnion(cabinId) : arrayRemove(cabinId),
+  });
 }
