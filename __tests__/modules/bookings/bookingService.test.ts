@@ -16,6 +16,7 @@ import * as cabinRepo from '@/modules/cabins/infrastructure/firestoreCabinReposi
 import {
   createBooking,
   cancelBooking,
+  confirmBooking,
   confirmBookingForOwner,
   rejectBookingForOwner,
 } from '@/modules/bookings/application/bookingService';
@@ -220,6 +221,31 @@ describe('rejectBookingForOwner', () => {
     jest.mocked(cabinRepo.getCabinById).mockResolvedValue({ ...ownerCabin, ownerId: 'other-owner' });
 
     const result = await rejectBookingForOwner('bk-2', ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('FORBIDDEN');
+  });
+});
+
+const adminActor: SessionUser = { uid: 'admin-1', email: 'admin@example.com', role: 'admin' };
+
+describe('confirmBooking (admin-only)', () => {
+  it('allows admin to confirm any booking', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
+    jest.mocked(bookingRepo.updateBookingStatus).mockResolvedValue(undefined);
+
+    const result = await confirmBooking('bk-2', adminActor);
+    expect(result.ok).toBe(true);
+    expect(bookingRepo.updateBookingStatus).toHaveBeenCalledWith('bk-2', 'confirmed');
+  });
+
+  it('rejects non-admin actors', async () => {
+    const result = await confirmBooking('bk-2', ownerActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('FORBIDDEN');
+  });
+
+  it('rejects regular users', async () => {
+    const result = await confirmBooking('bk-2', mockActor);
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error.code).toBe('FORBIDDEN');
   });

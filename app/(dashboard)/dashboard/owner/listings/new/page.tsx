@@ -10,8 +10,17 @@ import CabinForm from '@/components/forms/CabinForm';
 
 export const metadata: Metadata = { title: 'Adaugă cabana' };
 
-export default async function NewListingPage() {
+interface Props {
+  searchParams: Promise<{ redirectTo?: string }>;
+}
+
+export default async function NewListingPage({ searchParams }: Props) {
   const session = await requireOwner();
+  const { redirectTo } = await searchParams;
+  // Only allow relative paths to prevent open redirect
+  const safeRedirect =
+    redirectTo && redirectTo.startsWith('/') ? redirectTo : undefined;
+  const backHref = safeRedirect ?? '/dashboard/owner/listings';
 
   const [profileResult, cabinsResult] = await Promise.all([
     getProfile(session.uid),
@@ -43,15 +52,15 @@ export default async function NewListingPage() {
 
       <nav aria-label="Navigare" className="mb-6 text-sm text-gray-500">
         <Link
-          href="/dashboard/owner/listings"
+          href={backHref}
           className="hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
         >
-          ← Înapoi la cabane mele
+          ← Înapoi
         </Link>
       </nav>
 
       <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <CabinForm />
+        <CabinForm redirectPath={safeRedirect} />
       </div>
     </div>
   );

@@ -23,6 +23,15 @@ export default async function CabinsPage() {
           : 'Căutăm cabane pentru tine…'}
       </p>
 
+      {!result.ok && (
+        <div
+          role="alert"
+          className="mb-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
+        >
+          Ne pare rău, nu am putut încărca lista cabanelor. Te rugăm să revii mai târziu.
+        </div>
+      )}
+
       {cabins.length === 0 ? (
         <EmptyState
           icon="🏔️"

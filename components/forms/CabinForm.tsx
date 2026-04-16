@@ -11,6 +11,8 @@ import type { Cabin } from '@/modules/cabins/domain/types';
 interface CabinFormProps {
   /** When provided the form operates in edit mode. */
   cabin?: Cabin;
+  /** Path to redirect to after a successful create or update. Defaults to /dashboard/owner/listings. */
+  redirectPath?: string;
 }
 
 function slugify(value: string): string {
@@ -29,7 +31,7 @@ function slugify(value: string): string {
  * - In create mode: calls createCabinAction and redirects to /dashboard/owner/listings.
  * - In edit mode:   calls updateCabinAction and redirects to /dashboard/owner/listings.
  */
-export default function CabinForm({ cabin }: CabinFormProps) {
+export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/listings' }: CabinFormProps) {
   const router = useRouter();
   const isEdit = !!cabin;
 
@@ -103,7 +105,7 @@ export default function CabinForm({ cabin }: CabinFormProps) {
         return;
       }
 
-      router.push('/dashboard/owner/listings');
+      router.push(redirectPath);
     } catch {
       setError('A apărut o eroare. Vă rugăm să încercați din nou.');
     } finally {

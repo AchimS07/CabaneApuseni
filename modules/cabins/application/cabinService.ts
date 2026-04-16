@@ -28,7 +28,7 @@ export async function getPublishedCabins(): Promise<Result<Cabin[]>> {
     const cabins = await listPublishedCabins();
     return ok(cabins.length > 0 ? cabins : MOCK_CABINS);
   } catch (error) {
-    log.error({ error }, 'Failed to load published cabins');
+    log.error({ error }, 'Failed to load published cabins from Firestore, falling back to mock data');
     return ok(MOCK_CABINS);
   }
 }
@@ -100,7 +100,13 @@ export async function createCabin(input: CabinInput, actor: SessionUser): Promis
   const id = randomUUID();
   const cabin: Cabin = { id, ownerId: actor.uid, ...parsed.data, createdAt: now, updatedAt: now };
 
-  await saveCabin(id, { ownerId: actor.uid, ...parsed.data, createdAt: now, updatedAt: now });
+  try {
+    await saveCabin(id, { ownerId: actor.uid, ...parsed.data, createdAt: now, updatedAt: now });
+  } catch (error) {
+    log.error({ error, actorUid: actor.uid }, 'Failed to save cabin');
+    return fail('INTERNAL_ERROR', 'Failed to save cabin. Please try again.');
+  }
+
   log.info({ id, actorUid: actor.uid }, 'Cabin created');
   return ok(cabin);
 }
