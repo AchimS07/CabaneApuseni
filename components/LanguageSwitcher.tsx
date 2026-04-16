@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useTransition } from 'react';
 import { setLocale } from '@/lib/i18n/setLocale';
-import { locales, type Locale } from '@/i18n/request';
+import { locales, type Locale } from '@/i18n/config';
 
 export function LanguageSwitcher() {
   const t = useTranslations('languageSwitcher');
