@@ -11,6 +11,12 @@ jest.mock('@/modules/users/infrastructure/firestoreUserRepository', () => ({
   getUserById: jest.fn(),
   upsertUser: jest.fn(),
 }));
+jest.mock('@/lib/firebase/admin', () => ({
+  getAdminAuth: jest.fn().mockReturnValue({
+    setCustomUserClaims: jest.fn().mockResolvedValue(undefined),
+  }),
+  getAdminFirestore: jest.fn(),
+}));
 
 import { NextRequest } from 'next/server';
 import * as sessionModule from '@/lib/auth/session';
