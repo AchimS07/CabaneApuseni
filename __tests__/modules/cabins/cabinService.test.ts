@@ -16,6 +16,8 @@ import {
   removeCabin,
   getOwnerCabins,
   getPublishedCabins,
+  getAllCabins,
+  getCabinDetail,
 } from '@/modules/cabins/application/cabinService';
 import { MOCK_CABINS } from '@/modules/cabins/application/mockCabins';
 import type { SessionUser } from '@/lib/auth/session';
@@ -194,5 +196,109 @@ describe('getPublishedCabins', () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) expect(result.data).toEqual(MOCK_CABINS);
+  });
+});
+
+describe('getAllCabins', () => {
+  it('returns all cabins from Firestore', async () => {
+    jest.mocked(cabinRepo.listAllCabins).mockResolvedValue([mockCabin]);
+
+    const result = await getAllCabins();
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0]!.id).toBe('cabin-1');
+    }
+  });
+
+  it('returns an empty array when no cabins exist', async () => {
+    jest.mocked(cabinRepo.listAllCabins).mockResolvedValue([]);
+
+    const result = await getAllCabins();
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data).toHaveLength(0);
+  });
+
+  it('returns INTERNAL_ERROR when Firestore throws', async () => {
+    jest.mocked(cabinRepo.listAllCabins).mockRejectedValue(new Error('Firestore error'));
+
+    const result = await getAllCabins();
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('INTERNAL_ERROR');
+  });
+});
+
+describe('getCabinDetail', () => {
+  it('returns the cabin when found in Firestore', async () => {
+    jest.mocked(cabinRepo.getCabinBySlug).mockResolvedValue(mockCabin);
+
+    const result = await getCabinDetail('cabana-test');
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data.slug).toBe('cabana-test');
+  });
+
+  it('falls back to MOCK_CABINS when Firestore returns null for a known slug', async () => {
+    jest.mocked(cabinRepo.getCabinBySlug).mockResolvedValue(null);
+
+    const mockSlug = MOCK_CABINS[0]!.slug;
+    const result = await getCabinDetail(mockSlug);
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data.slug).toBe(mockSlug);
+  });
+
+  it('returns NOT_FOUND when cabin does not exist in Firestore or mock data', async () => {
+    jest.mocked(cabinRepo.getCabinBySlug).mockResolvedValue(null);
+
+    const result = await getCabinDetail('nonexistent-cabin-xyz');
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('NOT_FOUND');
+  });
+
+  it('falls back to MOCK_CABINS when Firestore throws but slug exists in mocks', async () => {
+    jest.mocked(cabinRepo.getCabinBySlug).mockRejectedValue(new Error('Firestore error'));
+
+    // Use a slug guaranteed to be in MOCK_CABINS
+    const mockSlug = MOCK_CABINS[0]!.slug;
+    const result = await getCabinDetail(mockSlug);
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data.slug).toBe(mockSlug);
+  });
+
+  it('returns INTERNAL_ERROR when Firestore throws and slug is not in mocks', async () => {
+    jest.mocked(cabinRepo.getCabinBySlug).mockRejectedValue(new Error('Firestore error'));
+
+    const result = await getCabinDetail('nonexistent-cabin-xyz');
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('INTERNAL_ERROR');
+  });
+});
+
+describe('removeCabin — NOT_FOUND', () => {
+  it('returns NOT_FOUND when cabin does not exist', async () => {
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(null);
+
+    const result = await removeCabin('nonexistent', ownerSession);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('NOT_FOUND');
+  });
+});
+
+describe('getOwnerCabins — error handling', () => {
+  it('returns INTERNAL_ERROR when Firestore throws', async () => {
+    jest.mocked(cabinRepo.listCabinsByOwner).mockRejectedValue(new Error('Firestore error'));
+
+    const result = await getOwnerCabins('owner-1');
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('INTERNAL_ERROR');
+  });
+});
+
+describe('createCabin — error handling', () => {
+  it('returns INTERNAL_ERROR when saveCabin throws', async () => {
+    jest.mocked(cabinRepo.saveCabin).mockRejectedValue(new Error('Firestore write failed'));
+
+    const result = await createCabin(validInput, ownerSession);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('INTERNAL_ERROR');
   });
 });
