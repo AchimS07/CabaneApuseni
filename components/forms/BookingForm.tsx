@@ -30,7 +30,7 @@ function calcNights(checkIn: string, checkOut: string): number {
 
 function formatDate(iso: string): string {
   if (!iso) return '';
-  return new Date(iso).toLocaleDateString('ro-RO', {
+  return new Date(iso).toLocaleDateString(undefined, {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -48,6 +48,8 @@ const PLATFORM_FEE_PCT = 0.12;
  * – "Nu ești taxat acum" note
  */
 export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps) {
+  const t = useTranslations('booking');
+
   const router = useRouter();
   const formId = useId();
 
@@ -146,7 +148,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
 
       router.push('/dashboard/bookings?success=1');
     } catch {
-      setError('A apărut o eroare. Vă rugăm să încercați din nou.');
+      setError(t('errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -159,11 +161,11 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
       <div className="flex items-start justify-between">
         <p className="text-xl font-bold text-gray-900">
           {cabin.pricePerNight}{' '}
-          <span className="text-base font-normal text-gray-500">RON / noapte</span>
+          <span className="text-base font-normal text-gray-500">{t('pricePerNight')}</span>
         </p>
         <span className="flex items-center gap-1 text-sm font-medium text-gray-700">
           <StarIcon size={14} className="text-gray-900" aria-hidden="true" />
-          Nou
+          {t('newBadge')}
         </span>
       </div>
 
@@ -260,10 +262,10 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             >
               <span className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-900">
                 <UsersIcon size={12} aria-hidden="true" />
-                Oaspeți
+                {t('guests')}
               </span>
               <span className="text-sm text-gray-900">
-                {guestCount} {guestCount === 1 ? 'oaspete' : 'oaspeți'}
+                {guestCount} {guestCount === 1 ? t('guestSingular') : t('guestPlural')}
               </span>
             </button>
 
@@ -271,26 +273,30 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
               <div
                 id={`${formId}-guest-popover`}
                 role="dialog"
-                aria-label="Selectează numărul de oaspeți"
+                aria-label={t('selectGuestsAriaLabel')}
                 className="absolute bottom-[calc(100%+4px)] left-0 right-0 z-20 rounded-2xl border border-gray-200 bg-white p-4 shadow-xl"
               >
                 {/* Adults */}
                 <GuestCounter
-                  label="Adulți"
-                  sublabel="Vârsta 13+"
+                  label={t('adults')}
+                  sublabel={t('adultsAge')}
                   value={adults}
                   min={1}
                   max={cabin.maxGuests - children}
                   onChange={setAdults}
+                  decreaseAriaLabel={t('decreaseLabel', { label: t('adults') })}
+                  increaseAriaLabel={t('increaseLabel', { label: t('adults') })}
                 />
                 {/* Children */}
                 <GuestCounter
-                  label="Copii"
-                  sublabel="Vârsta 2–12"
+                  label={t('children')}
+                  sublabel={t('childrenAge')}
                   value={children}
                   min={0}
                   max={cabin.maxGuests - adults}
                   onChange={setChildren}
+                  decreaseAriaLabel={t('decreaseLabel', { label: t('children') })}
+                  increaseAriaLabel={t('increaseLabel', { label: t('children') })}
                 />
                 {fieldErrors.guestCount && (
                   <p className="mt-2 text-xs text-red-600" role="alert">
@@ -302,7 +308,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
                   onClick={() => setGuestPopoverOpen(false)}
                   className="mt-4 w-full text-right text-sm font-semibold text-gray-900 underline"
                 >
-                  Aplică
+                  {t('applyGuests')}
                 </button>
               </div>
             )}
@@ -312,8 +318,8 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
         {/* Notes */}
         <div className="mt-4 flex flex-col gap-1">
           <label htmlFor={`${formId}-notes`} className="text-xs font-medium text-gray-700">
-            Mențiuni{' '}
-            <span className="font-normal text-gray-400">(opțional)</span>
+            {t('notes')}{' '}
+            <span className="font-normal text-gray-400">{t('notesOptional')}</span>
           </label>
           <textarea
             id={`${formId}-notes`}
@@ -321,7 +327,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             maxLength={500}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Cerințe speciale, ora aproximativă de sosire…"
+            placeholder={t('notesPlaceholder')}
             className="rounded-xl border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
           />
         </div>
@@ -338,17 +344,17 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Se procesează…
+              {t('processing')}
             </span>
           ) : isAuthenticated ? (
-            'Rezervă acum'
+            t('bookNow')
           ) : (
-            'Autentifică-te pentru a rezerva'
+            t('loginToBook')
           )}
         </button>
 
         <p className="mt-2 text-center text-xs text-gray-500">
-          Nu ești taxat acum
+          {t('notChargedNow')}
         </p>
 
         {/* Price breakdown */}
@@ -357,20 +363,20 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             <div className="flex justify-between text-gray-700">
               <span>
                 {cabin.pricePerNight} RON × {nights}{' '}
-                {nights === 1 ? 'noapte' : 'nopți'}
+                {nights === 1 ? t('nightSingular') : t('nightPlural')}
               </span>
               <span>{subtotal} RON</span>
             </div>
             <div className="flex justify-between text-gray-700">
-              <span>Taxă de curățenie</span>
-              <span>Inclusă</span>
+              <span>{t('cleaningFee')}</span>
+              <span>{t('included')}</span>
             </div>
             <div className="flex justify-between text-gray-700">
-              <span>Taxă de serviciu ({Math.round(PLATFORM_FEE_PCT * 100)}%)</span>
+              <span>{t('serviceFee', { pct: Math.round(PLATFORM_FEE_PCT * 100) })}</span>
               <span>{platformFee} RON</span>
             </div>
             <div className="flex justify-between border-t border-gray-200 pt-3 font-bold text-gray-900">
-              <span>Total</span>
+              <span>{t('total')}</span>
               <span>{totalPrice} RON</span>
             </div>
             {checkIn && checkOut && (
@@ -388,7 +394,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
           type="button"
           className="underline transition hover:text-gray-600"
         >
-          Raportează acest anunț
+          {t('reportListing')}
         </button>
       </p>
     </div>
@@ -404,9 +410,11 @@ interface GuestCounterProps {
   min: number;
   max: number;
   onChange: (v: number) => void;
+  decreaseAriaLabel?: string;
+  increaseAriaLabel?: string;
 }
 
-function GuestCounter({ label, sublabel, value, min, max, onChange }: GuestCounterProps) {
+function GuestCounter({ label, sublabel, value, min, max, onChange, decreaseAriaLabel, increaseAriaLabel }: GuestCounterProps) {
   return (
     <div className="flex items-center justify-between py-3">
       <div>
@@ -418,7 +426,7 @@ function GuestCounter({ label, sublabel, value, min, max, onChange }: GuestCount
           type="button"
           onClick={() => onChange(Math.max(min, value - 1))}
           disabled={value <= min}
-          aria-label={`Scade ${label.toLowerCase()}`}
+          aria-label={decreaseAriaLabel ?? `Decrease ${label.toLowerCase()}`}
           className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
         >
           <span aria-hidden="true" className="text-lg leading-none">−</span>
@@ -434,7 +442,7 @@ function GuestCounter({ label, sublabel, value, min, max, onChange }: GuestCount
           type="button"
           onClick={() => onChange(Math.min(max, value + 1))}
           disabled={value >= max}
-          aria-label={`Crește ${label.toLowerCase()}`}
+          aria-label={increaseAriaLabel ?? `Increase ${label.toLowerCase()}`}
           className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
         >
           <span aria-hidden="true" className="text-lg leading-none">+</span>

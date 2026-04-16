@@ -87,7 +87,7 @@ export default async function AdminPage() {
             href="/admin/bookings"
             className="rounded-md border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            Gestionează rezervări
+            {t('manageBookings')}
           </Link>
           <Link
             href="/"

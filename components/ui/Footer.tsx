@@ -3,43 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDownIcon } from './Icons';
-
-const FOOTER_COLUMNS = [
-  {
-    title: 'Suport',
-    links: [
-      { label: 'Centru de ajutor', href: '/contact' },
-      { label: 'Siguranța contului', href: '/contact' },
-      { label: 'Raportează o problemă', href: '/contact' },
-    ],
-  },
-  {
-    title: 'Comunitate',
-    links: [
-      { label: 'Blog Cabane Apuseni', href: '/' },
-      { label: 'Povești de călătorie', href: '/' },
-      { label: 'Parteneriate', href: '/contact' },
-    ],
-  },
-  {
-    title: 'Gazduire',
-    links: [
-      { label: 'Devino gazdă', href: '/register' },
-      { label: 'Resurse pentru gazde', href: '/' },
-      { label: 'Panoul gazdei', href: '/dashboard/owner' },
-    ],
-  },
-  {
-    title: 'Cabane Apuseni',
-    links: [
-      { label: 'Despre noi', href: '/' },
-      { label: 'Contact', href: '/contact' },
-      { label: 'Termeni și condiții', href: '/' },
-      { label: 'Politica de confidențialitate', href: '/' },
-      { label: 'Accesibilitate', href: '/' },
-    ],
-  },
-];
+import { useTranslations } from 'next-intl';
 
 function AccordionColumn({
   title,
@@ -92,14 +56,52 @@ function AccordionColumn({
 }
 
 export function Footer() {
+  const t = useTranslations('footer');
   const year = new Date().getFullYear();
+
+  const footerColumns = [
+    {
+      title: t('support'),
+      links: [
+        { label: t('helpCenter'), href: '/contact' },
+        { label: t('accountSafety'), href: '/contact' },
+        { label: t('reportProblem'), href: '/contact' },
+      ],
+    },
+    {
+      title: t('community'),
+      links: [
+        { label: t('blog'), href: '/' },
+        { label: t('travelStories'), href: '/' },
+        { label: t('partnerships'), href: '/contact' },
+      ],
+    },
+    {
+      title: t('hosting'),
+      links: [
+        { label: t('becomeHost'), href: '/register' },
+        { label: t('hostResources'), href: '/' },
+        { label: t('hostDashboard'), href: '/dashboard/owner' },
+      ],
+    },
+    {
+      title: t('company'),
+      links: [
+        { label: t('aboutUs'), href: '/' },
+        { label: t('contact'), href: '/contact' },
+        { label: t('terms'), href: '/' },
+        { label: t('privacy'), href: '/' },
+        { label: t('accessibility'), href: '/' },
+      ],
+    },
+  ];
 
   return (
     <footer className="border-t border-gray-200 bg-gray-50" aria-label="Footer">
       {/* Main columns */}
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid gap-0 md:grid-cols-4 md:gap-8">
-          {FOOTER_COLUMNS.map((col) => (
+          {footerColumns.map((col) => (
             <AccordionColumn key={col.title} title={col.title} links={col.links} />
           ))}
         </div>
@@ -109,28 +111,28 @@ export function Footer() {
       <div className="border-t border-gray-200">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 sm:flex-row sm:px-6 lg:px-8">
           <p className="text-sm text-gray-500">
-            © {year} Cabane Apuseni SRL. Toate drepturile rezervate.
+            {t('copyright', { year })}
           </p>
           <div className="flex items-center gap-4 text-sm text-gray-500">
             <Link
               href="/"
               className="transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
-              Termeni
+              {t('termsLink')}
             </Link>
             <span aria-hidden="true">·</span>
             <Link
               href="/"
               className="transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
-              Confidențialitate
+              {t('privacyLink')}
             </Link>
             <span aria-hidden="true">·</span>
             <Link
               href="/"
               className="transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
-              Sitemap
+              {t('sitemapLink')}
             </Link>
           </div>
         </div>

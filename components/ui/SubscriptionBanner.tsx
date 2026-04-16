@@ -7,6 +7,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { SubscriptionTier, SubscriptionStatus } from '@/modules/users/domain/types';
+import { useTranslations } from 'next-intl';
 
 interface SubscriptionBannerProps {
   tier: SubscriptionTier | null;
@@ -15,6 +16,7 @@ interface SubscriptionBannerProps {
 }
 
 export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBannerProps) {
+  const t = useTranslations('subscriptionBanner');
   const [loading, setLoading] = useState(false);
 
   async function openPortal() {
@@ -33,7 +35,7 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
   }
 
   const expiryLabel = expiresAt
-    ? new Date(expiresAt).toLocaleDateString('ro-RO')
+    ? new Date(expiresAt).toLocaleDateString()
     : null;
 
   if (status === 'active' && tier) {
@@ -41,18 +43,18 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
     return (
       <div
         role="status"
-        aria-label={'Abonament ' + planLabel + ' activ'}
+        aria-label={t('activeAriaLabel', { plan: planLabel })}
         className="flex flex-col gap-3 rounded-xl border border-green-200 bg-green-50 p-4 sm:flex-row sm:items-center sm:justify-between"
       >
         <div className="flex items-center gap-3">
           <span className="text-xl" aria-hidden="true">✅</span>
           <div>
             <p className="text-sm font-semibold text-green-800">
-              {'Abonament ' + planLabel + ' activ'}
+              {t('activeTitle', { plan: planLabel })}
             </p>
             {expiryLabel && (
               <p className="text-xs text-green-700">
-                {'Se reînnoiește la: ' + expiryLabel}
+                {t('renewsAt', { date: expiryLabel })}
               </p>
             )}
           </div>
@@ -63,7 +65,7 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
               href="/pricing"
               className="rounded-md border border-green-300 bg-white px-3 py-1.5 text-xs font-medium text-green-700 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1"
             >
-              Upgradează la Pro
+              {t('upgradeToPro')}
             </Link>
           )}
           <button
@@ -72,7 +74,7 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
             aria-busy={loading}
             className="rounded-md bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? 'Se deschide…' : 'Gestionează abonamentul'}
+            {loading ? t('opening') : t('manageSubscription')}
           </button>
         </div>
       </div>
@@ -88,9 +90,9 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
         <div className="flex items-center gap-3">
           <span className="text-xl" aria-hidden="true">⚠️</span>
           <div>
-            <p className="text-sm font-semibold text-yellow-800">Plată restantă</p>
+            <p className="text-sm font-semibold text-yellow-800">{t('pastDueTitle')}</p>
             <p className="text-xs text-yellow-700">
-              Actualizează metoda de plată pentru a menține accesul la listinguri.
+              {t('pastDueDescription')}
             </p>
           </div>
         </div>
@@ -100,7 +102,7 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
           aria-busy={loading}
           className="rounded-md bg-yellow-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {loading ? 'Se deschide…' : 'Actualizează metoda de plată'}
+          {loading ? t('opening') : t('updatePayment')}
         </button>
       </div>
     );
@@ -115,9 +117,9 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
       <div className="flex items-center gap-3">
         <span className="text-xl" aria-hidden="true">⛔</span>
         <div>
-          <p className="text-sm font-semibold text-red-800">Fără abonament activ</p>
+          <p className="text-sm font-semibold text-red-800">{t('noSubscriptionTitle')}</p>
           <p className="text-xs text-red-700">
-            Alege un plan pentru a putea publica și gestiona cabane.
+            {t('noSubscriptionDescription')}
           </p>
         </div>
       </div>
@@ -125,7 +127,7 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
         href="/pricing"
         className="inline-block rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1"
       >
-        Alege un plan
+        {t('choosePlan')}
       </Link>
     </div>
   );

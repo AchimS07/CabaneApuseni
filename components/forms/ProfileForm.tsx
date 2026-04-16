@@ -5,12 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { updateProfileAction } from '@/modules/users/actions';
 import type { UserRole } from '@/modules/users/domain/types';
-
-const ROLE_LABELS: Record<UserRole, string> = {
-  user: 'Utilizator',
-  owner: 'Proprietar',
-  admin: 'Administrator',
-};
+import { useTranslations } from 'next-intl';
 
 interface ProfileFormProps {
   initialName: string;
@@ -20,12 +15,19 @@ interface ProfileFormProps {
 }
 
 export default function ProfileForm({ initialName, initialPhone, email, role }: ProfileFormProps) {
+  const t = useTranslations('profile');
   const [name, setName] = useState(initialName);
   const [phone, setPhone] = useState(initialPhone);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState(false);
+
+  const roleLabel: Record<UserRole, string> = {
+    user: t('roleUser'),
+    owner: t('roleOwner'),
+    admin: t('roleAdmin'),
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -49,7 +51,7 @@ export default function ProfileForm({ initialName, initialPhone, email, role }: 
       }
       setSuccess(true);
     } catch {
-      setError('A apărut o eroare. Încearcă din nou.');
+      setError(t('genericError'));
     } finally {
       setLoading(false);
     }
@@ -65,29 +67,29 @@ export default function ProfileForm({ initialName, initialPhone, email, role }: 
 
       {success && (
         <div role="status" className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
-          ✓ Profilul a fost actualizat cu succes.
+          {t('successMessage')}
         </div>
       )}
 
       {/* Read-only email */}
       <div className="flex flex-col gap-1">
-        <span className="text-sm font-medium text-gray-700">Email</span>
+        <span className="text-sm font-medium text-gray-700">{t('emailLabel')}</span>
         <p className="rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600">
           {email}
         </p>
-        <p className="text-xs text-gray-400">Adresa de email nu poate fi modificată.</p>
+        <p className="text-xs text-gray-400">{t('emailHint')}</p>
       </div>
 
       {/* Read-only role */}
       <div className="flex flex-col gap-1">
-        <span className="text-sm font-medium text-gray-700">Rol</span>
+        <span className="text-sm font-medium text-gray-700">{t('roleLabel')}</span>
         <p className="rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600">
-          {ROLE_LABELS[role]}
+          {roleLabel[role]}
         </p>
       </div>
 
       <Input
-        label="Nume complet"
+        label={t('fullNameLabel')}
         type="text"
         autoComplete="name"
         required
@@ -97,17 +99,17 @@ export default function ProfileForm({ initialName, initialPhone, email, role }: 
       />
 
       <Input
-        label="Telefon"
+        label={t('phoneLabel')}
         type="tel"
         autoComplete="tel"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
-        hint="Opțional – folosit de proprietari pentru a te contacta."
+        hint={t('phoneHint')}
         error={fieldErrors.phone}
       />
 
       <Button type="submit" loading={loading}>
-        Salvează modificările
+        {t('saveButton')}
       </Button>
     </form>
   );

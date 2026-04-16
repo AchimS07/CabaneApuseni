@@ -1,47 +1,108 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { PricingTabs } from '@/app/components/PricingTabs';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = {
-  title: 'Cabane Apuseni – Cazare la Munte',
-  description:
-    'Descoperă cele mai frumoase cabane din Munții Apuseni. Rezervă acum online, confirmare imediată.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('home.meta');
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
 
 /**
  * Homepage — redirects to the cabins listing page.
  * All discovery content lives at /cabins for clean URLs and ISR caching.
  */
-export default function HomePage() {
+export default async function HomePage() {
+  const t = await getTranslations('home');
+
+  const features = [
+    {
+      icon: '🏔️',
+      title: t('features.nature.title'),
+      description: t('features.nature.description'),
+    },
+    {
+      icon: '🔥',
+      title: t('features.comfort.title'),
+      description: t('features.comfort.description'),
+    },
+    {
+      icon: '📅',
+      title: t('features.booking.title'),
+      description: t('features.booking.description'),
+    },
+  ];
+
+  const howItWorks = [
+    {
+      icon: '🔍',
+      title: t('howItWorks.search.title'),
+      description: t('howItWorks.search.description'),
+    },
+    {
+      icon: '📅',
+      title: t('howItWorks.chooseDates.title'),
+      description: t('howItWorks.chooseDates.description'),
+    },
+    {
+      icon: '✅',
+      title: t('howItWorks.book.title'),
+      description: t('howItWorks.book.description'),
+    },
+    {
+      icon: '🏕️',
+      title: t('howItWorks.enjoy.title'),
+      description: t('howItWorks.enjoy.description'),
+    },
+  ];
+
+  const trustBadges = [
+    { icon: '🔒', text: t('trust.securePayments') },
+    { icon: '✅', text: t('trust.cancelAnytime') },
+    { icon: '🎁', text: t('trust.freeTrial') },
+    { icon: '💬', text: t('trust.supportRo') },
+  ];
+
+  const faqItems = [
+    { question: t('faq.q1.question'), answer: t('faq.q1.answer') },
+    { question: t('faq.q2.question'), answer: t('faq.q2.answer') },
+    { question: t('faq.q3.question'), answer: t('faq.q3.answer') },
+    { question: t('faq.q4.question'), answer: t('faq.q4.answer') },
+    { question: t('faq.q5.question'), answer: t('faq.q5.answer') },
+  ];
+
   return (
     <main>
       {/* Hero */}
       <section className="relative flex min-h-[70vh] flex-col items-center justify-center bg-gradient-to-b from-indigo-900 to-indigo-700 px-4 text-center text-white">
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-          Cabane în Munții Apuseni
+          {t('hero.title')}
         </h1>
         <p className="mb-8 max-w-xl text-lg text-indigo-100">
-          Refugii autentice de munte, perfecte pentru relaxare și aventură.
+          {t('hero.subtitle')}
         </p>
         <div className="flex flex-col items-center gap-4 sm:flex-row">
           <Link
             href="/cabins"
             className="rounded-full bg-white px-8 py-3 text-base font-semibold text-indigo-700 shadow hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-700"
           >
-            Explorează cabane
+            {t('hero.exploreCabins')}
           </Link>
           <Link
             href="#pricing"
             className="rounded-full border border-indigo-400 px-8 py-3 text-base font-semibold text-white hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-700"
           >
-            Vezi prețuri
+            {t('hero.viewPricing')}
           </Link>
         </div>
       </section>
 
       {/* Features */}
       <section className="mx-auto max-w-5xl px-4 py-16">
-        <h2 className="mb-10 text-center text-2xl font-bold">De ce să alegi Cabane Apuseni?</h2>
+        <h2 className="mb-10 text-center text-2xl font-bold">{t('features.heading')}</h2>
         <div className="grid gap-8 sm:grid-cols-3">
           {features.map((f) => (
             <article key={f.title} className="rounded-xl border p-6 shadow-sm">
@@ -57,7 +118,7 @@ export default function HomePage() {
       <section className="bg-gray-50 px-4 py-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-10 text-center text-2xl font-bold text-gray-900">
-            Cum funcționează?
+            {t('howItWorks.heading')}
           </h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {howItWorks.map((step, i) => (
@@ -78,11 +139,10 @@ export default function HomePage() {
       <section id="pricing" className="mx-auto max-w-5xl scroll-mt-20 px-4 py-20">
         <div className="mb-12 text-center">
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Planuri transparente, fără surprize
+            {t('pricing.heading')}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-gray-500">
-            Indiferent dacă ești turist în căutarea aventurii sau proprietar care
-            vrea să-și listeze cabana, avem planul potrivit pentru tine.
+            {t('pricing.subtitle')}
           </p>
         </div>
         <PricingTabs />
@@ -103,7 +163,7 @@ export default function HomePage() {
       {/* FAQ */}
       <section className="mx-auto max-w-2xl px-4 py-16">
         <h2 className="mb-10 text-center text-2xl font-bold text-gray-900">
-          Întrebări frecvente
+          {t('faq.heading')}
         </h2>
         <dl className="flex flex-col gap-4">
           {faqItems.map((item) => (
@@ -117,101 +177,25 @@ export default function HomePage() {
 
       {/* CTA */}
       <section className="bg-indigo-600 px-4 py-16 text-center text-white">
-        <h2 className="text-2xl font-bold sm:text-3xl">Gata să începi aventura?</h2>
+        <h2 className="text-2xl font-bold sm:text-3xl">{t('cta.heading')}</h2>
         <p className="mx-auto mt-3 max-w-md text-indigo-200">
-          Creează un cont gratuit în câteva secunde. Niciun card necesar.
+          {t('cta.subtitle')}
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href="/register"
             className="rounded-xl bg-white px-8 py-3 text-sm font-semibold text-indigo-700 shadow hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600"
           >
-            Înregistrare gratuită
+            {t('cta.register')}
           </Link>
           <Link
             href="/cabins"
             className="rounded-xl border border-indigo-400 px-8 py-3 text-sm font-semibold text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600"
           >
-            Explorează cabane
+            {t('cta.exploreCabins')}
           </Link>
         </div>
       </section>
     </main>
   );
 }
-
-const features = [
-  {
-    icon: '🏔️',
-    title: 'Natură autentică',
-    description: 'Peisaje montane spectaculoase direct la ușa cabinei tale.',
-  },
-  {
-    icon: '🔥',
-    title: 'Confort modern',
-    description: 'Căldură, internet și dotări complete pentru un sejur fără griji.',
-  },
-  {
-    icon: '📅',
-    title: 'Rezervare ușoară',
-    description: 'Disponibilitate în timp real, confirmare imediată.',
-  },
-];
-
-const howItWorks = [
-  {
-    icon: '🔍',
-    title: 'Caută',
-    description: 'Răsfoiește zeci de cabane cu filtre după locație, preț și dotări.',
-  },
-  {
-    icon: '📅',
-    title: 'Alege datele',
-    description: 'Verifică disponibilitatea în timp real și selectează nopțile dorite.',
-  },
-  {
-    icon: '✅',
-    title: 'Rezervă',
-    description: 'Confirmare imediată și plată securizată prin platformă.',
-  },
-  {
-    icon: '🏕️',
-    title: 'Bucură-te',
-    description: 'Ajunge la cabană și trăiește experiența montană perfectă.',
-  },
-];
-
-const trustBadges = [
-  { icon: '🔒', text: 'Plăți securizate' },
-  { icon: '✅', text: 'Anulare oricând' },
-  { icon: '🎁', text: '14 zile gratuit' },
-  { icon: '💬', text: 'Suport în română' },
-];
-
-const faqItems = [
-  {
-    question: 'Pot schimba planul oricând?',
-    answer:
-      'Da, poți face upgrade sau downgrade la orice plan oricând din contul tău. Modificările intră în vigoare la începutul ciclului de facturare următor.',
-  },
-  {
-    question: 'Există un contract pe termen lung?',
-    answer:
-      'Nu. Toate planurile sunt lunare, fără angajament pe termen lung. Poți anula în orice moment.',
-  },
-  {
-    question: 'Ce înseamnă comisionul pentru proprietari?',
-    answer:
-      'Comisionul se aplică pe fiecare rezervare confirmată prin platformă. Cu planuri superioare, procentul scade, crescând veniturile nete.',
-  },
-  {
-    question: 'Cum funcționează perioada de probă?',
-    answer:
-      'Planul Gratuit este disponibil fără limită de timp. Planurile plătite pot fi testate 14 zile gratuit — nu este necesar cardul de credit.',
-  },
-  {
-    question: 'Există reduceri pentru plata anuală?',
-    answer:
-      'Da! La plata anuală beneficiezi de 2 luni gratuite față de plata lunară. Contactează-ne pentru detalii.',
-  },
-];

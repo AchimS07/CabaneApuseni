@@ -8,6 +8,7 @@ import { PhotoGrid } from '@/components/ui/PhotoGrid';
 import { WishlistButton } from '@/components/ui/WishlistButton';
 import { MapPinIcon, UsersIcon, StarIcon, ArrowLeftIcon, ShareIcon } from '@/components/ui/Icons';
 import ReportButton from '@/components/ReportButton';
+import { getTranslations } from 'next-intl/server';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -18,8 +19,9 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const t = await getTranslations('cabin');
   const result = await getCabinDetail(slug);
-  if (!result.ok) return { title: 'Cabana negăsită' };
+  if (!result.ok) return { title: t('notFoundMeta') };
   return {
     title: result.data.title,
     description: result.data.description.slice(0, 160),
@@ -58,9 +60,10 @@ function amenityEmoji(name: string): string {
 export default async function CabinDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  const [result, session] = await Promise.all([
+  const [result, session, t] = await Promise.all([
     getCabinDetail(slug),
     verifySession(),
+    getTranslations('cabin'),
   ]);
 
   if (!result.ok) notFound();
@@ -70,6 +73,8 @@ export default async function CabinDetailPage({ params }: Props) {
   const extraAmenities = cabin.amenities.length > SHOW_AMENITIES
     ? cabin.amenities.length - SHOW_AMENITIES
     : 0;
+
+  const guestSuffix = cabin.maxGuests === 1 ? t('person') : t('persons');
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-24 pt-6 sm:px-6 lg:px-8">
@@ -81,16 +86,16 @@ export default async function CabinDetailPage({ params }: Props) {
           className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
           <ArrowLeftIcon size={16} aria-hidden="true" />
-          Înapoi la cabane
+          {t('backToCabins')}
         </Link>
         <div className="flex items-center gap-2">
           <button
             type="button"
             className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 underline transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-            aria-label="Distribuie"
+            aria-label={t('shareAriaLabel')}
           >
             <ShareIcon size={16} aria-hidden="true" />
-            Distribuie
+            {t('share')}
           </button>
           <WishlistButton
             cabinId={cabin.id}
@@ -121,11 +126,11 @@ export default async function CabinDetailPage({ params }: Props) {
             </span>
             <span className="flex items-center gap-1.5">
               <UsersIcon size={15} className="text-gray-400" aria-hidden="true" />
-              Max. {cabin.maxGuests} {cabin.maxGuests === 1 ? 'persoană' : 'persoane'}
+              {t('maxGuests', { count: cabin.maxGuests, suffix: guestSuffix })}
             </span>
             <span className="flex items-center gap-1">
               <StarIcon size={13} className="text-[#222]" aria-hidden="true" />
-              <span className="font-medium text-[#222]">Nou</span>
+              <span className="font-medium text-[#222]">{t('newBadge')}</span>
             </span>
           </div>
 
@@ -135,15 +140,15 @@ export default async function CabinDetailPage({ params }: Props) {
               {cabin.title.charAt(0)}
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900">Cabane Apuseni</p>
-              <p className="text-xs text-gray-500">Gazdă de 1 an</p>
+              <p className="text-sm font-semibold text-gray-900">{t('hostLabel')}</p>
+              <p className="text-xs text-gray-500">{t('hostDuration')}</p>
             </div>
           </div>
 
           {/* Description */}
           <section aria-labelledby="description-heading" className="border-b border-gray-200 py-8">
             <h2 id="description-heading" className="mb-4 text-xl font-semibold text-gray-900">
-              Despre această cabană
+              {t('about')}
             </h2>
             <p className="leading-relaxed text-gray-700 whitespace-pre-wrap">
               {cabin.description}
@@ -154,11 +159,12 @@ export default async function CabinDetailPage({ params }: Props) {
           {cabin.amenities.length > 0 && (
             <section aria-labelledby="amenities-heading" className="border-b border-gray-200 py-8">
               <h2 id="amenities-heading" className="mb-5 text-xl font-semibold text-gray-900">
-                Ce oferă această cabană
+                {t('whatOffers')}
               </h2>
               <AmenitiesGrid
                 amenities={cabin.amenities}
                 showAll={SHOW_AMENITIES}
+                showMoreLabel={(extra: number) => t('showMoreAmenities', { extra })}
               />
             </section>
           )}
@@ -166,15 +172,15 @@ export default async function CabinDetailPage({ params }: Props) {
           {/* Map section */}
           <section aria-labelledby="map-heading" className="py-8">
             <h2 id="map-heading" className="mb-5 text-xl font-semibold text-gray-900">
-              Unde te afli
+              {t('whereYouAre')}
             </h2>
             <p className="mb-4 flex items-center gap-1.5 text-sm font-medium text-gray-700">
               <MapPinIcon size={15} className="text-gray-400" aria-hidden="true" />
-              {cabin.location}, Munții Apuseni
+              {t('locationSuffix', { location: cabin.location })}
             </p>
             <div className="overflow-hidden rounded-2xl border border-gray-200">
               <iframe
-                title={`Harta pentru ${cabin.title}`}
+                title={t('mapTitle', { title: cabin.title })}
                 src={`https://www.google.com/maps?q=${encodeURIComponent(`${cabin.location}, Apuseni, Romania`)}&output=embed`}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -192,7 +198,7 @@ export default async function CabinDetailPage({ params }: Props) {
         </div>
 
         {/* ── Right column: sticky booking widget ── */}
-        <aside aria-label="Formular de rezervare" className="mt-10 lg:mt-0">
+        <aside aria-label={t('bookingFormAriaLabel')} className="mt-10 lg:mt-0">
           <div className="lg:sticky lg:top-28">
             <BookingForm
               cabin={{
@@ -215,9 +221,10 @@ export default async function CabinDetailPage({ params }: Props) {
 interface AmenitiesGridProps {
   amenities: string[];
   showAll: number;
+  showMoreLabel: (extra: number) => string;
 }
 
-function AmenitiesGrid({ amenities, showAll }: AmenitiesGridProps) {
+function AmenitiesGrid({ amenities, showAll, showMoreLabel }: AmenitiesGridProps) {
   const visible = amenities.slice(0, showAll);
   const extra = amenities.length > showAll ? amenities.length - showAll : 0;
 
@@ -236,10 +243,9 @@ function AmenitiesGrid({ amenities, showAll }: AmenitiesGridProps) {
           type="button"
           className="mt-5 rounded-xl border border-gray-900 px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
-          Afișează toate dotările (+{extra})
+          {showMoreLabel(extra)}
         </button>
       )}
     </div>
   );
 }
-

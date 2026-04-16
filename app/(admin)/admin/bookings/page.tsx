@@ -6,19 +6,18 @@ import { StatusBadge } from '@/components/ui/StatusBadge';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import type { BookingStatus } from '@/modules/bookings/domain/types';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Admin – Rezervări' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('adminBookingsPage');
+  return { title: t('metaTitle') };
+}
+
 export const dynamic = 'force-dynamic';
 
-const STATUS_LABELS: Record<BookingStatus | 'all', string> = {
-  all: 'Toate',
-  pending: 'În așteptare',
-  confirmed: 'Confirmate',
-  cancelled: 'Anulate',
-  completed: 'Finalizate',
-};
+type StatusFilter = BookingStatus | 'all';
 
-const STATUS_TABS: Array<BookingStatus | 'all'> = [
+const STATUS_TABS: StatusFilter[] = [
   'all',
   'pending',
   'confirmed',
@@ -32,9 +31,13 @@ interface Props {
 
 export default async function AdminBookingsPage({ searchParams }: Props) {
   await requireAdmin();
-  const [result, params] = await Promise.all([getAllBookings(), searchParams]);
+  const [result, params, t] = await Promise.all([
+    getAllBookings(),
+    searchParams,
+    getTranslations('adminBookingsPage'),
+  ]);
 
-  const activeStatus = (params.status ?? 'all') as BookingStatus | 'all';
+  const activeStatus = (params.status ?? 'all') as StatusFilter;
   const allBookings = result.ok ? result.data : [];
 
   const filtered =
@@ -44,11 +47,24 @@ export default async function AdminBookingsPage({ searchParams }: Props) {
 
   const pendingCount = allBookings.filter((b) => b.status === 'pending').length;
 
+  const STATUS_LABELS: Record<StatusFilter, string> = {
+    all: t('filterAll'),
+    pending: t('filterPending'),
+    confirmed: t('filterConfirmed'),
+    cancelled: t('filterCancelled'),
+    completed: t('filterCompleted'),
+  };
+
+  const description =
+    allBookings.length === 1
+      ? t('descriptionSingular')
+      : t('descriptionPlural', { count: allBookings.length });
+
   return (
     <div>
       <SectionHeader
-        title="Rezervări"
-        description={`${allBookings.length} ${allBookings.length === 1 ? 'rezervare' : 'rezervări'} total`}
+        title={t('title')}
+        description={description}
       />
 
       {!result.ok && (
@@ -56,13 +72,13 @@ export default async function AdminBookingsPage({ searchParams }: Props) {
           role="alert"
           className="mb-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
         >
-          Nu s-au putut încărca rezervările. Încearcă din nou.
+          {t('loadError')}
         </div>
       )}
 
       {/* Status tabs */}
       <nav
-        aria-label="Filtrează după status"
+        aria-label={t('filterLabel')}
         className="mb-6 flex flex-wrap gap-2 border-b pb-4"
       >
         {STATUS_TABS.map((s) => {
@@ -94,7 +110,7 @@ export default async function AdminBookingsPage({ searchParams }: Props) {
                   className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${
                     isActive ? 'bg-white text-indigo-700' : 'bg-yellow-400 text-white'
                   }`}
-                  aria-label={`${pendingCount} în așteptare`}
+                  aria-label={t('pendingAriaLabel', { count: pendingCount })}
                 >
                   {pendingCount}
                 </span>
@@ -110,21 +126,21 @@ export default async function AdminBookingsPage({ searchParams }: Props) {
       {filtered.length === 0 ? (
         <EmptyState
           icon="📋"
-          title={`Nicio rezervare ${activeStatus !== 'all' ? STATUS_LABELS[activeStatus].toLowerCase() : ''}`}
-          description="Nu există rezervări în această categorie."
+          title={`${t('emptyTitlePrefix')} ${activeStatus !== 'all' ? STATUS_LABELS[activeStatus].toLowerCase() : ''}`.trim()}
+          description={t('emptyDescription')}
         />
       ) : (
         <div className="overflow-x-auto rounded-xl border">
-          <table className="w-full text-sm" aria-label="Rezervări">
+          <table className="w-full text-sm" aria-label={t('tableAriaLabel')}>
             <thead className="bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
               <tr>
-                <th scope="col" className="px-4 py-3">Cabană</th>
-                <th scope="col" className="px-4 py-3">Perioadă</th>
-                <th scope="col" className="px-4 py-3">Oaspeți</th>
-                <th scope="col" className="px-4 py-3">Total</th>
-                <th scope="col" className="px-4 py-3">Mențiuni</th>
-                <th scope="col" className="px-4 py-3">Status</th>
-                <th scope="col" className="px-4 py-3">Creat</th>
+                <th scope="col" className="px-4 py-3">{t('colCabin')}</th>
+                <th scope="col" className="px-4 py-3">{t('colPeriod')}</th>
+                <th scope="col" className="px-4 py-3">{t('colGuests')}</th>
+                <th scope="col" className="px-4 py-3">{t('colTotal')}</th>
+                <th scope="col" className="px-4 py-3">{t('colNotes')}</th>
+                <th scope="col" className="px-4 py-3">{t('colStatus')}</th>
+                <th scope="col" className="px-4 py-3">{t('colCreated')}</th>
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -160,7 +176,7 @@ export default async function AdminBookingsPage({ searchParams }: Props) {
                     <StatusBadge status={b.status} />
                   </td>
                   <td className="px-4 py-3 text-gray-500">
-                    {new Date(b.createdAt).toLocaleDateString('ro-RO')}
+                    {new Date(b.createdAt).toLocaleDateString()}
                   </td>
                 </tr>
               ))}
