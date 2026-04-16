@@ -29,8 +29,8 @@ export function WishlistButton({
   iconSize = 22,
 }: WishlistButtonProps) {
   const router = useRouter();
-  const { user } = useAuth();
-  const { isWishlisted, toggle, loading } = useWishlist();
+  const { user, loading: authLoading } = useAuth();
+  const { isWishlisted, toggle, loading: toggleLoading } = useWishlist();
 
   const wishlisted = isWishlisted(cabinId);
 
@@ -39,6 +39,9 @@ export function WishlistButton({
       e.preventDefault();  // prevent card navigation
       e.stopPropagation(); // prevent bubbling to Link
 
+      // Auth state is not yet resolved — do nothing to avoid false redirects
+      if (authLoading) return;
+
       if (!user) {
         router.push(`/login?redirect=/cabins/${cabinSlug}`);
         return;
@@ -46,8 +49,10 @@ export function WishlistButton({
 
       await toggle(cabinId);
     },
-    [user, router, cabinSlug, cabinId, toggle],
+    [authLoading, user, router, cabinSlug, cabinId, toggle],
   );
+
+  const loading = authLoading || toggleLoading;
 
   return (
     <button
