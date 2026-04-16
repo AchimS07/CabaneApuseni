@@ -1,0 +1,496 @@
+{
+  "common": {
+    "siteName": "Cabane Apuseni",
+    "loading": "Loading...",
+    "error": "An error occurred.",
+    "tryAgain": "Try again",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "open": "Open →",
+    "allRightsReserved": "All rights reserved."
+  },
+  "nav": {
+    "cabins": "Cabins",
+    "pricing": "Pricing",
+    "myBookings": "My bookings",
+    "ownerDashboard": "Owner dashboard",
+    "admin": "Admin",
+    "signIn": "Sign in",
+    "register": "Register",
+    "logout": "Logout",
+    "loggingOut": "Logging out…",
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu",
+    "mainNav": "Main navigation",
+    "owner": "Owner",
+    "myListings": "My listings",
+    "bookings": "Bookings",
+    "publicSite": "← Public site",
+    "dashboard": "Dashboard",
+    "searchCabins": "Search cabins"
+  },
+  "home": {
+    "meta": {
+      "title": "Cabane Apuseni – Mountain Accommodation",
+      "description": "Discover the most beautiful cabins in the Apuseni Mountains. Book now."
+    },
+    "hero": {
+      "title": "Cabins in the Apuseni Mountains",
+      "subtitle": "Authentic mountain retreats, perfect for relaxation and adventure.",
+      "exploreCabins": "Explore cabins",
+      "viewPricing": "View pricing"
+    },
+    "features": {
+      "heading": "Why choose Cabane Apuseni?",
+      "nature": {
+        "title": "Authentic nature",
+        "description": "Spectacular mountain scenery right at your cabin door."
+      },
+      "comfort": {
+        "title": "Modern comfort",
+        "description": "Heating, internet and full amenities for a worry-free stay."
+      },
+      "booking": {
+        "title": "Easy booking",
+        "description": "Real-time availability, instant confirmation."
+      }
+    },
+    "howItWorks": {
+      "heading": "How does it work?",
+      "search": {
+        "title": "Search",
+        "description": "Browse dozens of cabins with filters by location, price and amenities."
+      },
+      "chooseDates": {
+        "title": "Choose dates",
+        "description": "Check real-time availability and select your desired nights."
+      },
+      "book": {
+        "title": "Book",
+        "description": "Instant confirmation and secure payment through the platform."
+      },
+      "enjoy": {
+        "title": "Enjoy",
+        "description": "Arrive at the cabin and experience the perfect mountain getaway."
+      }
+    },
+    "pricing": {
+      "heading": "Transparent plans, no surprises",
+      "subtitle": "Whether you're a tourist seeking adventure or an owner wanting to list your cabin, we have the right plan for you."
+    },
+    "trust": {
+      "securePayments": "Secure payments",
+      "cancelAnytime": "Cancel anytime",
+      "freeTrial": "14 days free",
+      "supportRo": "Support in Romanian"
+    },
+    "faq": {
+      "heading": "Frequently asked questions",
+      "q1": {
+        "question": "Can I change my plan anytime?",
+        "answer": "Yes, you can upgrade or downgrade to any plan at any time from your account. Changes take effect at the beginning of the next billing cycle."
+      },
+      "q2": {
+        "question": "Is there a long-term contract?",
+        "answer": "No. All plans are monthly with no long-term commitment. You can cancel at any time."
+      },
+      "q3": {
+        "question": "What does the owner commission mean?",
+        "answer": "The commission applies to each confirmed booking through the platform. With higher plans, the percentage decreases, increasing net revenue."
+      },
+      "q4": {
+        "question": "How does the trial period work?",
+        "answer": "The Free plan is available without time limits. Paid plans can be tested for 14 days for free — no credit card required."
+      },
+      "q5": {
+        "question": "Are there discounts for annual payment?",
+        "answer": "Yes! With annual payment you get 2 months free compared to monthly billing. Contact us for details."
+      }
+    },
+    "cta": {
+      "heading": "Ready to start the adventure?",
+      "subtitle": "Create a free account in a few seconds. No card required.",
+      "register": "Free registration",
+      "exploreCabins": "Explore cabins"
+    }
+  },
+  "pricing": {
+    "tabsLabel": "Select account type",
+    "forTourists": "🏕️ For tourists",
+    "forOwners": "🏠 For owners",
+    "touristsTabLabel": "Plans for tourists",
+    "ownersTabLabel": "Plans for owners",
+    "vatNote": "All prices include VAT. You can cancel anytime, without penalties.",
+    "period": "month",
+    "recommended": "Recommended",
+    "mostPopular": "Most popular",
+    "free": {
+      "name": "Free",
+      "price": "0 RON",
+      "description": "Perfect for discovering the platform at no cost.",
+      "cta": "Start for free",
+      "f1": "Unlimited cabin browsing",
+      "f2": "Availability view",
+      "f3": "Up to 2 bookings / month",
+      "f4": "Standard support (email)",
+      "f5": "Unlimited bookings",
+      "f6": "Seasonal discounts",
+      "f7": "Early access to new cabins",
+      "f8": "Priority support"
+    },
+    "explorer": {
+      "name": "Explorer",
+      "price": "29 RON",
+      "description": "For active tourists who book frequently.",
+      "cta": "Choose Explorer",
+      "f1": "Unlimited cabin browsing",
+      "f2": "Availability view",
+      "f3": "Unlimited bookings",
+      "f4": "Priority support (chat)",
+      "f5": "Early access to new cabins",
+      "f6": "Seasonal discounts",
+      "f7": "Exclusive premium cabin offers",
+      "f8": "Personal concierge service"
+    },
+    "premium": {
+      "name": "Premium",
+      "price": "69 RON",
+      "description": "Complete experience with exclusive benefits.",
+      "cta": "Choose Premium",
+      "f1": "Unlimited cabin browsing",
+      "f2": "Availability view",
+      "f3": "Unlimited bookings",
+      "f4": "24/7 priority support",
+      "f5": "Early access to new cabins",
+      "f6": "Seasonal discounts",
+      "f7": "Exclusive premium cabin offers",
+      "f8": "Personal concierge service"
+    },
+    "starter": {
+      "name": "Starter",
+      "price": "0 RON",
+      "description": "List your first cabin and discover the platform.",
+      "cta": "List for free",
+      "f1": "1 active cabin",
+      "f2": "Availability calendar",
+      "f3": "Booking management",
+      "f4": "Basic statistics",
+      "f5": "Standard 12% commission",
+      "f6": "Priority placement in searches",
+      "f7": "Advanced statistics",
+      "f8": "Dedicated support"
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "99 RON",
+      "description": "For owners with multiple cabins.",
+      "cta": "Choose Pro",
+      "f1": "Up to 5 active cabins",
+      "f2": "Availability calendar",
+      "f3": "Booking management",
+      "f4": "Advanced statistics",
+      "f5": "Reduced 8% commission",
+      "f6": "Priority placement in searches",
+      "f7": "\"Verified owner\" badge",
+      "f8": "Dedicated support"
+    },
+    "business": {
+      "name": "Business",
+      "price": "249 RON",
+      "description": "The complete solution for large portfolios.",
+      "cta": "Choose Business",
+      "f1": "Unlimited cabins",
+      "f2": "Availability calendar",
+      "f3": "Booking management",
+      "f4": "Advanced statistics + reports",
+      "f5": "Minimum 5% commission",
+      "f6": "Priority & featured placement",
+      "f7": "\"Verified owner\" badge",
+      "f8": "Dedicated support & account manager"
+    }
+  },
+  "cabin": {
+    "notFound": "Cabin not found",
+    "backToCabins": "← Back to cabins",
+    "capacity": "Capacity:",
+    "person": "person",
+    "persons": "persons",
+    "perNight": "/ night",
+    "description": "Description",
+    "amenities": "Amenities",
+    "gallery": "Photo gallery",
+    "imageAlt": "image",
+    "bookingFormLabel": "Booking form"
+  },
+  "booking": {
+    "pricePerNight": "RON / night",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "guests": "Guests",
+    "guestsMax": "(max {max})",
+    "notes": "Notes",
+    "notesOptional": "(optional)",
+    "notesPlaceholder": "Special requirements, approximate arrival time…",
+    "nightSingular": "night",
+    "nightPlural": "nights",
+    "total": "Total",
+    "bookNow": "Book now",
+    "loginToBook": "Sign in to book",
+    "redirectToLogin": "You will be redirected to the login page.",
+    "errors": {
+      "checkInRequired": "Please select a check-in date.",
+      "checkOutRequired": "Please select a check-out date.",
+      "checkOutAfterCheckIn": "Check-out must be after check-in.",
+      "minOneGuest": "At least 1 guest required.",
+      "maxGuests": "Maximum {max} guests for this cabin.",
+      "generic": "An error occurred. Please try again."
+    }
+  },
+  "auth": {
+    "loginTitle": "Sign in",
+    "registerTitle": "New account",
+    "loginButton": "Sign in",
+    "registerButton": "Create account",
+    "noAccount": "Don't have an account?",
+    "signUpLink": "Sign up",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "haveACabin": "Have a cabin?",
+    "registerAsOwner": "Register as an owner",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "confirmPassword": "Confirm password",
+    "loginFailed": "Login failed. Please check your credentials.",
+    "registerFailed": "Registration failed. Please try again.",
+    "ownerRegisterTitle": "Owner Account",
+    "createOwnerAccount": "Create owner account",
+    "wantClientAccount": "Want a client account?",
+    "standardRegister": "Standard registration"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcomeBack": "Welcome back, {name}!",
+    "subtitleOwner": "Manage your owner profile and account activity.",
+    "subtitleUser": "Manage your bookings and account.",
+    "myBookings": "My bookings",
+    "myBookingsDesc": "View and manage your active bookings.",
+    "viewBookings": "View bookings →",
+    "searchCabins": "Search cabins",
+    "searchCabinsDesc": "Explore available cabins and book.",
+    "explore": "Explore →",
+    "ownerDashboard": "Owner dashboard",
+    "ownerDashboardDesc": "View your owner account status and next steps.",
+    "openDashboard": "Open dashboard →"
+  },
+  "myBookings": {
+    "title": "My bookings",
+    "metaTitle": "My bookings",
+    "successTitle": "Booking submitted successfully!",
+    "successMessage": "You will be contacted for confirmation.",
+    "emptyTitle": "No bookings yet",
+    "emptyDescription": "Explore available cabins and make your first booking.",
+    "exploreCabins": "Explore cabins",
+    "cabin": "Cabin",
+    "period": "Period",
+    "guests": "Guests",
+    "total": "Total",
+    "status": "Status",
+    "actions": "Actions",
+    "cancelBooking": "Cancel booking",
+    "cancel": "Cancel",
+    "cancelling": "Cancelling…",
+    "confirmCancel": "Are you sure you want to cancel this booking?",
+    "cancelError": "An error occurred. Please try again."
+  },
+  "ownerDashboard": {
+    "title": "Owner dashboard",
+    "metaTitle": "Owner dashboard",
+    "description": "Overview of your activity.",
+    "totalCabins": "Total cabins",
+    "published": "Published",
+    "pendingBookings": "Pending bookings",
+    "upcomingStays": "Upcoming stays",
+    "noCabinsTitle": "No cabins registered",
+    "noCabinsDesc": "Add your first cabin to start receiving bookings.",
+    "addCabin": "+ Add cabin",
+    "quickAccess": "Quick access",
+    "myCabins": "My cabins",
+    "myCabinsDesc": "Manage your listings.",
+    "bookings": "Bookings",
+    "bookingsPendingDesc": "{count} {suffix} pending",
+    "bookingsSuffix1": "booking",
+    "bookingsSuffixN": "bookings",
+    "allBookings": "View all bookings",
+    "addNewCabin": "Add cabin",
+    "addNewCabinDesc": "Register a new cabin.",
+    "open": "Open →"
+  },
+  "ownerListings": {
+    "title": "My cabins",
+    "metaTitle": "My cabins",
+    "descriptionSingular": "1 cabin registered",
+    "descriptionPlural": "{count} cabins registered",
+    "addCabin": "+ Add cabin",
+    "loadError": "Could not load listings. Please try again.",
+    "emptyTitle": "No cabins yet",
+    "emptyDesc": "Add your first cabin to start receiving bookings.",
+    "colTitle": "Title",
+    "colLocation": "Location",
+    "colPrice": "Price / night",
+    "colMaxGuests": "Max guests",
+    "colStatus": "Status",
+    "colUpdated": "Updated",
+    "colActions": "Actions",
+    "statusPublished": "Published",
+    "statusDraft": "Draft",
+    "edit": "Edit",
+    "preview": "Preview ↗",
+    "publish": "Publish",
+    "unpublish": "Unpublish",
+    "publishing": "Saving…",
+    "publishCabin": "Publish cabin",
+    "unpublishCabin": "Unpublish cabin",
+    "toggleError": "An error occurred. Please try again."
+  },
+  "ownerBookings": {
+    "title": "Cabin bookings",
+    "metaTitle": "Cabin bookings",
+    "loadError": "Could not load bookings. Please try again.",
+    "filterLabel": "Filter by status",
+    "filterAll": "All",
+    "filterPending": "Pending",
+    "filterConfirmed": "Confirmed",
+    "filterCancelled": "Cancelled",
+    "filterCompleted": "Completed",
+    "emptyTitlePrefix": "No bookings",
+    "emptyDescPending": "No new bookings requiring action.",
+    "emptyDescOther": "No bookings in this category.",
+    "colCabin": "Cabin",
+    "colPeriod": "Period",
+    "colGuests": "Guests",
+    "colTotal": "Total",
+    "colStatus": "Status",
+    "colActions": "Actions",
+    "confirm": "Confirm",
+    "confirming": "Confirming…",
+    "confirmBooking": "Confirm booking",
+    "reject": "Reject",
+    "rejecting": "Rejecting…",
+    "rejectBooking": "Reject booking",
+    "confirmReject": "Are you sure you want to reject this booking?",
+    "actionError": "An error occurred. Please try again.",
+    "reservationSingular": "booking",
+    "reservationPlural": "bookings",
+    "total": "total"
+  },
+  "ownerNewListing": {
+    "title": "Add cabin",
+    "metaTitle": "Add cabin",
+    "description": "Fill in the details of your new cabin.",
+    "back": "← Back"
+  },
+  "cabinForm": {
+    "basicInfo": "Basic information",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Green Mountain Cabin",
+    "slugLabel": "Slug (URL)",
+    "slugPlaceholder": "green-mountain-cabin",
+    "slugHint": "Auto-generated from title. Use only lowercase letters, numbers and hyphens.",
+    "locationLabel": "Location",
+    "locationPlaceholder": "Arieșeni",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Describe the cabin in at least 20 characters…",
+    "pricingCapacity": "Pricing & capacity",
+    "priceLabel": "Price / night (RON)",
+    "maxGuestsLabel": "Max guests",
+    "amenitiesImages": "Amenities & images",
+    "amenitiesLabel": "Amenities",
+    "amenitiesHint": "(one per line)",
+    "amenitiesPlaceholder": "Wi-Fi\nFireplace\nParking",
+    "imageUrlsLabel": "Image URLs",
+    "imageUrlsHint": "(one per line)",
+    "imageUrlsPlaceholder": "https://example.com/image1.jpg",
+    "publishToggleLabel": "Publish immediately",
+    "publishToggleHint": "– visible to guests after saving",
+    "cancel": "Cancel",
+    "addCabin": "Add cabin",
+    "saveChanges": "Save changes",
+    "genericError": "An error occurred. Please try again."
+  },
+  "adminDashboard": {
+    "title": "Dashboard",
+    "metaTitle": "Admin – Dashboard",
+    "description": "Platform overview.",
+    "cabins": "Cabins",
+    "totalBookings": "Total bookings",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "quickAccess": "Quick access",
+    "manageCabins": "Manage cabins",
+    "viewPublicSite": "View public site"
+  },
+  "adminCabins": {
+    "title": "Cabins",
+    "metaTitle": "Admin – Cabins",
+    "descriptionSingular": "1 cabin registered",
+    "descriptionPlural": "{count} cabins registered",
+    "addCabin": "+ Add cabin",
+    "emptyTitle": "No cabins registered",
+    "emptyDesc": "Add the first cabin to get started.",
+    "colTitle": "Title",
+    "colLocation": "Location",
+    "colPrice": "Price / night",
+    "colMaxGuests": "Max guests",
+    "colPublished": "Published",
+    "colActions": "Actions",
+    "statusPublished": "Published",
+    "statusDraft": "Draft",
+    "viewCabin": "View ↗",
+    "listLabel": "Cabin list",
+    "adminNav": "Admin panel navigation"
+  },
+  "statusBadge": {
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "cancelled": "Cancelled",
+    "completed": "Completed"
+  },
+  "errors": {
+    "title": "An error occurred",
+    "retry": "Try again",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "The page you are looking for does not exist or has been moved.",
+    "backHome": "Back to home page"
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "ro": "RO",
+    "en": "EN",
+    "hu": "HU"
+  },
+  "cabinsList": {
+    "metaTitle": "Available Cabins",
+    "metaDescription": "Explore available cabins in the Apuseni Mountains.",
+    "title": "Available Cabins",
+    "countSingular": "1 cabin available",
+    "countPlural": "{count} cabins available",
+    "searching": "Searching for cabins…",
+    "loadError": "Sorry, we couldn't load the cabin list. Please try again later.",
+    "emptyTitle": "No cabins available at this time",
+    "emptyDescription": "Check back later – new cabins are added regularly.",
+    "viewList": "List",
+    "viewMap": "Map",
+    "listAriaLabel": "Available cabins list",
+    "perNight": "/ night",
+    "viewDetails": "View details →"
+  },
+  "ownerEditListing": {
+    "title": "Edit cabin",
+    "metaTitle": "Edit cabin",
+    "editPrefix": "Edit:",
+    "back": "← Back to my cabins"
+  }
+}

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { togglePublishAction } from '@/modules/cabins/actions';
+import { useTranslations } from 'next-intl';
 
 interface TogglePublishButtonProps {
   cabinId: string;
@@ -14,6 +15,7 @@ interface TogglePublishButtonProps {
  */
 export function TogglePublishButton({ cabinId, published }: TogglePublishButtonProps) {
   const router = useRouter();
+  const t = useTranslations('ownerListings');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -28,7 +30,7 @@ export function TogglePublishButton({ cabinId, published }: TogglePublishButtonP
       }
       router.refresh();
     } catch {
-      setError('A apărut o eroare. Încearcă din nou.');
+      setError(t('toggleError'));
     } finally {
       setLoading(false);
     }
@@ -47,9 +49,9 @@ export function TogglePublishButton({ cabinId, published }: TogglePublishButtonP
             ? 'border border-gray-300 text-gray-600 hover:bg-gray-50 focus:ring-gray-400'
             : 'border border-green-300 text-green-700 hover:bg-green-50 focus:ring-green-500',
         ].join(' ')}
-        aria-label={published ? 'Retrage din publicare' : 'Publică cabana'}
+        aria-label={published ? t('unpublishCabin') : t('publishCabin')}
       >
-        {loading ? 'Se salvează…' : published ? 'Retrage' : 'Publică'}
+        {loading ? t('publishing') : published ? t('unpublish') : t('publish')}
       </button>
       {error && (
         <p className="mt-1 text-xs text-red-600" role="alert">

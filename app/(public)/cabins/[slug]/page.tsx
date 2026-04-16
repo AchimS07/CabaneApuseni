@@ -4,6 +4,7 @@ import { verifySession } from '@/lib/auth/session';
 import BookingForm from '@/components/forms/BookingForm';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -15,7 +16,10 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const result = await getCabinDetail(slug);
-  if (!result.ok) return { title: 'Cabana negăsită' };
+  if (!result.ok) {
+    const t = await getTranslations('cabin');
+    return { title: t('notFound') };
+  }
   return {
     title: result.data.title,
     description: result.data.description.slice(0, 160),
@@ -25,9 +29,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CabinDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  const [result, session] = await Promise.all([
+  const [result, session, t] = await Promise.all([
     getCabinDetail(slug),
     verifySession(),
+    getTranslations('cabin'),
   ]);
 
   if (!result.ok) notFound();
@@ -40,7 +45,7 @@ export default async function CabinDetailPage({ params }: Props) {
         href="/cabins"
         className="mb-6 inline-flex items-center gap-1 text-sm text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
       >
-        ← Înapoi la cabane
+        {t('backToCabins')}
       </Link>
 
       {/* Hero image */}
@@ -73,14 +78,14 @@ export default async function CabinDetailPage({ params }: Props) {
             </span>
             <span className="flex items-center gap-1">
               <span aria-hidden="true">👥</span>
-              Capacitate: {cabin.maxGuests}{' '}
-              {cabin.maxGuests === 1 ? 'persoană' : 'persoane'}
+              {t('capacity')} {cabin.maxGuests}{' '}
+              {cabin.maxGuests === 1 ? t('person') : t('persons')}
             </span>
           </div>
 
           <p className="mt-3 text-xl font-semibold text-indigo-700">
             {cabin.pricePerNight} RON{' '}
-            <span className="text-base font-normal text-gray-500">/ noapte</span>
+            <span className="text-base font-normal text-gray-500">{t('perNight')}</span>
           </p>
 
           {/* Description */}
@@ -89,7 +94,7 @@ export default async function CabinDetailPage({ params }: Props) {
               id="description-heading"
               className="mb-2 text-lg font-semibold text-gray-900"
             >
-              Descriere
+              {t('description')}
             </h2>
             <p className="leading-relaxed text-gray-700 whitespace-pre-wrap">
               {cabin.description}
@@ -103,7 +108,7 @@ export default async function CabinDetailPage({ params }: Props) {
                 id="amenities-heading"
                 className="mb-3 text-lg font-semibold text-gray-900"
               >
-                Dotări
+                {t('amenities')}
               </h2>
               <ul className="flex flex-wrap gap-2">
                 {cabin.amenities.map((a) => (
@@ -125,7 +130,7 @@ export default async function CabinDetailPage({ params }: Props) {
                 id="gallery-heading"
                 className="mb-3 text-lg font-semibold text-gray-900"
               >
-                Galerie foto
+                {t('gallery')}
               </h2>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {cabin.imageUrls.slice(1).map((url, i) => (
@@ -133,7 +138,7 @@ export default async function CabinDetailPage({ params }: Props) {
                   <img
                     key={url}
                     src={url}
-                    alt={`${cabin.title} – imagine ${i + 2}`}
+                    alt={`${cabin.title} – ${t('imageAlt')} ${i + 2}`}
                     className="h-40 w-full rounded-lg object-cover"
                   />
                 ))}
@@ -143,7 +148,7 @@ export default async function CabinDetailPage({ params }: Props) {
         </div>
 
         {/* ── Right column: booking form ── */}
-        <aside aria-label="Formular de rezervare" className="mt-10 lg:mt-0">
+        <aside aria-label={t('bookingFormLabel')} className="mt-10 lg:mt-0">
           <div className="lg:sticky lg:top-24">
             <BookingForm
               cabin={{

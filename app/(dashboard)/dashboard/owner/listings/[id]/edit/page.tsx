@@ -5,6 +5,7 @@ import { requireOwner } from '@/lib/auth/authorization';
 import { getCabinById } from '@/modules/cabins/infrastructure/firestoreCabinRepository';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import CabinForm from '@/components/forms/CabinForm';
+import { getTranslations } from 'next-intl/server';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -15,12 +16,14 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const cabin = await getCabinById(id);
-  return { title: cabin ? `Editează: ${cabin.title}` : 'Editează cabana' };
+  const t = await getTranslations('ownerEditListing');
+  return { title: cabin ? `${t('editPrefix')} ${cabin.title}` : t('metaTitle') };
 }
 
 export default async function EditListingPage({ params }: Props) {
   const session = await requireOwner();
   const { id } = await params;
+  const t = await getTranslations('ownerEditListing');
 
   const cabinOrNull = await getCabinById(id);
 
@@ -37,7 +40,7 @@ export default async function EditListingPage({ params }: Props) {
   return (
     <div>
       <SectionHeader
-        title="Editează cabana"
+        title={t('title')}
         description={cabin.title}
       />
 
@@ -46,7 +49,7 @@ export default async function EditListingPage({ params }: Props) {
           href="/dashboard/owner/listings"
           className="hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
         >
-          ← Înapoi la cabane mele
+          {t('back')}
         </Link>
       </nav>
 

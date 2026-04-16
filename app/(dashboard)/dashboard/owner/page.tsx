@@ -6,12 +6,18 @@ import { getOwnerCabins } from '@/modules/cabins/application/cabinService';
 import { getOwnerBookings } from '@/modules/bookings/application/bookingService';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Dashboard proprietar' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('ownerDashboard');
+  return { title: t('metaTitle') };
+}
+
 export const dynamic = 'force-dynamic';
 
 export default async function OwnerDashboardPage() {
   const session = await requireOwner();
+  const t = await getTranslations('ownerDashboard');
 
   const [cabinsResult, bookingsResult] = await Promise.all([
     getOwnerCabins(session.uid),
@@ -30,30 +36,37 @@ export default async function OwnerDashboardPage() {
     (b) => b.status === 'confirmed' && b.checkIn >= today,
   ).length;
 
+  const bookingsDesc = pendingBookings > 0
+    ? t('bookingsPendingDesc', {
+        count: pendingBookings,
+        suffix: pendingBookings === 1 ? t('bookingsSuffix1') : t('bookingsSuffixN'),
+      })
+    : t('allBookings');
+
   return (
     <section className="space-y-8">
       <SectionHeader
-        title="Dashboard proprietar"
-        description="Privire de ansamblu asupra activității tale."
+        title={t('title')}
+        description={t('description')}
       />
 
       {/* KPI cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard label="Cabane total" value={totalCabins} icon="🏠" />
+        <KpiCard label={t('totalCabins')} value={totalCabins} icon="🏠" />
         <KpiCard
-          label="Publicate"
+          label={t('published')}
           value={publishedCabins}
           icon="✅"
           variant="success"
         />
         <KpiCard
-          label="Rezervări în așteptare"
+          label={t('pendingBookings')}
           value={pendingBookings}
           icon="⏳"
           variant={pendingBookings > 0 ? 'warning' : 'default'}
         />
         <KpiCard
-          label="Sejururi viitoare"
+          label={t('upcomingStays')}
           value={upcomingStays}
           icon="📅"
         />
@@ -63,9 +76,9 @@ export default async function OwnerDashboardPage() {
       {totalCabins === 0 ? (
         <EmptyState
           icon="🏠"
-          title="Nu ai nicio cabană înregistrată"
-          description="Adaugă prima ta cabană pentru a începe să primești rezervări."
-          action={{ label: '+ Adaugă cabana', href: '/dashboard/owner/listings/new' }}
+          title={t('noCabinsTitle')}
+          description={t('noCabinsDesc')}
+          action={{ label: t('addCabin'), href: '/dashboard/owner/listings/new' }}
         />
       ) : (
         /* Quick-access links */
@@ -74,30 +87,29 @@ export default async function OwnerDashboardPage() {
             id="quick-access-heading"
             className="mb-4 text-lg font-semibold text-gray-900"
           >
-            Acces rapid
+            {t('quickAccess')}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <QuickLink
               href="/dashboard/owner/listings"
               icon="🏠"
-              title="Cabane mele"
-              description="Gestionează listingurile tale."
+              title={t('myCabins')}
+              description={t('myCabinsDesc')}
+              openLabel={t('open')}
             />
             <QuickLink
               href="/dashboard/owner/bookings"
               icon="📋"
-              title="Rezervări"
-              description={
-                pendingBookings > 0
-                  ? `${pendingBookings} rezerv${pendingBookings === 1 ? 'are' : 'ări'} în așteptare`
-                  : 'Vezi toate rezervările'
-              }
+              title={t('bookings')}
+              description={bookingsDesc}
+              openLabel={t('open')}
             />
             <QuickLink
               href="/dashboard/owner/listings/new"
               icon="➕"
-              title="Adaugă cabana"
-              description="Înregistrează o cabană nouă."
+              title={t('addNewCabin')}
+              description={t('addNewCabinDesc')}
+              openLabel={t('open')}
             />
           </div>
         </section>
@@ -139,9 +151,10 @@ interface QuickLinkProps {
   icon: string;
   title: string;
   description: string;
+  openLabel: string;
 }
 
-function QuickLink({ href, icon, title, description }: QuickLinkProps) {
+function QuickLink({ href, icon, title, description, openLabel }: QuickLinkProps) {
   return (
     <Link
       href={href}
@@ -153,7 +166,7 @@ function QuickLink({ href, icon, title, description }: QuickLinkProps) {
       </h3>
       <p className="mt-1 text-sm text-gray-500">{description}</p>
       <span className="mt-4 text-sm font-medium text-indigo-600 group-hover:underline">
-        Deschide →
+        {openLabel}
       </span>
     </Link>
   );

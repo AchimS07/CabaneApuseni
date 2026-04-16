@@ -7,17 +7,14 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { BookingActionButtons } from '@/components/ui/BookingActionButtons';
 import type { BookingStatus } from '@/modules/bookings/domain/types';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Rezervări cabane' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('ownerBookings');
+  return { title: t('metaTitle') };
+}
+
 export const dynamic = 'force-dynamic';
-
-const STATUS_LABELS: Record<BookingStatus | 'all', string> = {
-  all: 'Toate',
-  pending: 'În așteptare',
-  confirmed: 'Confirmate',
-  cancelled: 'Anulate',
-  completed: 'Finalizate',
-};
 
 const STATUS_TABS: Array<BookingStatus | 'all'> = [
   'all',
@@ -33,9 +30,10 @@ interface Props {
 
 export default async function OwnerBookingsPage({ searchParams }: Props) {
   const session = await requireOwner();
-  const [result, params] = await Promise.all([
+  const [result, params, t] = await Promise.all([
     getOwnerBookings(session),
     searchParams,
+    getTranslations('ownerBookings'),
   ]);
 
   const activeStatus = (params.status ?? 'all') as BookingStatus | 'all';
@@ -48,11 +46,21 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
 
   const pendingCount = allBookings.filter((b) => b.status === 'pending').length;
 
+  const STATUS_LABELS: Record<BookingStatus | 'all', string> = {
+    all: t('filterAll'),
+    pending: t('filterPending'),
+    confirmed: t('filterConfirmed'),
+    cancelled: t('filterCancelled'),
+    completed: t('filterCompleted'),
+  };
+
+  const descSuffix = allBookings.length === 1 ? t('reservationSingular') : t('reservationPlural');
+
   return (
     <div>
       <SectionHeader
-        title="Rezervări cabane"
-        description={`${allBookings.length} ${allBookings.length === 1 ? 'rezervare' : 'rezervări'} total`}
+        title={t('title')}
+        description={`${allBookings.length} ${descSuffix} ${t('total')}`}
       />
 
       {!result.ok && (
@@ -60,13 +68,13 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
           role="alert"
           className="mb-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
         >
-          Nu s-au putut încărca rezervările. Încearcă din nou.
+          {t('loadError')}
         </div>
       )}
 
       {/* Status tabs */}
       <nav
-        aria-label="Filtrează după status"
+        aria-label={t('filterLabel')}
         className="mb-6 flex flex-wrap gap-2 border-b pb-4"
       >
         {STATUS_TABS.map((s) => {
@@ -94,7 +102,7 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
                   className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${
                     isActive ? 'bg-white text-indigo-700' : 'bg-yellow-400 text-white'
                   }`}
-                  aria-label={`${pendingCount} în așteptare`}
+                  aria-label={`${pendingCount} ${t('filterPending').toLowerCase()}`}
                 >
                   {pendingCount}
                 </span>
@@ -112,25 +120,25 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
       {filtered.length === 0 ? (
         <EmptyState
           icon="📋"
-          title={`Nicio rezervare ${activeStatus !== 'all' ? STATUS_LABELS[activeStatus].toLowerCase() : ''}`}
+          title={`${t('emptyTitlePrefix')} ${activeStatus !== 'all' ? STATUS_LABELS[activeStatus].toLowerCase() : ''}`}
           description={
             activeStatus === 'pending'
-              ? 'Nu ai rezervări noi care necesită acțiune.'
-              : 'Nu există rezervări în această categorie.'
+              ? t('emptyDescPending')
+              : t('emptyDescOther')
           }
         />
       ) : (
         <div className="overflow-x-auto rounded-xl border">
-          <table className="w-full text-sm" aria-label="Rezervări cabane">
+          <table className="w-full text-sm" aria-label={t('title')}>
             <thead className="bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
               <tr>
-                <th scope="col" className="px-4 py-3">Cabană</th>
-                <th scope="col" className="px-4 py-3">Perioadă</th>
-                <th scope="col" className="px-4 py-3">Oaspeți</th>
-                <th scope="col" className="px-4 py-3">Total</th>
-                <th scope="col" className="px-4 py-3">Status</th>
+                <th scope="col" className="px-4 py-3">{t('colCabin')}</th>
+                <th scope="col" className="px-4 py-3">{t('colPeriod')}</th>
+                <th scope="col" className="px-4 py-3">{t('colGuests')}</th>
+                <th scope="col" className="px-4 py-3">{t('colTotal')}</th>
+                <th scope="col" className="px-4 py-3">{t('colStatus')}</th>
                 <th scope="col" className="px-4 py-3">
-                  <span className="sr-only">Acțiuni</span>
+                  <span className="sr-only">{t('colActions')}</span>
                 </th>
               </tr>
             </thead>

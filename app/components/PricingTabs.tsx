@@ -2,129 +2,131 @@
 
 import { useState } from 'react';
 import { PricingCard, type PricingCardProps } from '@/components/ui/PricingCard';
+import { useTranslations } from 'next-intl';
 
 type Audience = 'clients' | 'owners';
 
-const clientPlans: PricingCardProps[] = [
-  {
-    name: 'Gratuit',
-    price: '0 lei',
-    period: 'lună',
-    description: 'Perfect pentru a descoperi platforma fără niciun cost.',
-    features: [
-      { text: 'Browsing cabane nelimitat', included: true },
-      { text: 'Vizualizare disponibilitate', included: true },
-      { text: 'Până la 2 rezervări / lună', included: true },
-      { text: 'Suport standard (e-mail)', included: true },
-      { text: 'Rezervări nelimitate', included: false },
-      { text: 'Reduceri de sezon', included: false },
-      { text: 'Acces anticipat la cabane noi', included: false },
-      { text: 'Suport prioritar', included: false },
-    ],
-    ctaLabel: 'Începe gratuit',
-    ctaHref: '/register',
-  },
-  {
-    name: 'Explorer',
-    price: '29 lei',
-    period: 'lună',
-    description: 'Pentru turiștii activi care rezervă frecvent.',
-    features: [
-      { text: 'Browsing cabane nelimitat', included: true },
-      { text: 'Vizualizare disponibilitate', included: true },
-      { text: 'Rezervări nelimitate', included: true },
-      { text: 'Suport prioritar (chat)', included: true },
-      { text: 'Acces anticipat la cabane noi', included: true },
-      { text: 'Reduceri de sezon', included: true },
-      { text: 'Oferte exclusive cabane premium', included: false },
-      { text: 'Serviciu concierge personal', included: false },
-    ],
-    ctaLabel: 'Alege Explorer',
-    ctaHref: '/register?plan=explorer',
-    highlighted: true,
-    badge: 'Recomandat',
-  },
-  {
-    name: 'Premium',
-    price: '69 lei',
-    period: 'lună',
-    description: 'Experiență completă cu beneficii exclusive.',
-    features: [
-      { text: 'Browsing cabane nelimitat', included: true },
-      { text: 'Vizualizare disponibilitate', included: true },
-      { text: 'Rezervări nelimitate', included: true },
-      { text: 'Suport prioritar 24/7', included: true },
-      { text: 'Acces anticipat la cabane noi', included: true },
-      { text: 'Reduceri de sezon', included: true },
-      { text: 'Oferte exclusive cabane premium', included: true },
-      { text: 'Serviciu concierge personal', included: true },
-    ],
-    ctaLabel: 'Alege Premium',
-    ctaHref: '/register?plan=premium',
-  },
-];
-
-const ownerPlans: PricingCardProps[] = [
-  {
-    name: 'Starter',
-    price: '0 lei',
-    period: 'lună',
-    description: 'Listează prima ta cabană și descoperă platforma.',
-    features: [
-      { text: '1 cabană activă', included: true },
-      { text: 'Calendar disponibilitate', included: true },
-      { text: 'Gestionare rezervări', included: true },
-      { text: 'Statistici de bază', included: true },
-      { text: 'Comision standard 12%', included: true },
-      { text: 'Plasare prioritară în căutări', included: false },
-      { text: 'Statistici avansate', included: false },
-      { text: 'Suport dedicat', included: false },
-    ],
-    ctaLabel: 'Listează gratuit',
-    ctaHref: '/register?role=owner',
-  },
-  {
-    name: 'Pro',
-    price: '99 lei',
-    period: 'lună',
-    description: 'Pentru proprietarii cu mai multe cabane.',
-    features: [
-      { text: 'Până la 5 cabane active', included: true },
-      { text: 'Calendar disponibilitate', included: true },
-      { text: 'Gestionare rezervări', included: true },
-      { text: 'Statistici avansate', included: true },
-      { text: 'Comision redus 8%', included: true },
-      { text: 'Plasare prioritară în căutări', included: true },
-      { text: 'Insignă „Proprietar verificat"', included: true },
-      { text: 'Suport dedicat', included: false },
-    ],
-    ctaLabel: 'Alege Pro',
-    ctaHref: '/register?role=owner&plan=pro',
-    highlighted: true,
-    badge: 'Cel mai popular',
-  },
-  {
-    name: 'Business',
-    price: '249 lei',
-    period: 'lună',
-    description: 'Soluția completă pentru portofolii mari.',
-    features: [
-      { text: 'Cabane nelimitate', included: true },
-      { text: 'Calendar disponibilitate', included: true },
-      { text: 'Gestionare rezervări', included: true },
-      { text: 'Statistici avansate + rapoarte', included: true },
-      { text: 'Comision minim 5%', included: true },
-      { text: 'Plasare prioritară & featured', included: true },
-      { text: 'Insignă „Proprietar verificat"', included: true },
-      { text: 'Suport dedicat & account manager', included: true },
-    ],
-    ctaLabel: 'Alege Business',
-    ctaHref: '/register?role=owner&plan=business',
-  },
-];
-
 export function PricingTabs() {
+  const t = useTranslations('pricing');
   const [audience, setAudience] = useState<Audience>('clients');
+
+  const clientPlans: PricingCardProps[] = [
+    {
+      name: t('free.name'),
+      price: t('free.price'),
+      period: t('period'),
+      description: t('free.description'),
+      features: [
+        { text: t('free.f1'), included: true },
+        { text: t('free.f2'), included: true },
+        { text: t('free.f3'), included: true },
+        { text: t('free.f4'), included: true },
+        { text: t('free.f5'), included: false },
+        { text: t('free.f6'), included: false },
+        { text: t('free.f7'), included: false },
+        { text: t('free.f8'), included: false },
+      ],
+      ctaLabel: t('free.cta'),
+      ctaHref: '/register',
+    },
+    {
+      name: t('explorer.name'),
+      price: t('explorer.price'),
+      period: t('period'),
+      description: t('explorer.description'),
+      features: [
+        { text: t('explorer.f1'), included: true },
+        { text: t('explorer.f2'), included: true },
+        { text: t('explorer.f3'), included: true },
+        { text: t('explorer.f4'), included: true },
+        { text: t('explorer.f5'), included: true },
+        { text: t('explorer.f6'), included: true },
+        { text: t('explorer.f7'), included: false },
+        { text: t('explorer.f8'), included: false },
+      ],
+      ctaLabel: t('explorer.cta'),
+      ctaHref: '/register?plan=explorer',
+      highlighted: true,
+      badge: t('recommended'),
+    },
+    {
+      name: t('premium.name'),
+      price: t('premium.price'),
+      period: t('period'),
+      description: t('premium.description'),
+      features: [
+        { text: t('premium.f1'), included: true },
+        { text: t('premium.f2'), included: true },
+        { text: t('premium.f3'), included: true },
+        { text: t('premium.f4'), included: true },
+        { text: t('premium.f5'), included: true },
+        { text: t('premium.f6'), included: true },
+        { text: t('premium.f7'), included: true },
+        { text: t('premium.f8'), included: true },
+      ],
+      ctaLabel: t('premium.cta'),
+      ctaHref: '/register?plan=premium',
+    },
+  ];
+
+  const ownerPlans: PricingCardProps[] = [
+    {
+      name: t('starter.name'),
+      price: t('starter.price'),
+      period: t('period'),
+      description: t('starter.description'),
+      features: [
+        { text: t('starter.f1'), included: true },
+        { text: t('starter.f2'), included: true },
+        { text: t('starter.f3'), included: true },
+        { text: t('starter.f4'), included: true },
+        { text: t('starter.f5'), included: true },
+        { text: t('starter.f6'), included: false },
+        { text: t('starter.f7'), included: false },
+        { text: t('starter.f8'), included: false },
+      ],
+      ctaLabel: t('starter.cta'),
+      ctaHref: '/register?role=owner',
+    },
+    {
+      name: t('pro.name'),
+      price: t('pro.price'),
+      period: t('period'),
+      description: t('pro.description'),
+      features: [
+        { text: t('pro.f1'), included: true },
+        { text: t('pro.f2'), included: true },
+        { text: t('pro.f3'), included: true },
+        { text: t('pro.f4'), included: true },
+        { text: t('pro.f5'), included: true },
+        { text: t('pro.f6'), included: true },
+        { text: t('pro.f7'), included: true },
+        { text: t('pro.f8'), included: false },
+      ],
+      ctaLabel: t('pro.cta'),
+      ctaHref: '/register?role=owner&plan=pro',
+      highlighted: true,
+      badge: t('mostPopular'),
+    },
+    {
+      name: t('business.name'),
+      price: t('business.price'),
+      period: t('period'),
+      description: t('business.description'),
+      features: [
+        { text: t('business.f1'), included: true },
+        { text: t('business.f2'), included: true },
+        { text: t('business.f3'), included: true },
+        { text: t('business.f4'), included: true },
+        { text: t('business.f5'), included: true },
+        { text: t('business.f6'), included: true },
+        { text: t('business.f7'), included: true },
+        { text: t('business.f8'), included: true },
+      ],
+      ctaLabel: t('business.cta'),
+      ctaHref: '/register?role=owner&plan=business',
+    },
+  ];
 
   const plans = audience === 'clients' ? clientPlans : ownerPlans;
 
@@ -135,7 +137,7 @@ export function PricingTabs() {
         <div
           className="inline-flex rounded-xl border border-gray-200 bg-gray-100 p-1"
           role="tablist"
-          aria-label="Selectează tipul de cont"
+          aria-label={t('tabsLabel')}
         >
           <button
             role="tab"
@@ -148,7 +150,7 @@ export function PricingTabs() {
                 : 'text-gray-600 hover:text-gray-900',
             ].join(' ')}
           >
-            🏕️ Pentru turiști
+            {t('forTourists')}
           </button>
           <button
             role="tab"
@@ -161,7 +163,7 @@ export function PricingTabs() {
                 : 'text-gray-600 hover:text-gray-900',
             ].join(' ')}
           >
-            🏠 Pentru proprietari
+            {t('forOwners')}
           </button>
         </div>
       </div>
@@ -170,9 +172,7 @@ export function PricingTabs() {
       <div
         role="tabpanel"
         aria-label={
-          audience === 'clients'
-            ? 'Planuri pentru turiști'
-            : 'Planuri pentru proprietari'
+          audience === 'clients' ? t('touristsTabLabel') : t('ownersTabLabel')
         }
         className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
       >
@@ -182,7 +182,7 @@ export function PricingTabs() {
       </div>
 
       <p className="mt-8 text-center text-sm text-gray-500">
-        Toate prețurile includ TVA. Poți anula oricând, fără penalizări.
+        {t('vatNote')}
       </p>
     </div>
   );

@@ -6,23 +6,33 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TogglePublishButton } from '@/components/ui/TogglePublishButton';
 import { Button } from '@/components/ui/Button';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Cabane mele' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('ownerListings');
+  return { title: t('metaTitle') };
+}
+
 export const dynamic = 'force-dynamic';
 
 export default async function OwnerListingsPage() {
   const session = await requireOwner();
   const result = await getOwnerCabins(session.uid);
   const cabins = result.ok ? result.data : [];
+  const t = await getTranslations('ownerListings');
+
+  const description = cabins.length === 1
+    ? t('descriptionSingular')
+    : t('descriptionPlural', { count: cabins.length });
 
   return (
     <div>
       <SectionHeader
-        title="Cabane mele"
-        description={`${cabins.length} ${cabins.length === 1 ? 'cabană înregistrată' : 'cabane înregistrate'}`}
+        title={t('title')}
+        description={description}
         action={
           <Link href="/dashboard/owner/listings/new">
-            <Button size="sm">+ Adaugă cabana</Button>
+            <Button size="sm">{t('addCabin')}</Button>
           </Link>
         }
       />
@@ -32,32 +42,32 @@ export default async function OwnerListingsPage() {
           role="alert"
           className="mb-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
         >
-          Nu s-au putut încărca listingurile. Încearcă din nou.
+          {t('loadError')}
         </div>
       )}
 
       {result.ok && cabins.length === 0 && (
         <EmptyState
           icon="🏠"
-          title="Nu ai nicio cabană"
-          description="Adaugă prima ta cabană pentru a începe să primești rezervări."
-          action={{ label: '+ Adaugă cabana', href: '/dashboard/owner/listings/new' }}
+          title={t('emptyTitle')}
+          description={t('emptyDesc')}
+          action={{ label: t('addCabin'), href: '/dashboard/owner/listings/new' }}
         />
       )}
 
       {result.ok && cabins.length > 0 && (
         <div className="overflow-x-auto rounded-xl border">
-          <table className="w-full text-sm" aria-label="Cabane mele">
+          <table className="w-full text-sm" aria-label={t('title')}>
             <thead className="bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
               <tr>
-                <th scope="col" className="px-4 py-3">Titlu</th>
-                <th scope="col" className="px-4 py-3">Locație</th>
-                <th scope="col" className="px-4 py-3">Preț / noapte</th>
-                <th scope="col" className="px-4 py-3">Oaspeți max.</th>
-                <th scope="col" className="px-4 py-3">Status</th>
-                <th scope="col" className="px-4 py-3">Actualizat</th>
+                <th scope="col" className="px-4 py-3">{t('colTitle')}</th>
+                <th scope="col" className="px-4 py-3">{t('colLocation')}</th>
+                <th scope="col" className="px-4 py-3">{t('colPrice')}</th>
+                <th scope="col" className="px-4 py-3">{t('colMaxGuests')}</th>
+                <th scope="col" className="px-4 py-3">{t('colStatus')}</th>
+                <th scope="col" className="px-4 py-3">{t('colUpdated')}</th>
                 <th scope="col" className="px-4 py-3">
-                  <span className="sr-only">Acțiuni</span>
+                  <span className="sr-only">{t('colActions')}</span>
                 </th>
               </tr>
             </thead>
@@ -73,11 +83,11 @@ export default async function OwnerListingsPage() {
                   <td className="px-4 py-3">
                     {cabin.published ? (
                       <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
-                        <span aria-hidden="true">●</span> Publicată
+                        <span aria-hidden="true">●</span> {t('statusPublished')}
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
-                        <span aria-hidden="true">○</span> Draft
+                        <span aria-hidden="true">○</span> {t('statusDraft')}
                       </span>
                     )}
                   </td>
@@ -90,7 +100,7 @@ export default async function OwnerListingsPage() {
                         href={`/dashboard/owner/listings/${cabin.id}/edit`}
                         className="rounded-md border border-indigo-200 px-3 py-1.5 text-xs font-medium text-indigo-600 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       >
-                        Editează
+                        {t('edit')}
                       </Link>
                       <TogglePublishButton
                         cabinId={cabin.id}
@@ -102,7 +112,7 @@ export default async function OwnerListingsPage() {
                         rel="noopener noreferrer"
                         className="text-xs text-gray-400 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
                       >
-                        Previzualizare ↗
+                        {t('preview')}
                       </Link>
                     </div>
                   </td>

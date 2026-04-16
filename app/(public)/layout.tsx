@@ -2,9 +2,11 @@ import type { ReactNode } from 'react';
 import { verifySession } from '@/lib/auth/session';
 import { getUserById } from '@/modules/users/infrastructure/firestoreUserRepository';
 import { PublicHeader } from '@/components/ui/PublicHeader';
+import { getTranslations } from 'next-intl/server';
 
 export default async function PublicLayout({ children }: { children: ReactNode }) {
   const session = await verifySession();
+  const t = await getTranslations('common');
 
   let isOwner = false;
   if (session) {
@@ -26,7 +28,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
       />
       <div className="flex-1">{children}</div>
       <footer className="border-t py-8 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Cabane Apuseni. Toate drepturile rezervate.
+        © {new Date().getFullYear()} Cabane Apuseni. {t('allRightsReserved')}
       </footer>
     </div>
   );

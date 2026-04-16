@@ -1,0 +1,496 @@
+{
+  "common": {
+    "siteName": "Cabane Apuseni",
+    "loading": "Se încarcă...",
+    "error": "A apărut o eroare.",
+    "tryAgain": "Încearcă din nou",
+    "back": "Înapoi",
+    "cancel": "Anulează",
+    "save": "Salvează modificările",
+    "saving": "Se salvează...",
+    "open": "Deschide →",
+    "allRightsReserved": "Toate drepturile rezervate."
+  },
+  "nav": {
+    "cabins": "Cabane",
+    "pricing": "Prețuri",
+    "myBookings": "Rezervările mele",
+    "ownerDashboard": "Dashboard proprietar",
+    "admin": "Admin",
+    "signIn": "Autentificare",
+    "register": "Înregistrare",
+    "logout": "Deconectare",
+    "loggingOut": "Se deconectează…",
+    "closeMenu": "Închide meniu",
+    "openMenu": "Deschide meniu",
+    "mainNav": "Navigare principală",
+    "owner": "Proprietar",
+    "myListings": "Cabane mele",
+    "bookings": "Rezervări",
+    "publicSite": "← Site public",
+    "dashboard": "Tablou de bord",
+    "searchCabins": "Caută cabane"
+  },
+  "home": {
+    "meta": {
+      "title": "Cabane Apuseni – Cazare la Munte",
+      "description": "Descoperă cele mai frumoase cabane din Munții Apuseni. Rezervă acum."
+    },
+    "hero": {
+      "title": "Cabane în Munții Apuseni",
+      "subtitle": "Refugii autentice de munte, perfecte pentru relaxare și aventură.",
+      "exploreCabins": "Explorează cabane",
+      "viewPricing": "Vezi prețuri"
+    },
+    "features": {
+      "heading": "De ce să alegi Cabane Apuseni?",
+      "nature": {
+        "title": "Natură autentică",
+        "description": "Peisaje montane spectaculoase direct la ușa cabinei tale."
+      },
+      "comfort": {
+        "title": "Confort modern",
+        "description": "Căldură, internet și dotări complete pentru un sejur fără griji."
+      },
+      "booking": {
+        "title": "Rezervare ușoară",
+        "description": "Disponibilitate în timp real, confirmare imediată."
+      }
+    },
+    "howItWorks": {
+      "heading": "Cum funcționează?",
+      "search": {
+        "title": "Caută",
+        "description": "Răsfoiește zeci de cabane cu filtre după locație, preț și dotări."
+      },
+      "chooseDates": {
+        "title": "Alege datele",
+        "description": "Verifică disponibilitatea în timp real și selectează nopțile dorite."
+      },
+      "book": {
+        "title": "Rezervă",
+        "description": "Confirmare imediată și plată securizată prin platformă."
+      },
+      "enjoy": {
+        "title": "Bucură-te",
+        "description": "Ajunge la cabană și trăiește experiența montană perfectă."
+      }
+    },
+    "pricing": {
+      "heading": "Planuri transparente, fără surprize",
+      "subtitle": "Indiferent dacă ești turist în căutarea aventurii sau proprietar care vrea să-și listeze cabana, avem planul potrivit pentru tine."
+    },
+    "trust": {
+      "securePayments": "Plăți securizate",
+      "cancelAnytime": "Anulare oricând",
+      "freeTrial": "14 zile gratuit",
+      "supportRo": "Suport în română"
+    },
+    "faq": {
+      "heading": "Întrebări frecvente",
+      "q1": {
+        "question": "Pot schimba planul oricând?",
+        "answer": "Da, poți face upgrade sau downgrade la orice plan oricând din contul tău. Modificările intră în vigoare la începutul ciclului de facturare următor."
+      },
+      "q2": {
+        "question": "Există un contract pe termen lung?",
+        "answer": "Nu. Toate planurile sunt lunare, fără angajament pe termen lung. Poți anula în orice moment."
+      },
+      "q3": {
+        "question": "Ce înseamnă comisionul pentru proprietari?",
+        "answer": "Comisionul se aplică pe fiecare rezervare confirmată prin platformă. Cu planuri superioare, procentul scade, crescând veniturile nete."
+      },
+      "q4": {
+        "question": "Cum funcționează perioada de probă?",
+        "answer": "Planul Gratuit este disponibil fără limită de timp. Planurile plătite pot fi testate 14 zile gratuit — nu este necesar cardul de credit."
+      },
+      "q5": {
+        "question": "Există reduceri pentru plata anuală?",
+        "answer": "Da! La plata anuală beneficiezi de 2 luni gratuite față de plata lunară. Contactează-ne pentru detalii."
+      }
+    },
+    "cta": {
+      "heading": "Gata să începi aventura?",
+      "subtitle": "Creează un cont gratuit în câteva secunde. Niciun card necesar.",
+      "register": "Înregistrare gratuită",
+      "exploreCabins": "Explorează cabane"
+    }
+  },
+  "pricing": {
+    "tabsLabel": "Selectează tipul de cont",
+    "forTourists": "🏕️ Pentru turiști",
+    "forOwners": "🏠 Pentru proprietari",
+    "touristsTabLabel": "Planuri pentru turiști",
+    "ownersTabLabel": "Planuri pentru proprietari",
+    "vatNote": "Toate prețurile includ TVA. Poți anula oricând, fără penalizări.",
+    "period": "lună",
+    "recommended": "Recomandat",
+    "mostPopular": "Cel mai popular",
+    "free": {
+      "name": "Gratuit",
+      "price": "0 lei",
+      "description": "Perfect pentru a descoperi platforma fără niciun cost.",
+      "cta": "Începe gratuit",
+      "f1": "Browsing cabane nelimitat",
+      "f2": "Vizualizare disponibilitate",
+      "f3": "Până la 2 rezervări / lună",
+      "f4": "Suport standard (e-mail)",
+      "f5": "Rezervări nelimitate",
+      "f6": "Reduceri de sezon",
+      "f7": "Acces anticipat la cabane noi",
+      "f8": "Suport prioritar"
+    },
+    "explorer": {
+      "name": "Explorer",
+      "price": "29 lei",
+      "description": "Pentru turiștii activi care rezervă frecvent.",
+      "cta": "Alege Explorer",
+      "f1": "Browsing cabane nelimitat",
+      "f2": "Vizualizare disponibilitate",
+      "f3": "Rezervări nelimitate",
+      "f4": "Suport prioritar (chat)",
+      "f5": "Acces anticipat la cabane noi",
+      "f6": "Reduceri de sezon",
+      "f7": "Oferte exclusive cabane premium",
+      "f8": "Serviciu concierge personal"
+    },
+    "premium": {
+      "name": "Premium",
+      "price": "69 lei",
+      "description": "Experiență completă cu beneficii exclusive.",
+      "cta": "Alege Premium",
+      "f1": "Browsing cabane nelimitat",
+      "f2": "Vizualizare disponibilitate",
+      "f3": "Rezervări nelimitate",
+      "f4": "Suport prioritar 24/7",
+      "f5": "Acces anticipat la cabane noi",
+      "f6": "Reduceri de sezon",
+      "f7": "Oferte exclusive cabane premium",
+      "f8": "Serviciu concierge personal"
+    },
+    "starter": {
+      "name": "Starter",
+      "price": "0 lei",
+      "description": "Listează prima ta cabană și descoperă platforma.",
+      "cta": "Listează gratuit",
+      "f1": "1 cabană activă",
+      "f2": "Calendar disponibilitate",
+      "f3": "Gestionare rezervări",
+      "f4": "Statistici de bază",
+      "f5": "Comision standard 12%",
+      "f6": "Plasare prioritară în căutări",
+      "f7": "Statistici avansate",
+      "f8": "Suport dedicat"
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "99 lei",
+      "description": "Pentru proprietarii cu mai multe cabane.",
+      "cta": "Alege Pro",
+      "f1": "Până la 5 cabane active",
+      "f2": "Calendar disponibilitate",
+      "f3": "Gestionare rezervări",
+      "f4": "Statistici avansate",
+      "f5": "Comision redus 8%",
+      "f6": "Plasare prioritară în căutări",
+      "f7": "Insignă 'Proprietar verificat'",
+      "f8": "Suport dedicat"
+    },
+    "business": {
+      "name": "Business",
+      "price": "249 lei",
+      "description": "Soluția completă pentru portofolii mari.",
+      "cta": "Alege Business",
+      "f1": "Cabane nelimitate",
+      "f2": "Calendar disponibilitate",
+      "f3": "Gestionare rezervări",
+      "f4": "Statistici avansate + rapoarte",
+      "f5": "Comision minim 5%",
+      "f6": "Plasare prioritară & featured",
+      "f7": "Insigna 'Proprietar verificat'",
+      "f8": "Suport dedicat & account manager"
+    }
+  },
+  "cabin": {
+    "notFound": "Cabana negăsită",
+    "backToCabins": "← Înapoi la cabane",
+    "capacity": "Capacitate:",
+    "person": "persoană",
+    "persons": "persoane",
+    "perNight": "/ noapte",
+    "description": "Descriere",
+    "amenities": "Dotări",
+    "gallery": "Galerie foto",
+    "imageAlt": "imagine",
+    "bookingFormLabel": "Formular de rezervare"
+  },
+  "booking": {
+    "pricePerNight": "RON / noapte",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "guests": "Oaspeți",
+    "guestsMax": "(max {max})",
+    "notes": "Mențiuni",
+    "notesOptional": "(opțional)",
+    "notesPlaceholder": "Cerințe speciale, ora aproximativă de sosire…",
+    "nightSingular": "noapte",
+    "nightPlural": "nopți",
+    "total": "Total",
+    "bookNow": "Rezervă acum",
+    "loginToBook": "Autentifică-te pentru a rezerva",
+    "redirectToLogin": "Vei fi redirecționat la pagina de autentificare.",
+    "errors": {
+      "checkInRequired": "Selectează data de check-in.",
+      "checkOutRequired": "Selectează data de check-out.",
+      "checkOutAfterCheckIn": "Check-out trebuie să fie după check-in.",
+      "minOneGuest": "Minim 1 oaspete.",
+      "maxGuests": "Maximum {max} oaspeți pentru această cabană.",
+      "generic": "A apărut o eroare. Vă rugăm să încercați din nou."
+    }
+  },
+  "auth": {
+    "loginTitle": "Autentificare",
+    "registerTitle": "Cont nou",
+    "loginButton": "Autentificare",
+    "registerButton": "Creează cont",
+    "noAccount": "Nu ai cont?",
+    "signUpLink": "Înregistrează-te",
+    "haveAccount": "Ai deja cont?",
+    "signInLink": "Autentifică-te",
+    "haveACabin": "Ai o cabană?",
+    "registerAsOwner": "Înregistrează-te ca proprietar",
+    "email": "Email",
+    "password": "Parolă",
+    "fullName": "Nume complet",
+    "confirmPassword": "Confirmă parola",
+    "loginFailed": "Autentificare eșuată. Verificați credențialele.",
+    "registerFailed": "Înregistrare eșuată. Încercați din nou.",
+    "ownerRegisterTitle": "Cont proprietar",
+    "createOwnerAccount": "Creează cont de proprietar",
+    "wantClientAccount": "Vrei cont de client?",
+    "standardRegister": "Înregistrare standard"
+  },
+  "dashboard": {
+    "title": "Tablou de bord",
+    "welcomeBack": "Bine ai revenit, {name}!",
+    "subtitleOwner": "Gestionează profilul de proprietar și activitatea contului.",
+    "subtitleUser": "Gestionează rezervările și contul tău.",
+    "myBookings": "Rezervările mele",
+    "myBookingsDesc": "Vezi și gestionează rezervările tale active.",
+    "viewBookings": "Vezi rezervări →",
+    "searchCabins": "Caută cabane",
+    "searchCabinsDesc": "Explorează cabane disponibile și rezervă.",
+    "explore": "Explorează →",
+    "ownerDashboard": "Dashboard proprietar",
+    "ownerDashboardDesc": "Vezi statusul contului de proprietar și următorii pași.",
+    "openDashboard": "Deschide dashboard →"
+  },
+  "myBookings": {
+    "title": "Rezervările mele",
+    "metaTitle": "Rezervările mele",
+    "successTitle": "Rezervare trimisă cu succes!",
+    "successMessage": "Vei fi contactat pentru confirmare.",
+    "emptyTitle": "Nu ai nicio rezervare",
+    "emptyDescription": "Explorează cabanele disponibile și fă prima ta rezervare.",
+    "exploreCabins": "Explorează cabane",
+    "cabin": "Cabană",
+    "period": "Perioadă",
+    "guests": "Oaspeți",
+    "total": "Total",
+    "status": "Status",
+    "actions": "Acțiuni",
+    "cancelBooking": "Anulează rezervarea",
+    "cancel": "Anulează",
+    "cancelling": "Se anulează…",
+    "confirmCancel": "Ești sigur că vrei să anulezi această rezervare?",
+    "cancelError": "A apărut o eroare. Încercați din nou."
+  },
+  "ownerDashboard": {
+    "title": "Dashboard proprietar",
+    "metaTitle": "Dashboard proprietar",
+    "description": "Privire de ansamblu asupra activității tale.",
+    "totalCabins": "Cabane total",
+    "published": "Publicate",
+    "pendingBookings": "Rezervări în așteptare",
+    "upcomingStays": "Sejururi viitoare",
+    "noCabinsTitle": "Nu ai nicio cabană înregistrată",
+    "noCabinsDesc": "Adaugă prima ta cabană pentru a începe să primești rezervări.",
+    "addCabin": "+ Adaugă cabana",
+    "quickAccess": "Acces rapid",
+    "myCabins": "Cabane mele",
+    "myCabinsDesc": "Gestionează listingurile tale.",
+    "bookings": "Rezervări",
+    "bookingsPendingDesc": "{count} {suffix} în așteptare",
+    "bookingsSuffix1": "rezervare",
+    "bookingsSuffixN": "rezervări",
+    "allBookings": "Vezi toate rezervările",
+    "addNewCabin": "Adaugă cabana",
+    "addNewCabinDesc": "Înregistrează o cabană nouă.",
+    "open": "Deschide →"
+  },
+  "ownerListings": {
+    "title": "Cabane mele",
+    "metaTitle": "Cabane mele",
+    "descriptionSingular": "1 cabană înregistrată",
+    "descriptionPlural": "{count} cabane înregistrate",
+    "addCabin": "+ Adaugă cabana",
+    "loadError": "Nu s-au putut încărca listingurile. Încearcă din nou.",
+    "emptyTitle": "Nu ai nicio cabană",
+    "emptyDesc": "Adaugă prima ta cabană pentru a începe să primești rezervări.",
+    "colTitle": "Titlu",
+    "colLocation": "Locație",
+    "colPrice": "Preț / noapte",
+    "colMaxGuests": "Oaspeți max.",
+    "colStatus": "Status",
+    "colUpdated": "Actualizat",
+    "colActions": "Acțiuni",
+    "statusPublished": "Publicată",
+    "statusDraft": "Draft",
+    "edit": "Editează",
+    "preview": "Previzualizare ↗",
+    "publish": "Publică",
+    "unpublish": "Retrage",
+    "publishing": "Se salvează…",
+    "publishCabin": "Publică cabana",
+    "unpublishCabin": "Retrage din publicare",
+    "toggleError": "A apărut o eroare. Încearcă din nou."
+  },
+  "ownerBookings": {
+    "title": "Rezervări cabane",
+    "metaTitle": "Rezervări cabane",
+    "loadError": "Nu s-au putut încărca rezervările. Încearcă din nou.",
+    "filterLabel": "Filtrează după status",
+    "filterAll": "Toate",
+    "filterPending": "În așteptare",
+    "filterConfirmed": "Confirmate",
+    "filterCancelled": "Anulate",
+    "filterCompleted": "Finalizate",
+    "emptyTitlePrefix": "Nicio rezervare",
+    "emptyDescPending": "Nu ai rezervări noi care necesită acțiune.",
+    "emptyDescOther": "Nu există rezervări în această categorie.",
+    "colCabin": "Cabană",
+    "colPeriod": "Perioadă",
+    "colGuests": "Oaspeți",
+    "colTotal": "Total",
+    "colStatus": "Status",
+    "colActions": "Acțiuni",
+    "confirm": "Confirmă",
+    "confirming": "Se confirmă…",
+    "confirmBooking": "Confirmă rezervarea",
+    "reject": "Refuză",
+    "rejecting": "Se refuză…",
+    "rejectBooking": "Refuză rezervarea",
+    "confirmReject": "Ești sigur că vrei să refuzi această rezervare?",
+    "actionError": "A apărut o eroare. Încearcă din nou.",
+    "reservationSingular": "rezervare",
+    "reservationPlural": "rezervări",
+    "total": "total"
+  },
+  "ownerNewListing": {
+    "title": "Adaugă cabana",
+    "metaTitle": "Adaugă cabana",
+    "description": "Completează detaliile noii tale cabane.",
+    "back": "← Înapoi"
+  },
+  "cabinForm": {
+    "basicInfo": "Informații de bază",
+    "titleLabel": "Titlu",
+    "titlePlaceholder": "Cabana Muntele Verde",
+    "slugLabel": "Slug (URL)",
+    "slugPlaceholder": "cabana-muntele-verde",
+    "slugHint": "Generat automat din titlu. Folosește doar litere mici, cifre și liniuțe.",
+    "locationLabel": "Locație",
+    "locationPlaceholder": "Arieșeni",
+    "descriptionLabel": "Descriere",
+    "descriptionPlaceholder": "Descrieți cabana în cel puțin 20 de caractere…",
+    "pricingCapacity": "Prețuri și capacitate",
+    "priceLabel": "Preț / noapte (RON)",
+    "maxGuestsLabel": "Oaspeți maxim",
+    "amenitiesImages": "Dotări și imagini",
+    "amenitiesLabel": "Dotări",
+    "amenitiesHint": "(câte una pe linie)",
+    "amenitiesPlaceholder": "Wi-Fi\nȘemineu\nParcare",
+    "imageUrlsLabel": "URL-uri imagini",
+    "imageUrlsHint": "(câte unul pe linie)",
+    "imageUrlsPlaceholder": "https://example.com/imagine1.jpg",
+    "publishToggleLabel": "Publică imediat",
+    "publishToggleHint": "– vizibilă pentru oaspeți după salvare",
+    "cancel": "Anulează",
+    "addCabin": "Adaugă cabana",
+    "saveChanges": "Salvează modificările",
+    "genericError": "A apărut o eroare. Vă rugăm să încercați din nou."
+  },
+  "adminDashboard": {
+    "title": "Tablou de bord",
+    "metaTitle": "Admin – Tablou de bord",
+    "description": "Privire de ansamblu asupra platformei.",
+    "cabins": "Cabane",
+    "totalBookings": "Rezervări totale",
+    "pending": "În așteptare",
+    "confirmed": "Confirmate",
+    "quickAccess": "Acces rapid",
+    "manageCabins": "Gestionează cabane",
+    "viewPublicSite": "Vizualizează site-ul public"
+  },
+  "adminCabins": {
+    "title": "Cabane",
+    "metaTitle": "Admin – Cabane",
+    "descriptionSingular": "1 cabană înregistrată",
+    "descriptionPlural": "{count} cabane înregistrate",
+    "addCabin": "+ Adaugă cabană",
+    "emptyTitle": "Nu există cabane înregistrate",
+    "emptyDesc": "Adaugă prima cabană pentru a începe.",
+    "colTitle": "Titlu",
+    "colLocation": "Locație",
+    "colPrice": "Preț / noapte",
+    "colMaxGuests": "Oaspeți max.",
+    "colPublished": "Publicată",
+    "colActions": "Acțiuni",
+    "statusPublished": "Publicată",
+    "statusDraft": "Draft",
+    "viewCabin": "Vizualizare ↗",
+    "listLabel": "Lista cabane",
+    "adminNav": "Navigare panou admin"
+  },
+  "statusBadge": {
+    "pending": "În așteptare",
+    "confirmed": "Confirmată",
+    "cancelled": "Anulată",
+    "completed": "Finalizată"
+  },
+  "errors": {
+    "title": "A apărut o eroare",
+    "retry": "Încearcă din nou",
+    "notFoundTitle": "Pagina nu a fost găsită",
+    "notFoundDescription": "Pagina pe care o căutați nu există sau a fost mutată.",
+    "backHome": "Înapoi la pagina principală"
+  },
+  "languageSwitcher": {
+    "label": "Limbă",
+    "ro": "RO",
+    "en": "EN",
+    "hu": "HU"
+  },
+  "cabinsList": {
+    "metaTitle": "Cabane disponibile",
+    "metaDescription": "Explorează cabanele disponibile din Munții Apuseni.",
+    "title": "Cabane disponibile",
+    "countSingular": "1 cabană disponibilă",
+    "countPlural": "{count} cabane disponibile",
+    "searching": "Căutăm cabane pentru tine…",
+    "loadError": "Ne pare rău, nu am putut încărca lista cabanelor. Te rugăm să revii mai târziu.",
+    "emptyTitle": "Nu există cabane disponibile momentan",
+    "emptyDescription": "Revino mai târziu – noi cabane sunt adăugate în permanență.",
+    "viewList": "Listă",
+    "viewMap": "Hartă",
+    "listAriaLabel": "Lista cabane disponibile",
+    "perNight": "/ noapte",
+    "viewDetails": "Vezi detalii →"
+  },
+  "ownerEditListing": {
+    "title": "Editează cabana",
+    "metaTitle": "Editează cabana",
+    "editPrefix": "Editează:",
+    "back": "← Înapoi la cabane mele"
+  }
+}

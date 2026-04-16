@@ -3,8 +3,12 @@ import Link from 'next/link';
 import { requireOwner } from '@/lib/auth/authorization';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import CabinForm from '@/components/forms/CabinForm';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = { title: 'Adaugă cabana' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('ownerNewListing');
+  return { title: t('metaTitle') };
+}
 
 interface Props {
   searchParams: Promise<{ redirectTo?: string }>;
@@ -13,6 +17,7 @@ interface Props {
 export default async function NewListingPage({ searchParams }: Props) {
   await requireOwner();
   const { redirectTo } = await searchParams;
+  const t = await getTranslations('ownerNewListing');
   // Only allow relative paths to prevent open redirect
   const safeRedirect =
     redirectTo && redirectTo.startsWith('/') ? redirectTo : undefined;
@@ -21,8 +26,8 @@ export default async function NewListingPage({ searchParams }: Props) {
   return (
     <div>
       <SectionHeader
-        title="Adaugă cabana"
-        description="Completează detaliile noii tale cabane."
+        title={t('title')}
+        description={t('description')}
       />
 
       <nav aria-label="Navigare" className="mb-6 text-sm text-gray-500">
@@ -30,7 +35,7 @@ export default async function NewListingPage({ searchParams }: Props) {
           href={backHref}
           className="hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
         >
-          ← Înapoi
+          {t('back')}
         </Link>
       </nav>
 

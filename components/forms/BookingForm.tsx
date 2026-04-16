@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { createBookingAction } from '@/modules/bookings/actions';
+import { useTranslations } from 'next-intl';
 
 interface BookingFormProps {
   cabin: {
@@ -37,6 +38,7 @@ function calcNights(checkIn: string, checkOut: string): number {
 export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps) {
   const router = useRouter();
   const formId = useId();
+  const t = useTranslations('booking');
 
   const tomorrow = getTomorrow();
 
@@ -73,14 +75,14 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
 
     // Basic client-side validation
     const errs: Record<string, string> = {};
-    if (!checkIn) errs.checkIn = 'Selectează data de check-in.';
-    if (!checkOut) errs.checkOut = 'Selectează data de check-out.';
+    if (!checkIn) errs.checkIn = t('errors.checkInRequired');
+    if (!checkOut) errs.checkOut = t('errors.checkOutRequired');
     if (checkIn && checkOut && new Date(checkOut) <= new Date(checkIn)) {
-      errs.checkOut = 'Check-out trebuie să fie după check-in.';
+      errs.checkOut = t('errors.checkOutAfterCheckIn');
     }
-    if (guestCount < 1) errs.guestCount = 'Minim 1 oaspete.';
+    if (guestCount < 1) errs.guestCount = t('errors.minOneGuest');
     if (guestCount > cabin.maxGuests) {
-      errs.guestCount = `Maximum ${cabin.maxGuests} oaspeți pentru această cabană.`;
+      errs.guestCount = t('errors.maxGuests', { max: cabin.maxGuests });
     }
     if (Object.keys(errs).length > 0) {
       setFieldErrors(errs);
@@ -117,7 +119,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
 
       router.push('/dashboard/bookings?success=1');
     } catch {
-      setError('A apărut o eroare. Vă rugăm să încercați din nou.');
+      setError(t('errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -127,7 +129,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
     <div className="rounded-xl border bg-white p-6 shadow-sm">
       <p className="text-2xl font-bold text-gray-900">
         {cabin.pricePerNight}{' '}
-        <span className="text-base font-normal text-gray-500">RON / noapte</span>
+        <span className="text-base font-normal text-gray-500">{t('pricePerNight')}</span>
       </p>
 
       <form
@@ -147,7 +149,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
 
         <div className="grid grid-cols-2 gap-3">
           <Input
-            label="Check-in"
+            label={t('checkIn')}
             id={`${formId}-checkin`}
             type="date"
             value={checkIn}
@@ -161,7 +163,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             error={fieldErrors.checkIn}
           />
           <Input
-            label="Check-out"
+            label={t('checkOut')}
             id={`${formId}-checkout`}
             type="date"
             value={checkOut}
@@ -177,9 +179,9 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             htmlFor={`${formId}-guests`}
             className="text-sm font-medium text-gray-700"
           >
-            Oaspeți{' '}
+            {t('guests')}{' '}
             <span className="text-gray-400">
-              (max {cabin.maxGuests})
+              {t('guestsMax', { max: cabin.maxGuests })}
             </span>
           </label>
           <input
@@ -218,8 +220,8 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             htmlFor={`${formId}-notes`}
             className="text-sm font-medium text-gray-700"
           >
-            Mențiuni{' '}
-            <span className="text-gray-400">(opțional)</span>
+            {t('notes')}{' '}
+            <span className="text-gray-400">{t('notesOptional')}</span>
           </label>
           <textarea
             id={`${formId}-notes`}
@@ -227,7 +229,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             maxLength={500}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Cerințe speciale, ora aproximativă de sosire…"
+            placeholder={t('notesPlaceholder')}
             className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm transition placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
@@ -238,12 +240,12 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
             <div className="flex justify-between text-gray-700">
               <span>
                 {cabin.pricePerNight} RON × {nights}{' '}
-                {nights === 1 ? 'noapte' : 'nopți'}
+                {nights === 1 ? t('nightSingular') : t('nightPlural')}
               </span>
               <span>{totalPrice} RON</span>
             </div>
             <div className="mt-1 flex justify-between font-semibold text-gray-900">
-              <span>Total</span>
+              <span>{t('total')}</span>
               <span>{totalPrice} RON</span>
             </div>
           </div>
@@ -255,12 +257,12 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
           size="lg"
           className="w-full"
         >
-          {isAuthenticated ? 'Rezervă acum' : 'Autentifică-te pentru a rezerva'}
+          {isAuthenticated ? t('bookNow') : t('loginToBook')}
         </Button>
 
         {!isAuthenticated && (
           <p className="text-center text-xs text-gray-500">
-            Vei fi redirecționat la pagina de autentificare.
+            {t('redirectToLogin')}
           </p>
         )}
       </form>

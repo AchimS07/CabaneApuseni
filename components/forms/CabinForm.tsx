@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input';
 import { createCabinAction, updateCabinAction } from '@/modules/cabins/actions';
 import type { CabinInput } from '@/lib/validation/schemas';
 import type { Cabin } from '@/modules/cabins/domain/types';
+import { useTranslations } from 'next-intl';
 
 interface CabinFormProps {
   /** When provided the form operates in edit mode. */
@@ -33,6 +34,7 @@ function slugify(value: string): string {
  */
 export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/listings' }: CabinFormProps) {
   const router = useRouter();
+  const t = useTranslations('cabinForm');
   const isEdit = !!cabin;
 
   const [title, setTitle] = useState(cabin?.title ?? '');
@@ -107,7 +109,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
 
       router.push(redirectPath);
     } catch {
-      setError('A apărut o eroare. Vă rugăm să încercați din nou.');
+      setError(t('genericError'));
     } finally {
       setLoading(false);
     }
@@ -127,34 +129,34 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
       {/* Basic info */}
       <fieldset className="space-y-4">
         <legend className="text-base font-semibold text-gray-900">
-          Informații de bază
+          {t('basicInfo')}
         </legend>
 
         <Input
-          label="Titlu"
+          label={t('titleLabel')}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          placeholder="Cabana Muntele Verde"
+          placeholder={t('titlePlaceholder')}
           error={fieldErrors.title}
         />
 
         <Input
-          label="Slug (URL)"
+          label={t('slugLabel')}
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
           required
-          placeholder="cabana-muntele-verde"
-          hint="Generat automat din titlu. Folosește doar litere mici, cifre și liniuțe."
+          placeholder={t('slugPlaceholder')}
+          hint={t('slugHint')}
           error={fieldErrors.slug}
         />
 
         <Input
-          label="Locație"
+          label={t('locationLabel')}
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           required
-          placeholder="Arieșeni"
+          placeholder={t('locationPlaceholder')}
           error={fieldErrors.location}
         />
 
@@ -163,7 +165,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
             htmlFor="description"
             className="text-sm font-medium text-gray-700"
           >
-            Descriere <span className="text-red-500" aria-hidden="true">*</span>
+            {t('descriptionLabel')} <span className="text-red-500" aria-hidden="true">*</span>
           </label>
           <textarea
             id="description"
@@ -171,7 +173,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
-            placeholder="Descrieți cabana în cel puțin 20 de caractere…"
+            placeholder={t('descriptionPlaceholder')}
             aria-invalid={!!fieldErrors.description}
             aria-describedby={
               fieldErrors.description ? 'description-error' : undefined
@@ -195,7 +197,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
       {/* Pricing & capacity */}
       <fieldset className="space-y-4">
         <legend className="text-base font-semibold text-gray-900">
-          Prețuri și capacitate
+          {t('pricingCapacity')}
         </legend>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -204,7 +206,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
               htmlFor="pricePerNight"
               className="text-sm font-medium text-gray-700"
             >
-              Preț / noapte (RON){' '}
+              {t('priceLabel')}{' '}
               <span className="text-red-500" aria-hidden="true">*</span>
             </label>
             <input
@@ -236,7 +238,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
               htmlFor="maxGuests"
               className="text-sm font-medium text-gray-700"
             >
-              Oaspeți maxim{' '}
+              {t('maxGuestsLabel')}{' '}
               <span className="text-red-500" aria-hidden="true">*</span>
             </label>
             <input
@@ -266,7 +268,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
       {/* Amenities & images */}
       <fieldset className="space-y-4">
         <legend className="text-base font-semibold text-gray-900">
-          Dotări și imagini
+          {t('amenitiesImages')}
         </legend>
 
         <div className="flex flex-col gap-1">
@@ -274,15 +276,15 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
             htmlFor="amenities"
             className="text-sm font-medium text-gray-700"
           >
-            Dotări{' '}
-            <span className="text-gray-400 font-normal">(câte una pe linie)</span>
+            {t('amenitiesLabel')}{' '}
+            <span className="text-gray-400 font-normal">{t('amenitiesHint')}</span>
           </label>
           <textarea
             id="amenities"
             rows={4}
             value={amenitiesText}
             onChange={(e) => setAmenitiesText(e.target.value)}
-            placeholder={'Wi-Fi\nȘemineu\nParcare'}
+            placeholder={t('amenitiesPlaceholder')}
             className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
@@ -292,15 +294,15 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
             htmlFor="imageUrls"
             className="text-sm font-medium text-gray-700"
           >
-            URL-uri imagini{' '}
-            <span className="text-gray-400 font-normal">(câte unul pe linie)</span>
+            {t('imageUrlsLabel')}{' '}
+            <span className="text-gray-400 font-normal">{t('imageUrlsHint')}</span>
           </label>
           <textarea
             id="imageUrls"
             rows={3}
             value={imageUrlsText}
             onChange={(e) => setImageUrlsText(e.target.value)}
-            placeholder="https://example.com/imagine1.jpg"
+            placeholder={t('imageUrlsPlaceholder')}
             aria-invalid={!!fieldErrors.imageUrls}
             className={[
               'rounded-md border px-3 py-2 text-sm shadow-sm transition',
@@ -326,9 +328,9 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
         />
         <label htmlFor="published" className="text-sm font-medium text-gray-700">
-          Publică imediat
+          {t('publishToggleLabel')}
           <span className="ml-1 font-normal text-gray-500">
-            – vizibilă pentru oaspeți după salvare
+            {t('publishToggleHint')}
           </span>
         </label>
       </div>
@@ -341,10 +343,10 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
           onClick={() => router.back()}
           disabled={loading}
         >
-          Anulează
+          {t('cancel')}
         </Button>
         <Button type="submit" loading={loading}>
-          {isEdit ? 'Salvează modificările' : 'Adaugă cabana'}
+          {isEdit ? t('saveChanges') : t('addCabin')}
         </Button>
       </div>
     </form>
