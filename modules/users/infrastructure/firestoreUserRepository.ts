@@ -16,10 +16,14 @@ export async function getUserById(uid: string): Promise<UserProfile | null> {
 
 export async function upsertUser(uid: string, data: Partial<Omit<UserProfile, 'uid'>>): Promise<void> {
   const db = getAdminFirestore();
+  // Firebase Admin SDK throws on undefined field values. Strip them before writing.
+  const sanitized = Object.fromEntries(
+    Object.entries(data).filter(([, v]) => v !== undefined),
+  ) as Partial<Omit<UserProfile, 'uid'>>;
   await db
     .collection(COLLECTION)
     .doc(uid)
-    .set({ ...data, updatedAt: new Date().toISOString() }, { merge: true });
+    .set({ ...sanitized, updatedAt: new Date().toISOString() }, { merge: true });
 }
 
 export async function listUsers(limit = 50): Promise<UserProfile[]> {

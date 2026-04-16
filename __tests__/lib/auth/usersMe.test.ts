@@ -17,6 +17,9 @@ jest.mock('@/lib/firebase/admin', () => ({
   }),
   getAdminFirestore: jest.fn(),
 }));
+jest.mock('@/lib/observability/logger', () => ({
+  createLogger: () => ({ error: jest.fn(), info: jest.fn() }),
+}));
 
 import { NextRequest } from 'next/server';
 import * as sessionModule from '@/lib/auth/session';
@@ -107,5 +110,43 @@ describe('POST /api/users/me', () => {
       'user-1',
       expect.objectContaining({ email: 'existing@example.com', name: 'New Name' }),
     );
+  });
+
+  it('registers an owner account (role=owner) and returns 200', async () => {
+    mockVerify.mockResolvedValue(session);
+    mockGetUser.mockResolvedValue(null);
+    mockUpsert.mockResolvedValue(undefined);
+
+    const req = new NextRequest('http://localhost/api/users/me', {
+      method: 'POST',
+      body: JSON.stringify({ name: 'Achim Sebastian', email: 'owner@example.com', role: 'owner' }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+    expect(mockUpsert).toHaveBeenCalledWith(
+      'user-1',
+      expect.objectContaining({ name: 'Achim Sebastian', role: 'owner' }),
+    );
+  });
+
+  it('returns 500 with JSON error when upsert throws (e.g. undefined Firestore value)', async () => {
+    mockVerify.mockResolvedValue(session);
+    mockGetUser.mockResolvedValue(null);
+    mockUpsert.mockRejectedValue(
+      new TypeError('Cannot use "undefined" as a Firestore value (found in field "plan")'),
+    );
+
+    const req = new NextRequest('http://localhost/api/users/me', {
+      method: 'POST',
+      body: JSON.stringify({ name: 'Achim Sebastian', email: 'owner@example.com', role: 'owner' }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(500);
+    const body = await res.json();
+    expect(body.error).toBeDefined();
   });
 });
