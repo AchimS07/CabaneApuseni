@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useWishlist } from '@/lib/hooks/useWishlist';
 import { getWishlistedCabins } from '@/lib/firestore';
-import { getCabinDetail } from '@/modules/cabins/application/cabinService';
+import { fetchCabinById } from '@/lib/serverActions';
 import type { Cabin } from '@/modules/cabins/domain/types';
 import { WishlistButton } from '@/components/ui/WishlistButton';
 import { MapPinIcon } from '@/components/ui/Icons';
@@ -36,7 +36,7 @@ export function WishlistSection() {
       setFetching(true);
       try {
         const ids = await getWishlistedCabins(user!.uid);
-        const results = await Promise.all(ids.map((id) => getCabinDetail(id)));
+        const results = await Promise.all(ids.map((id) => fetchCabinById(id)));
         if (!cancelled) {
           setCabins(
             results
