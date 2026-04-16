@@ -33,7 +33,7 @@ export function PricingCard({
       className={[
         'relative flex flex-col rounded-2xl border p-8 shadow-sm transition-shadow hover:shadow-md',
         highlighted
-          ? 'border-indigo-500 bg-indigo-600 text-white'
+          ? 'border-pine-600 bg-pine-700 text-white'
           : 'border-gray-200 bg-white text-gray-900',
       ].join(' ')}
     >
@@ -47,7 +47,7 @@ export function PricingCard({
         <h3 className={['text-xl font-bold', highlighted ? 'text-white' : 'text-gray-900'].join(' ')}>
           {name}
         </h3>
-        <p className={['mt-1 text-sm', highlighted ? 'text-indigo-200' : 'text-gray-500'].join(' ')}>
+        <p className={['mt-1 text-sm', highlighted ? 'text-pine-200' : 'text-gray-500'].join(' ')}>
           {description}
         </p>
       </div>
@@ -57,7 +57,7 @@ export function PricingCard({
           {price}
         </span>
         {period && (
-          <span className={['mb-1 text-sm', highlighted ? 'text-indigo-200' : 'text-gray-500'].join(' ')}>
+          <span className={['mb-1 text-sm', highlighted ? 'text-pine-200' : 'text-gray-500'].join(' ')}>
             /{period}
           </span>
         )}
@@ -75,13 +75,13 @@ export function PricingCard({
               </span>
             ) : (
               <span
-                className={['mt-0.5 flex-shrink-0 text-base', highlighted ? 'text-indigo-300' : 'text-gray-300'].join(' ')}
+                className={['mt-0.5 flex-shrink-0 text-base', highlighted ? 'text-pine-300' : 'text-gray-300'].join(' ')}
                 aria-hidden="true"
               >
                 –
               </span>
             )}
-            <span className={f.included ? '' : highlighted ? 'text-indigo-300' : 'text-gray-400'}>
+            <span className={f.included ? '' : highlighted ? 'text-pine-300' : 'text-gray-400'}>
               {f.text}
             </span>
           </li>
@@ -95,8 +95,8 @@ export function PricingCard({
             'block w-full rounded-xl px-6 py-3 text-center text-sm font-semibold transition',
             'focus:outline-none focus:ring-2 focus:ring-offset-2',
             highlighted
-              ? 'bg-white text-indigo-600 hover:bg-indigo-50 focus:ring-white focus:ring-offset-indigo-600'
-              : 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500',
+              ? 'bg-white text-pine-700 hover:bg-pine-50 focus:ring-white focus:ring-offset-pine-700'
+              : 'bg-ember-500 text-white hover:bg-ember-600 focus:ring-ember-500',
           ].join(' ')}
         >
           {ctaLabel}

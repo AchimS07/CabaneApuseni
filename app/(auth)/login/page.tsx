@@ -24,13 +24,13 @@ export default async function LoginPage({ searchParams }: Props) {
       <h1 className="mb-6 text-center text-2xl font-bold">{t('loginTitle')}</h1>
       <LoginForm redirectTo={redirectTo} />
       <p className="mt-4 text-center text-sm text-gray-500">
-        <Link href="/forgot-password" className="font-medium text-indigo-600 hover:underline">
+        <Link href="/forgot-password" className="font-medium text-pine-600 hover:underline">
           Ai uitat parola?
         </Link>
       </p>
       <p className="mt-2 text-center text-sm text-gray-500">
         {t('noAccount')}{' '}
-        <Link href="/register" className="font-medium text-forest-600 hover:underline">
+        <Link href="/register" className="font-medium text-pine-600 hover:underline">
           {t('signUpLink')}
         </Link>
       </p>

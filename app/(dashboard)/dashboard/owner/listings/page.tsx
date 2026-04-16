@@ -85,13 +85,13 @@ export default async function OwnerListingsPage() {
       {isSubscriptionActive && atLimit && (
         <div
           role="alert"
-          className="mb-6 flex items-center gap-3 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm text-indigo-800"
+          className="mb-6 flex items-center gap-3 rounded-xl border border-pine-200 bg-pine-50 px-4 py-3 text-sm text-pine-800"
         >
           <span aria-hidden="true">ℹ️</span>
           <span>
             {t('atLimitPrefix')} {listingLimit} {listingLimit === 1 ? t('atLimitCabana') : t('atLimitCabane')} {t('atLimitSuffix')}{' '}
             {tier === 'basic' && (
-              <Link href="/pricing" className="font-medium underline hover:text-indigo-900">
+              <Link href="/pricing" className="font-medium underline hover:text-pine-900">
                 {t('upgradeLink')}
               </Link>
             )}
@@ -165,7 +165,7 @@ export default async function OwnerListingsPage() {
                     <div className="flex flex-wrap items-center gap-2">
                       <Link
                         href={'/dashboard/owner/listings/' + cabin.id + '/edit'}
-                        className="rounded-md border border-indigo-200 px-3 py-1.5 text-xs font-medium text-indigo-600 hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="rounded-md border border-pine-200 px-3 py-1.5 text-xs font-medium text-pine-600 hover:bg-pine-50 focus:outline-none focus:ring-2 focus:ring-pine-500"
                       >
                         {t('edit')}
                       </Link>
@@ -177,7 +177,7 @@ export default async function OwnerListingsPage() {
                         href={'/cabins/' + cabin.slug}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-gray-400 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                        className="text-xs text-gray-400 hover:text-pine-600 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
                       >
                         {t('preview')}
                       </Link>

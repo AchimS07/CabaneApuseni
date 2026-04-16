@@ -16,7 +16,7 @@ export default function LegacyRegisterPage() {
                   className={
                     'flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-colors ' +
                     (role === r
-                      ? 'border-forest-600 bg-forest-50 text-forest-800'
+                      ? 'border-pine-600 bg-pine-50 text-pine-800'
                       : 'border-stone-200 hover:border-stone-300 text-stone-600')
                   }
                 >
@@ -73,7 +73,7 @@ export default function LegacyRegisterPage() {
 
         <p className="text-center text-sm text-stone-500 mt-6">
           Already have an account?{' '}
-          <Link href="/auth/login" className="text-forest-700 hover:text-forest-900 font-medium">Sign in</Link>
+          <Link href="/auth/login" className="text-pine-700 hover:text-pine-900 font-medium">Sign in</Link>
         </p>
       </div>
     </div>

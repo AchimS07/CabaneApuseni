@@ -90,9 +90,9 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
               aria-current={isActive ? 'page' : undefined}
               className={[
                 'inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition',
-                'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1',
+                'focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-1',
                 isActive
-                  ? 'bg-indigo-600 text-white'
+                  ? 'bg-ember-500 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200',
               ].join(' ')}
             >
@@ -100,7 +100,7 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
               {s === 'pending' && pendingCount > 0 && (
                 <span
                   className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${
-                    isActive ? 'bg-white text-indigo-700' : 'bg-yellow-400 text-white'
+                    isActive ? 'bg-white text-pine-700' : 'bg-yellow-400 text-white'
                   }`}
                   aria-label={`${pendingCount} ${t('filterPending').toLowerCase()}`}
                 >
@@ -155,7 +155,7 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
                     <span className="whitespace-nowrap">{b.checkOut}</span>
                   </td>
                   <td className="px-4 py-4 text-gray-600">{b.guestCount}</td>
-                  <td className="px-4 py-4 font-medium text-indigo-700">
+                  <td className="px-4 py-4 font-medium text-pine-700">
                     {b.totalPrice} RON
                   </td>
                   <td className="px-4 py-4 text-gray-500 text-xs max-w-[160px]">
