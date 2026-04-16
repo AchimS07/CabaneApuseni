@@ -70,9 +70,6 @@ export default async function CabinDetailPage({ params }: Props) {
   const cabin = result.data;
 
   const SHOW_AMENITIES = 6;
-  const extraAmenities = cabin.amenities.length > SHOW_AMENITIES
-    ? cabin.amenities.length - SHOW_AMENITIES
-    : 0;
 
   const guestSuffix = cabin.maxGuests === 1 ? t('person') : t('persons');
 
