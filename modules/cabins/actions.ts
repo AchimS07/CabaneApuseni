@@ -12,6 +12,11 @@ import {
 } from '@/modules/cabins/application/cabinService';
 import type { CabinInput } from '@/lib/validation/schemas';
 import { revalidatePath } from 'next/cache';
+import { getCabinById, saveCabin } from '@/modules/cabins/infrastructure/firestoreCabinRepository';
+import { MOCK_CABINS } from '@/modules/cabins/application/mockCabins';
+import { createLogger } from '@/lib/observability/logger';
+
+const log = createLogger({ module: 'cabinActions' });
 
 export type CabinActionResult =
   | { ok: true; cabinId?: string }
@@ -104,4 +109,42 @@ export async function deleteCabinAction(
   revalidatePath('/cabins/[slug]', 'page');
   revalidatePath('/dashboard/owner/listings');
   return { ok: true };
+}
+
+export type SeedCabinsResult =
+  | { ok: true; seeded: number; skipped: number }
+  | { ok: false; error: string };
+
+/**
+ * Seeds the 3 mock cabins into Firestore if they do not already exist.
+ * Admin-only. Idempotent — existing documents are left untouched.
+ */
+export async function seedMockCabinsAction(): Promise<SeedCabinsResult> {
+  const session = await verifySession();
+  if (!session) return { ok: false, error: 'Authentication required.' };
+  if (session.role !== 'admin') return { ok: false, error: 'Admin role required.' };
+
+  let seeded = 0;
+  let skipped = 0;
+
+  try {
+    for (const cabin of MOCK_CABINS) {
+      const { id, ...data } = cabin;
+      const existing = await getCabinById(id);
+      if (existing) {
+        skipped++;
+        continue;
+      }
+      await saveCabin(id, data);
+      log.info({ id }, 'Mock cabin seeded');
+      seeded++;
+    }
+  } catch (error) {
+    log.error({ error }, 'Failed to seed mock cabins');
+    return { ok: false, error: 'Failed to seed cabins. Please try again.' };
+  }
+
+  revalidatePath('/cabins', 'page');
+  revalidatePath('/admin/cabins', 'page');
+  return { ok: true, seeded, skipped };
 }
