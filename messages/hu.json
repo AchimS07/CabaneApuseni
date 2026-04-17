@@ -231,7 +231,9 @@
     "explore": "Felfedezés →",
     "ownerDashboard": "Tulajdonosi irányítópult",
     "ownerDashboardDesc": "Tekintse meg tulajdonosi fiókjának állapotát és a következő lépéseket.",
-    "openDashboard": "Irányítópult megnyitása →"
+    "openDashboard": "Irányítópult megnyitása →",
+    "favorites": "Kedvencek",
+    "favoritesDesc": "Az elmentett kabinjaid."
   },
   "myBookings": {
     "title": "Foglalásaim",

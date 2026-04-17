@@ -405,7 +405,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
           {/* "Become a host" / "Owner dashboard" – desktop only */}
           {!isAdmin && (
             <Link
-              href={isOwner ? '/dashboard/owner' : '/register'}
+              href={isOwner ? '/dashboard/owner' : '/pricing'}
               className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 lg:block"
             >
               {isOwner ? t('ownerDashboard') : t('becomeHost')}
@@ -440,6 +440,26 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               >
                 {isAuthenticated ? (
                   <>
+                    {!isAdmin && !isOwner && (
+                      <>
+                        <Link
+                          href="/dashboard/bookings"
+                          role="menuitem"
+                          onClick={() => setProfileOpen(false)}
+                          className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                        >
+                          {t('myBookings')}
+                        </Link>
+                        <Link
+                          href="/dashboard?view=favorites"
+                          role="menuitem"
+                          onClick={() => setProfileOpen(false)}
+                          className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
+                        >
+                          {t('favorites')}
+                        </Link>
+                      </>
+                    )}
                     {isAdmin && (
                       <Link
                         href="/admin"
@@ -586,15 +606,26 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   </li>
                 )}
                 {!isAdmin && !isOwner && (
-                  <li>
-                    <Link
-                      href="/dashboard/bookings"
-                      onClick={closeMobile}
-                      className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
-                    >
-                      {t('myBookings')}
-                    </Link>
-                  </li>
+                  <>
+                    <li>
+                      <Link
+                        href="/dashboard/bookings"
+                        onClick={closeMobile}
+                        className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
+                      >
+                        {t('myBookings')}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/dashboard?view=favorites"
+                        onClick={closeMobile}
+                        className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
+                      >
+                        {t('favorites')}
+                      </Link>
+                    </li>
+                  </>
                 )}
                 <li>
                   <Link

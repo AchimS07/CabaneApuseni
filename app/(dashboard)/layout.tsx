@@ -32,7 +32,6 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             </span>
             <span className="hidden sm:inline">Cabane Apuseni</span>
           </Link>
-
           <div className="flex flex-wrap items-center gap-1">
             <DashboardNav role={role} />
             <LogoutButton />

@@ -231,7 +231,9 @@
     "explore": "Explore →",
     "ownerDashboard": "Owner dashboard",
     "ownerDashboardDesc": "View your owner account status and next steps.",
-    "openDashboard": "Open dashboard →"
+    "openDashboard": "Open dashboard →",
+    "favorites": "Favourites",
+    "favoritesDesc": "Your saved cabins."
   },
   "myBookings": {
     "title": "My bookings",

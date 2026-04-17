@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { Suspense } from 'react';
 
 interface DashboardNavProps {
   role: string;
@@ -12,13 +13,25 @@ function NavLink({
   href,
   children,
   external,
+  activeSearch,
 }: {
   href: string;
   children: React.ReactNode;
   external?: boolean;
+  activeSearch?: string;
 }) {
   const pathname = usePathname();
-  const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href));
+  const searchParams = useSearchParams();
+
+  let isActive: boolean;
+  if (activeSearch) {
+    // Match by pathname + a specific search param value (e.g. view=favorites)
+    const [basePath, query] = activeSearch.split('?');
+    const [paramKey, paramValue] = (query ?? '').split('=');
+    isActive = pathname === basePath && searchParams.get(paramKey) === paramValue;
+  } else {
+    isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href));
+  }
 
   return (
     <li>
@@ -43,7 +56,7 @@ function NavLink({
   );
 }
 
-export function DashboardNav({ role }: DashboardNavProps) {
+function DashboardNavInner({ role }: DashboardNavProps) {
   const t = useTranslations('nav');
 
   return (
@@ -56,6 +69,15 @@ export function DashboardNav({ role }: DashboardNavProps) {
         <NavLink href="/dashboard/bookings">{t('myBookings')}</NavLink>
       )}
 
+      {role !== 'owner' && role !== 'admin' && (
+        <NavLink
+          href="/dashboard?view=favorites"
+          activeSearch="/dashboard?view=favorites"
+        >
+          {t('favorites')}
+        </NavLink>
+      )}
+
       {role === 'owner' && (
         <>
           <NavLink href="/dashboard/owner/listings">{t('myListings')}</NavLink>
@@ -65,5 +87,13 @@ export function DashboardNav({ role }: DashboardNavProps) {
 
       <NavLink href="/dashboard/profile">{t('profile')}</NavLink>
     </ul>
+  );
+}
+
+export function DashboardNav({ role }: DashboardNavProps) {
+  return (
+    <Suspense fallback={null}>
+      <DashboardNavInner role={role} />
+    </Suspense>
   );
 }
