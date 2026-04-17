@@ -9,7 +9,8 @@
     "save": "Módosítások mentése",
     "saving": "Mentés...",
     "open": "Megnyitás →",
-    "allRightsReserved": "Minden jog fenntartva."
+    "allRightsReserved": "Minden jog fenntartva.",
+    "guest": "Vendég"
   },
   "nav": {
     "cabins": "Kabinok",
@@ -221,7 +222,10 @@
     "amenities": "Felszereltség",
     "gallery": "Fotógaléria",
     "imageAlt": "kép",
-    "bookingFormLabel": "Foglalási űrlap"
+    "bookingFormLabel": "Foglalási űrlap",
+    "cardAriaLabel": "{title}, {location}, {price} RON / éjszaka",
+    "prevPhoto": "Előző kép",
+    "nextPhoto": "Következő kép"
   },
   "booking": {
     "pricePerNight": "RON / éjszaka",
@@ -550,7 +554,16 @@
     "viewMap": "Térkép",
     "listAriaLabel": "Elérhető kabinok listája",
     "perNight": "/ éjszaka",
-    "viewDetails": "Részletek →"
+    "viewDetails": "Részletek →",
+    "searchLabel": "Keresés név vagy helyszín alapján",
+    "searchPlaceholder": "Arieșeni, kunyhó…",
+    "priceMaxLabel": "Max ár (RON/éj)",
+    "guestsMinLabel": "Min. vendég",
+    "resetFilters": "Visszaállítás",
+    "filteredCountSingular": "1 kunyhó található",
+    "filteredCountPlural": "{count} kunyhó található",
+    "noFilterResults": "Egy kunyhó sem felel meg a kiválasztott szűrőknek.",
+    "resetFiltersLink": "Szűrők visszaállítása"
   },
   "ownerEditListing": {
     "title": "Kabin szerkesztése",
@@ -683,5 +696,83 @@
     "haveAccount": "Már van fiókja?",
     "signInLink": "Jelentkezzen be",
     "manageDashboard": "és kezelje előfizetését az irányítópultból."
+  },
+  "cabinsView": {
+    "categories": {
+      "toate": "Összes",
+      "munte": "Hegy",
+      "padure": "Erdő",
+      "lac": "Tó",
+      "izolat": "Elszigetelt",
+      "animale": "Kisállatbarát",
+      "foc": "Tábortűz"
+    },
+    "filterBtn": "Szűrők",
+    "viewGrid": "Rács",
+    "viewMap": "Térkép",
+    "viewToggleLabel": "Nézet mód",
+    "gridViewLabel": "Rácsnézet",
+    "mapViewLabel": "Térképnézet",
+    "filterPanelLabel": "Speciális szűrők",
+    "openFiltersLabel": "Speciális szűrők megnyitása",
+    "closeFiltersLabel": "Szűrők bezárása",
+    "listAriaLabel": "Elérhető kunyhók listája",
+    "pillLocation": "Helyszín: {value}",
+    "pillMinGuests": "Min. {count} vendég",
+    "pillMinPrice": "Min. {price} RON",
+    "pillMaxPrice": "Max. {price} RON",
+    "removePillLabel": "Szűrő eltávolítása: {label}",
+    "clearAll": "Összes törlése",
+    "clearFilters": "Szűrők törlése",
+    "noResults": "Egy kunyhó sem felel meg a kiválasztott szűrőknek",
+    "countSingular": "1 kunyhó elérhető",
+    "countPlural": "{count} kunyhó elérhető",
+    "emptyTitle": "Egy kunyhó sem felel meg a szűrőknek",
+    "emptyDescription": "Próbálja módosítani a szűrőket vagy keressen más helyszínt.",
+    "filterHeading": "Szűrők",
+    "priceHeading": "Ár / éjszaka",
+    "priceMin": "Min (RON)",
+    "priceMax": "Max (RON)",
+    "guestsHeading": "Minimális vendégszám",
+    "decreaseGuests": "Minimális vendégszám csökkentése",
+    "increaseGuests": "Minimális vendégszám növelése",
+    "persons": "személy",
+    "amenitiesHeading": "Felszereltség",
+    "showResults": "{count} {suffix} megjelenítése",
+    "resultSingular": "kunyhó",
+    "resultPlural": "kunyhó"
+  },
+  "deleteCabin": {
+    "confirmMessage": "Biztosan törölni kívánja a(z) \"{title}\" kunyhót? Ez a művelet nem visszavonható.",
+    "ariaLabel": "{title} kunyhó törlése",
+    "deleting": "Törlés…",
+    "delete": "Törlés",
+    "errorGeneric": "Hiba történt. Kérjük, próbálja újra."
+  },
+  "wishlistButton": {
+    "addToFavorites": "Hozzáadás a kedvencekhez",
+    "removeFromFavorites": "Eltávolítás a kedvencekből"
+  },
+  "seedCabins": {
+    "ariaLabel": "Demo kunyhók hozzáadása az adatbázishoz",
+    "adding": "Hozzáadás…",
+    "buttonText": "⬆ Demo kunyhók hozzáadása",
+    "allExisted": "Az összes kunyhó már létezett ({skipped} kihagyva).",
+    "added": "{seeded} kunyhó hozzáadva{suffix}.",
+    "skippedSuffix": ", {skipped} kihagyva",
+    "errorGeneric": "Hiba történt. Kérjük, próbálja újra."
+  },
+  "photoGrid": {
+    "showAllPhotos": "Összes kép megtekintése ({count})",
+    "morePhotos": "+{count} kép",
+    "photoScrollHintSingular": "1 kép — görgessen →",
+    "photoScrollHintPlural": "{count} kép — görgessen →",
+    "openPhotoLabel": "{total} kép közül a(z) {number}. megnyitása",
+    "lightboxLabel": "Teljes fotógaléria",
+    "closeLightbox": "Galéria bezárása",
+    "prevPhotoLabel": "Előző kép",
+    "nextPhotoLabel": "Következő kép",
+    "goToPhotoLabel": "Ugrás a(z) {number}. képhez",
+    "photoAlt": "{prefix} – {number}. kép"
   }
 }

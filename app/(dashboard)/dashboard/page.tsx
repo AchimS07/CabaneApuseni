@@ -15,9 +15,10 @@ export const dynamic = 'force-dynamic';
 export default async function DashboardPage() {
   const session = await requireAuth();
   const profileResult = await getProfile(session.uid);
-  const name = profileResult.ok ? profileResult.data.name : session.email ?? 'Utilizator';
-  const role = profileResult.ok ? profileResult.data.role : session.role;
   const t = await getTranslations('dashboard');
+  const tCommon = await getTranslations('common');
+  const name = profileResult.ok ? profileResult.data.name : session.email ?? tCommon('guest');
+  const role = profileResult.ok ? profileResult.data.role : session.role;
 
   return (
     <div>

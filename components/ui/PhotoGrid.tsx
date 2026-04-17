@@ -10,6 +10,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { ChevronLeftIcon, ChevronRightIcon, XIcon, PhotosIcon } from './Icons';
 
 interface PhotoGridProps {
@@ -18,6 +19,7 @@ interface PhotoGridProps {
 }
 
 export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
+  const t = useTranslations('photoGrid');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const openLightbox = useCallback((i: number) => setLightboxIndex(i), []);
@@ -78,11 +80,11 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
               type="button"
               className="relative overflow-hidden rounded-l-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
               onClick={() => openLightbox(0)}
-              aria-label={`Deschide fotografie 1 din ${images.length} în galerie completă`}
+              aria-label={t('openPhotoLabel', { number: 1, total: images.length })}
             >
               <Image
                 src={mainImage}
-                alt={`${altPrefix} – fotografie principală`}
+                alt={t('photoAlt', { prefix: altPrefix, number: 1 })}
                 fill
                 className="object-cover transition-opacity hover:opacity-95"
                 sizes="(max-width: 1280px) 50vw, 600px"
@@ -118,11 +120,11 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
                             row === 1 && col === 1 ? 'rounded-br-2xl' : '',
                           ].join(' ')}
                           onClick={() => openLightbox(idx)}
-                          aria-label={`Deschide fotografia ${idx + 1} din ${images.length}`}
+                          aria-label={t('openPhotoLabel', { number: idx + 1, total: images.length })}
                         >
                           <Image
                             src={img}
-                            alt={`${altPrefix} – fotografie ${idx + 1}`}
+                            alt={t('photoAlt', { prefix: altPrefix, number: idx + 1 })}
                             fill
                             className="object-cover transition-opacity hover:opacity-90"
                             sizes="(max-width: 1280px) 25vw, 300px"
@@ -131,7 +133,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
                           {isLast && (
                             <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-white">
                               <span className="text-sm font-semibold">
-                                +{images.length - 5} poze
+                                {t('morePhotos', { count: images.length - 5 })}
                               </span>
                             </div>
                           )}
@@ -152,7 +154,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
               className="absolute bottom-4 right-4 flex items-center gap-2 rounded-xl border border-gray-900 bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
               <PhotosIcon size={16} aria-hidden="true" />
-              Afișează toate fotografiile ({images.length})
+              {t('showAllPhotos', { count: images.length })}
             </button>
           )}
         </div>
@@ -167,11 +169,11 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
               type="button"
               className="relative h-56 w-72 shrink-0 overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               onClick={() => openLightbox(i)}
-              aria-label={`Deschide fotografia ${i + 1} din ${images.length}`}
+              aria-label={t('openPhotoLabel', { number: i + 1, total: images.length })}
             >
               <Image
                 src={img}
-                alt={`${altPrefix} – fotografie ${i + 1}`}
+                alt={t('photoAlt', { prefix: altPrefix, number: i + 1 })}
                 fill
                 className="object-cover"
                 sizes="288px"
@@ -180,7 +182,9 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
           ))}
         </div>
         <p className="mt-1 text-center text-xs text-gray-400">
-          {images.length} {images.length === 1 ? 'fotografie' : 'fotografii'} — derulează →
+          {images.length === 1
+            ? t('photoScrollHintSingular')
+            : t('photoScrollHintPlural', { count: images.length })}
         </p>
       </div>
 
@@ -189,14 +193,14 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Galerie foto completă"
+          aria-label={t('lightboxLabel')}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90"
         >
           {/* Close */}
           <button
             type="button"
             onClick={closeLightbox}
-            aria-label="Închide galeria"
+            aria-label={t('closeLightbox')}
             className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <XIcon size={20} aria-hidden="true" />
@@ -214,7 +218,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
           <button
             type="button"
             onClick={prevPhoto}
-            aria-label="Fotografia anterioară"
+            aria-label={t('prevPhotoLabel')}
             className="absolute left-4 top-1/2 z-10 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <ChevronLeftIcon size={22} aria-hidden="true" />
@@ -224,7 +228,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
           <div className="relative h-full max-h-[85vh] w-full max-w-5xl px-16">
             <Image
               src={images[lightboxIndex]}
-              alt={`${altPrefix} – fotografie ${lightboxIndex + 1}`}
+              alt={t('photoAlt', { prefix: altPrefix, number: lightboxIndex + 1 })}
               fill
               className="object-contain"
               sizes="100vw"
@@ -236,7 +240,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
           <button
             type="button"
             onClick={nextPhoto}
-            aria-label="Fotografia următoare"
+            aria-label={t('nextPhotoLabel')}
             className="absolute right-4 top-1/2 z-10 -translate-y-1/2 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <ChevronRightIcon size={22} aria-hidden="true" />
@@ -249,7 +253,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
                 key={i}
                 type="button"
                 onClick={() => setLightboxIndex(i)}
-                aria-label={`Navighează la fotografia ${i + 1}`}
+                aria-label={t('goToPhotoLabel', { number: i + 1 })}
                 aria-pressed={i === lightboxIndex}
                 className={[
                   'rounded-full transition-all duration-200',

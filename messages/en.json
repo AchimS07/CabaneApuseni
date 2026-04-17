@@ -9,7 +9,8 @@
     "save": "Save changes",
     "saving": "Saving...",
     "open": "Open →",
-    "allRightsReserved": "All rights reserved."
+    "allRightsReserved": "All rights reserved.",
+    "guest": "Guest"
   },
   "nav": {
     "cabins": "Cabins",
@@ -221,7 +222,10 @@
     "amenities": "Amenities",
     "gallery": "Photo gallery",
     "imageAlt": "image",
-    "bookingFormLabel": "Booking form"
+    "bookingFormLabel": "Booking form",
+    "cardAriaLabel": "{title}, {location}, {price} RON / night",
+    "prevPhoto": "Previous photo",
+    "nextPhoto": "Next photo"
   },
   "booking": {
     "pricePerNight": "RON / night",
@@ -550,7 +554,16 @@
     "viewMap": "Map",
     "listAriaLabel": "Available cabins list",
     "perNight": "/ night",
-    "viewDetails": "View details →"
+    "viewDetails": "View details →",
+    "searchLabel": "Search by name or location",
+    "searchPlaceholder": "Arieșeni, cabin…",
+    "priceMaxLabel": "Max price (RON/night)",
+    "guestsMinLabel": "Min. guests",
+    "resetFilters": "Reset",
+    "filteredCountSingular": "1 cabin found",
+    "filteredCountPlural": "{count} cabins found",
+    "noFilterResults": "No cabin matches the selected filters.",
+    "resetFiltersLink": "Reset filters"
   },
   "ownerEditListing": {
     "title": "Edit cabin",
@@ -683,5 +696,83 @@
     "haveAccount": "Already have an account?",
     "signInLink": "Sign in",
     "manageDashboard": "and manage your subscription from the dashboard."
+  },
+  "cabinsView": {
+    "categories": {
+      "toate": "All",
+      "munte": "Mountain",
+      "padure": "Forest",
+      "lac": "Lake",
+      "izolat": "Secluded",
+      "animale": "Pet-friendly",
+      "foc": "Campfire"
+    },
+    "filterBtn": "Filters",
+    "viewGrid": "Grid",
+    "viewMap": "Map",
+    "viewToggleLabel": "View mode",
+    "gridViewLabel": "Grid view",
+    "mapViewLabel": "Map view",
+    "filterPanelLabel": "Advanced filters",
+    "openFiltersLabel": "Open advanced filters",
+    "closeFiltersLabel": "Close filters",
+    "listAriaLabel": "Available cabins list",
+    "pillLocation": "Location: {value}",
+    "pillMinGuests": "Min. {count} guests",
+    "pillMinPrice": "Min. {price} RON",
+    "pillMaxPrice": "Max. {price} RON",
+    "removePillLabel": "Remove filter: {label}",
+    "clearAll": "Clear all",
+    "clearFilters": "Clear filters",
+    "noResults": "No cabin matches the selected filters",
+    "countSingular": "1 cabin available",
+    "countPlural": "{count} cabins available",
+    "emptyTitle": "No cabin matches the filters",
+    "emptyDescription": "Try adjusting the filters or searching a different location.",
+    "filterHeading": "Filters",
+    "priceHeading": "Price per night",
+    "priceMin": "Min (RON)",
+    "priceMax": "Max (RON)",
+    "guestsHeading": "Minimum guests",
+    "decreaseGuests": "Decrease minimum guests",
+    "increaseGuests": "Increase minimum guests",
+    "persons": "persons",
+    "amenitiesHeading": "Amenities",
+    "showResults": "Show {count} {suffix}",
+    "resultSingular": "cabin",
+    "resultPlural": "cabins"
+  },
+  "deleteCabin": {
+    "confirmMessage": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+    "ariaLabel": "Delete cabin {title}",
+    "deleting": "Deleting…",
+    "delete": "Delete",
+    "errorGeneric": "An error occurred. Please try again."
+  },
+  "wishlistButton": {
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites"
+  },
+  "seedCabins": {
+    "ariaLabel": "Add demo cabins to the database",
+    "adding": "Adding…",
+    "buttonText": "⬆ Add demo cabins",
+    "allExisted": "All cabins already existed ({skipped} skipped).",
+    "added": "{seeded} cabin(s) added{suffix}.",
+    "skippedSuffix": ", {skipped} skipped",
+    "errorGeneric": "An error occurred. Please try again."
+  },
+  "photoGrid": {
+    "showAllPhotos": "Show all photos ({count})",
+    "morePhotos": "+{count} more",
+    "photoScrollHintSingular": "1 photo — scroll →",
+    "photoScrollHintPlural": "{count} photos — scroll →",
+    "openPhotoLabel": "Open photo {number} of {total}",
+    "lightboxLabel": "Full photo gallery",
+    "closeLightbox": "Close gallery",
+    "prevPhotoLabel": "Previous photo",
+    "nextPhotoLabel": "Next photo",
+    "goToPhotoLabel": "Go to photo {number}",
+    "photoAlt": "{prefix} – photo {number}"
   }
 }

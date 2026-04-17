@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { deleteCabinAction } from '@/modules/cabins/actions';
 
 interface DeleteCabinButtonProps {
@@ -14,14 +15,13 @@ interface DeleteCabinButtonProps {
  * Only shown in the owner listings table.
  */
 export function DeleteCabinButton({ cabinId, cabinTitle }: DeleteCabinButtonProps) {
+  const t = useTranslations('deleteCabin');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   async function handleDelete() {
-    const confirmed = window.confirm(
-      `Ești sigur că vrei să ștergi "${cabinTitle}"? Această acțiune nu poate fi anulată.`,
-    );
+    const confirmed = window.confirm(t('confirmMessage', { title: cabinTitle }));
     if (!confirmed) return;
 
     setLoading(true);
@@ -34,7 +34,7 @@ export function DeleteCabinButton({ cabinId, cabinTitle }: DeleteCabinButtonProp
       }
       router.refresh();
     } catch {
-      setError('A apărut o eroare. Încearcă din nou.');
+      setError(t('errorGeneric'));
     } finally {
       setLoading(false);
     }
@@ -46,9 +46,9 @@ export function DeleteCabinButton({ cabinId, cabinTitle }: DeleteCabinButtonProp
         onClick={handleDelete}
         disabled={loading}
         className="rounded-md border border-red-300 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-        aria-label={`Șterge cabana ${cabinTitle}`}
+        aria-label={t('ariaLabel', { title: cabinTitle })}
       >
-        {loading ? 'Se șterge…' : 'Șterge'}
+        {loading ? t('deleting') : t('delete')}
       </button>
       {error && (
         <p className="mt-1 text-xs text-red-600" role="alert">

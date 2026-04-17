@@ -9,6 +9,7 @@
 
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useWishlist } from '@/lib/hooks/useWishlist';
 import { HeartIcon, HeartFilledIcon } from './Icons';
@@ -28,6 +29,7 @@ export function WishlistButton({
   className = '',
   iconSize = 22,
 }: WishlistButtonProps) {
+  const t = useTranslations('wishlistButton');
   const router = useRouter();
   const { user } = useAuth();
   const { isWishlisted, toggle, loading } = useWishlist();
@@ -54,7 +56,7 @@ export function WishlistButton({
       type="button"
       onClick={handleClick}
       disabled={loading}
-      aria-label={wishlisted ? 'Elimină din favorite' : 'Adaugă la favorite'}
+      aria-label={wishlisted ? t('removeFromFavorites') : t('addToFavorites')}
       aria-pressed={wishlisted}
       className={[
         'flex items-center justify-center rounded-full transition',

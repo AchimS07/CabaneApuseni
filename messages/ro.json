@@ -9,7 +9,8 @@
     "save": "Salvează modificările",
     "saving": "Se salvează...",
     "open": "Deschide →",
-    "allRightsReserved": "Toate drepturile rezervate."
+    "allRightsReserved": "Toate drepturile rezervate.",
+    "guest": "Utilizator"
   },
   "nav": {
     "cabins": "Cabane",
@@ -221,7 +222,10 @@
     "amenities": "Dotări",
     "gallery": "Galerie foto",
     "imageAlt": "imagine",
-    "bookingFormLabel": "Formular de rezervare"
+    "bookingFormLabel": "Formular de rezervare",
+    "cardAriaLabel": "{title}, {location}, {price} RON / noapte",
+    "prevPhoto": "Fotografie anterioară",
+    "nextPhoto": "Fotografie următoare"
   },
   "booking": {
     "pricePerNight": "RON / noapte",
@@ -550,7 +554,16 @@
     "viewMap": "Hartă",
     "listAriaLabel": "Lista cabane disponibile",
     "perNight": "/ noapte",
-    "viewDetails": "Vezi detalii →"
+    "viewDetails": "Vezi detalii →",
+    "searchLabel": "Caută după nume sau locație",
+    "searchPlaceholder": "Arieșeni, cabana…",
+    "priceMaxLabel": "Preț max (RON/noapte)",
+    "guestsMinLabel": "Oaspeți minim",
+    "resetFilters": "Resetează",
+    "filteredCountSingular": "1 cabană găsită",
+    "filteredCountPlural": "{count} cabane găsite",
+    "noFilterResults": "Nicio cabană nu corespunde filtrelor selectate.",
+    "resetFiltersLink": "Resetează filtrele"
   },
   "ownerEditListing": {
     "title": "Editează cabana",
@@ -683,5 +696,83 @@
     "haveAccount": "Ai deja un cont?",
     "signInLink": "Autentifică-te",
     "manageDashboard": "și gestionează-ți abonamentul din dashboard."
+  },
+  "cabinsView": {
+    "categories": {
+      "toate": "Toate",
+      "munte": "Munte",
+      "padure": "Pădure",
+      "lac": "Lac",
+      "izolat": "Izolat",
+      "animale": "Animale acceptate",
+      "foc": "Foc de tabără"
+    },
+    "filterBtn": "Filtre",
+    "viewGrid": "Grilă",
+    "viewMap": "Hartă",
+    "viewToggleLabel": "Mod vizualizare",
+    "gridViewLabel": "Vizualizare grilă",
+    "mapViewLabel": "Vizualizare hartă",
+    "filterPanelLabel": "Filtre avansate",
+    "openFiltersLabel": "Deschide filtre avansate",
+    "closeFiltersLabel": "Închide filtrele",
+    "listAriaLabel": "Lista de cabane disponibile",
+    "pillLocation": "Locație: {value}",
+    "pillMinGuests": "Min. {count} oaspeți",
+    "pillMinPrice": "Min. {price} RON",
+    "pillMaxPrice": "Max. {price} RON",
+    "removePillLabel": "Elimină filtrul: {label}",
+    "clearAll": "Șterge tot",
+    "clearFilters": "Șterge filtrele",
+    "noResults": "Nicio cabană nu corespunde filtrelor selectate",
+    "countSingular": "1 cabană disponibilă",
+    "countPlural": "{count} cabane disponibile",
+    "emptyTitle": "Nicio cabană nu corespunde filtrelor",
+    "emptyDescription": "Încearcă să ajustezi filtrele sau să cauți o altă locație.",
+    "filterHeading": "Filtre",
+    "priceHeading": "Preț pe noapte",
+    "priceMin": "Minim (RON)",
+    "priceMax": "Maxim (RON)",
+    "guestsHeading": "Număr minim de oaspeți",
+    "decreaseGuests": "Scade numărul minim de oaspeți",
+    "increaseGuests": "Crește numărul minim de oaspeți",
+    "persons": "persoane",
+    "amenitiesHeading": "Dotări",
+    "showResults": "Afișează {count} {suffix}",
+    "resultSingular": "cabană",
+    "resultPlural": "cabane"
+  },
+  "deleteCabin": {
+    "confirmMessage": "Ești sigur că vrei să ștergi \"{title}\"? Această acțiune nu poate fi anulată.",
+    "ariaLabel": "Șterge cabana {title}",
+    "deleting": "Se șterge…",
+    "delete": "Șterge",
+    "errorGeneric": "A apărut o eroare. Încearcă din nou."
+  },
+  "wishlistButton": {
+    "addToFavorites": "Adaugă la favorite",
+    "removeFromFavorites": "Elimină din favorite"
+  },
+  "seedCabins": {
+    "ariaLabel": "Adaugă cabanele demo în baza de date",
+    "adding": "Se adaugă…",
+    "buttonText": "⬆ Adaugă cabane demo",
+    "allExisted": "Toate cabanele existau deja ({skipped} sărite).",
+    "added": "{seeded} cabană/cabane adăugate{suffix}.",
+    "skippedSuffix": ", {skipped} sărite",
+    "errorGeneric": "A apărut o eroare. Încearcă din nou."
+  },
+  "photoGrid": {
+    "showAllPhotos": "Afișează toate fotografiile ({count})",
+    "morePhotos": "+{count} poze",
+    "photoScrollHintSingular": "1 fotografie — derulează →",
+    "photoScrollHintPlural": "{count} fotografii — derulează →",
+    "openPhotoLabel": "Deschide fotografia {number} din {total}",
+    "lightboxLabel": "Galerie foto completă",
+    "closeLightbox": "Închide galeria",
+    "prevPhotoLabel": "Fotografia anterioară",
+    "nextPhotoLabel": "Fotografia următoare",
+    "goToPhotoLabel": "Navighează la fotografia {number}",
+    "photoAlt": "{prefix} – fotografie {number}"
   }
 }
