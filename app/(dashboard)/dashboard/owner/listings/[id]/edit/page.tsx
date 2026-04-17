@@ -47,7 +47,7 @@ export default async function EditListingPage({ params }: Props) {
       <nav aria-label="Navigare" className="mb-6 text-sm text-gray-500">
         <Link
           href="/dashboard/owner/listings"
-          className="hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+          className="hover:text-pine-600 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
         >
           {t('back')}
         </Link>

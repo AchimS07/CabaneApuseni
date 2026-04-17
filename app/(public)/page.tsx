@@ -77,23 +77,23 @@ export default async function HomePage() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative flex min-h-[70vh] flex-col items-center justify-center bg-gradient-to-b from-indigo-900 to-indigo-700 px-4 text-center text-white">
+      <section className="relative flex min-h-[70vh] flex-col items-center justify-center bg-gradient-to-b from-pine-900 to-pine-700 px-4 text-center text-white">
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
           {t('hero.title')}
         </h1>
-        <p className="mb-8 max-w-xl text-lg text-indigo-100">
+        <p className="mb-8 max-w-xl text-lg text-pine-100">
           {t('hero.subtitle')}
         </p>
         <div className="flex flex-col items-center gap-4 sm:flex-row">
           <Link
             href="/cabins"
-            className="rounded-full bg-white px-8 py-3 text-base font-semibold text-indigo-700 shadow hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-700"
+            className="rounded-full bg-ember-500 px-8 py-3 text-base font-semibold text-white shadow hover:bg-ember-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-pine-800"
           >
             {t('hero.exploreCabins')}
           </Link>
           <Link
             href="#pricing"
-            className="rounded-full border border-indigo-400 px-8 py-3 text-base font-semibold text-white hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-700"
+            className="rounded-full border border-pine-400 px-8 py-3 text-base font-semibold text-white hover:bg-pine-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-pine-800"
           >
             {t('hero.viewPricing')}
           </Link>
@@ -123,7 +123,7 @@ export default async function HomePage() {
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {howItWorks.map((step, i) => (
               <div key={step.title} className="flex flex-col items-center text-center">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-xl font-bold text-indigo-700">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-ember-100 text-xl font-bold text-ember-700">
                   {i + 1}
                 </div>
                 <span className="mb-2 text-2xl" aria-hidden="true">{step.icon}</span>
@@ -176,21 +176,21 @@ export default async function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-indigo-600 px-4 py-16 text-center text-white">
+      <section className="bg-pine-800 px-4 py-16 text-center text-white">
         <h2 className="text-2xl font-bold sm:text-3xl">{t('cta.heading')}</h2>
-        <p className="mx-auto mt-3 max-w-md text-indigo-200">
+        <p className="mx-auto mt-3 max-w-md text-pine-200">
           {t('cta.subtitle')}
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href="/register"
-            className="rounded-xl bg-white px-8 py-3 text-sm font-semibold text-indigo-700 shadow hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600"
+            className="rounded-xl bg-ember-500 px-8 py-3 text-sm font-semibold text-white shadow hover:bg-ember-600 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-pine-800"
           >
             {t('cta.register')}
           </Link>
           <Link
             href="/cabins"
-            className="rounded-xl border border-indigo-400 px-8 py-3 text-sm font-semibold text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600"
+            className="rounded-xl border border-pine-500 px-8 py-3 text-sm font-semibold text-white hover:bg-pine-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-pine-800"
           >
             {t('cta.exploreCabins')}
           </Link>

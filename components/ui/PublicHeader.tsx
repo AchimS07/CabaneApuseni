@@ -142,14 +142,14 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
         {/* ── Logo ── */}
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2 text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
+          className="flex shrink-0 items-center gap-2 text-pine-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 rounded-sm"
           aria-label={th('logoAriaLabel')}
         >
           <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <path d="M16 3L2 28h28L16 3z" fill="#FF385C" />
+            <path d="M16 3L2 28h28L16 3z" fill="#e34e1c" />
             <path d="M16 10l-7 14h14L16 10z" fill="white" opacity="0.6" />
           </svg>
-          <span className="hidden text-lg font-bold tracking-tight text-brand sm:block">
+          <span className="hidden text-lg font-bold tracking-tight text-pine-700 sm:block">
             Cabane Apuseni
           </span>
         </Link>
@@ -259,8 +259,8 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   className={[
                     'mr-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition',
                     searchHasValue
-                      ? 'bg-brand text-white hover:bg-brand-dark'
-                      : 'bg-brand text-white hover:bg-brand-dark',
+                      ? 'bg-ember-500 text-white hover:bg-ember-600'
+                      : 'bg-ember-500 text-white hover:bg-ember-600',
                   ].join(' ')}
                   aria-label={th('searchButton')}
                 >
@@ -296,7 +296,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 {location && (
                   <button
                     type="button"
-                    className="mt-2 text-xs text-brand underline"
+                    className="mt-2 text-xs text-ember-600 underline"
                     onClick={() => setLocation('')}
                   >
                     {th('clear')}
@@ -402,13 +402,15 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
 
         {/* ── Right: profile / nav ── */}
         <div className="flex shrink-0 items-center gap-2">
-          {/* "Devino gazdă" – desktop only */}
-          <Link
-            href={isAuthenticated ? '/dashboard/owner' : '/register'}
-            className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand lg:block"
-          >
-            {th('becomeHost')}
-          </Link>
+          {/* "Become a host" / "Owner dashboard" – desktop only */}
+          {!isAdmin && (
+            <Link
+              href={isOwner ? '/dashboard/owner' : '/pricing'}
+              className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 lg:block"
+            >
+              {isOwner ? th('ownerDashboard') : th('becomeHost')}
+            </Link>
+          )}
 
           {/* Language switcher */}
           <div className="hidden md:block">
@@ -423,7 +425,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               aria-expanded={profileOpen}
               aria-haspopup="menu"
               aria-label={th('userMenu')}
-              className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-2 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-2 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             >
               <MenuIcon size={16} className="text-gray-700" aria-hidden="true" />
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-600 text-white">
@@ -438,7 +440,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               >
                 {isAuthenticated ? (
                   <>
-                    {!isAdmin && (
+                    {!isAdmin && !isOwner && (
                       <>
                         <Link
                           href="/dashboard/bookings"
@@ -449,20 +451,12 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                           {th('myBookings')}
                         </Link>
                         <Link
-                          href="/dashboard"
+                          href="/dashboard?view=favorites"
                           role="menuitem"
                           onClick={() => setProfileOpen(false)}
                           className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
                         >
                           {th('favorites')}
-                        </Link>
-                        <Link
-                          href="/dashboard"
-                          role="menuitem"
-                          onClick={() => setProfileOpen(false)}
-                          className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
-                        >
-                          {th('myAccount')}
                         </Link>
                       </>
                     )}
@@ -476,6 +470,34 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                         {th('admin')}
                       </Link>
                     )}
+                    {isOwner && !isAdmin && (
+                      <Link
+                        href="/dashboard/owner"
+                        role="menuitem"
+                        onClick={() => setProfileOpen(false)}
+                        className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                      >
+                        {t('ownerDashboard')}
+                      </Link>
+                    )}
+                    {!isAdmin && !isOwner && (
+                      <Link
+                        href="/dashboard/bookings"
+                        role="menuitem"
+                        onClick={() => setProfileOpen(false)}
+                        className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                      >
+                        {t('myBookings')}
+                      </Link>
+                    )}
+                    <Link
+                      href="/dashboard/profile"
+                      role="menuitem"
+                      onClick={() => setProfileOpen(false)}
+                      className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
+                    >
+                      {t('myAccount')}
+                    </Link>
                     <hr className="my-1 border-gray-100" />
                     <button
                       type="button"
@@ -514,7 +536,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
           {/* Mobile: hamburger only */}
           <button
             type="button"
-            className="flex items-center gap-2 rounded-full border border-gray-300 bg-white p-2.5 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:hidden"
+            className="flex items-center gap-2 rounded-full border border-gray-300 bg-white p-2.5 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 md:hidden"
             onClick={() => setMobileOpen((o) => !o)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
@@ -556,7 +578,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 onClick={closeMobile}
                 className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
               >
-                {th('cabins')}
+{th('cabins')}
               </Link>
             </li>
             {isAuthenticated ? (
@@ -568,7 +590,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={closeMobile}
                       className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                     >
-                      {th('admin')}
+{th('admin')}
                     </Link>
                   </li>
                 )}
@@ -579,7 +601,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={closeMobile}
                       className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                     >
-                      {th('ownerDashboard')}
+{th('ownerDashboard')}
                     </Link>
                   </li>
                 )}
@@ -591,20 +613,29 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                         onClick={closeMobile}
                         className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                       >
-                        {th('myBookings')}
+{th('myBookings')}
                       </Link>
                     </li>
                     <li>
                       <Link
-                        href="/dashboard"
+                        href="/dashboard?view=favorites"
                         onClick={closeMobile}
                         className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                       >
-                        {th('favorites')}
+{th('favorites')}
                       </Link>
                     </li>
                   </>
                 )}
+                <li>
+                  <Link
+                    href="/dashboard/profile"
+                    onClick={closeMobile}
+                    className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
+                  >
+                    {t('myAccount')}
+                  </Link>
+                </li>
                 <li>
                   <hr className="my-2 border-gray-100" />
                   <button
@@ -613,7 +644,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     disabled={loggingOut}
                     className="block w-full rounded-xl px-4 py-3 text-left text-red-600 transition hover:bg-red-50 disabled:opacity-50"
                   >
-                    {loggingOut ? th('loggingOut') : th('logout')}
+{loggingOut ? th('loggingOut') : th('logout')}
                   </button>
                 </li>
               </>
@@ -625,16 +656,16 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     onClick={closeMobile}
                     className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                   >
-                    {th('login')}
+{th('login')}
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/register"
                     onClick={closeMobile}
-                    className="block rounded-xl bg-brand px-4 py-3 text-center text-white transition hover:bg-brand-dark"
+                    className="block rounded-xl bg-ember-500 px-4 py-3 text-center text-white transition hover:bg-ember-600"
                   >
-                    {th('register')}
+{th('register')}
                   </Link>
                 </li>
               </>

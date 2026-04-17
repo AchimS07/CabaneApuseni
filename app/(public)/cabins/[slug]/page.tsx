@@ -80,7 +80,7 @@ export default async function CabinDetailPage({ params }: Props) {
       <div className="mb-4 flex items-center justify-between">
         <Link
           href="/cabins"
-          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
         >
           <ArrowLeftIcon size={16} aria-hidden="true" />
           {t('backToCabins')}
@@ -88,7 +88,7 @@ export default async function CabinDetailPage({ params }: Props) {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 underline transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 underline transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             aria-label={t('shareAriaLabel')}
           >
             <ShareIcon size={16} aria-hidden="true" />
@@ -133,7 +133,7 @@ export default async function CabinDetailPage({ params }: Props) {
 
           {/* Host row */}
           <div className="flex items-center gap-3 border-b border-gray-200 py-6">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand text-white text-lg font-bold">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-pine-600 text-white text-lg font-bold">
               {cabin.title.charAt(0)}
             </div>
             <div>
@@ -238,7 +238,7 @@ function AmenitiesGrid({ amenities, showAll, showMoreLabel }: AmenitiesGridProps
       {extra > 0 && (
         <button
           type="button"
-          className="mt-5 rounded-xl border border-gray-900 px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="mt-5 rounded-xl border border-gray-900 px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
         >
           {showMoreLabel(extra)}
         </button>

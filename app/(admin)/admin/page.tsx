@@ -79,13 +79,13 @@ export default async function AdminPage() {
         <div className="flex flex-wrap gap-3">
           <Link
             href="/admin/cabins"
-            className="rounded-md border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="rounded-md border border-pine-200 bg-pine-50 px-4 py-2 text-sm font-medium text-pine-700 hover:bg-pine-100 focus:outline-none focus:ring-2 focus:ring-pine-500"
           >
             {t('manageCabins')}
           </Link>
           <Link
             href="/admin/bookings"
-            className="rounded-md border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="rounded-md border border-pine-200 bg-pine-50 px-4 py-2 text-sm font-medium text-pine-700 hover:bg-pine-100 focus:outline-none focus:ring-2 focus:ring-pine-500"
           >
             {t('manageBookings')}
           </Link>
@@ -141,7 +141,7 @@ function KpiCard({ label, value, icon, href, variant = 'default' }: KpiCardProps
     return (
       <Link
         href={href}
-        className="focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-xl"
+        className="focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2 rounded-xl"
       >
         {content}
       </Link>

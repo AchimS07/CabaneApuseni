@@ -34,7 +34,7 @@ export function AvailableCabinsMap({ cabins }: Props) {
           href={mapsOpenUrl}
           target="_blank"
           rel="noreferrer"
-          className="text-sm font-medium text-indigo-600 hover:underline"
+          className="text-sm font-medium text-pine-600 hover:underline"
         >
           {t('openInMaps')}
         </a>
@@ -50,8 +50,8 @@ export function AvailableCabinsMap({ cabins }: Props) {
               onClick={() => setSelectedCabinId(cabin.id)}
               className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-sm transition ${
                 isActive
-                  ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
-                  : 'border-gray-200 bg-white text-gray-700 hover:border-indigo-300'
+                  ? 'border-pine-600 bg-pine-50 text-pine-700'
+                  : 'border-gray-200 bg-white text-gray-700 hover:border-pine-300'
               }`}
               aria-pressed={isActive}
             >

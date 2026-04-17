@@ -5,6 +5,7 @@ import { LogoutButton } from '@/components/ui/LogoutButton';
 import { getProfile } from '@/modules/users/application/userService';
 import { getTranslations } from 'next-intl/server';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { DashboardNav } from '@/components/ui/DashboardNav';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const session = await requireAuth();
@@ -20,95 +21,22 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           aria-label={t('mainNav')}
         >
           <Link
-            href="/"
-            className="font-bold text-brand hover:text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand rounded"
+            href="/dashboard"
+            className="flex items-center gap-2 font-bold text-pine-700 hover:text-pine-800 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
           >
             <span
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-forest-600 text-white text-xs"
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-pine-600 text-white text-xs"
               aria-hidden="true"
             >
               🏔️
             </span>
-            Cabane Apuseni
+            <span className="hidden sm:inline">Cabane Apuseni</span>
           </Link>
-          <ul className="flex flex-wrap items-center gap-1 text-sm font-medium">
-            <li>
-              <Link
-                href="/dashboard"
-                className="rounded-md px-3 py-2 text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                Acasă
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/cabins"
-                className="rounded-md px-3 py-2 text-gray-600 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
-              >
-                {t('cabins')}
-              </Link>
-            </li>
-            {role !== 'owner' && (
-              <li>
-                <Link
-                  href="/dashboard/bookings"
-                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
-                >
-                  {t('myBookings')}
-                </Link>
-              </li>
-            )}
-            <li>
-              <Link
-                href="/dashboard"
-                className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
-              >
-                Favorite
-              </Link>
-            </li>
-            {role === 'owner' && (
-              <>
-                <li>
-                  <Link
-                    href="/dashboard/owner"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
-                  >
-                    {t('owner')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard/owner/listings"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
-                  >
-                    {t('myListings')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard/owner/bookings"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
-                  >
-                    {t('bookings')}
-                  </Link>
-                </li>
-              </>
-            )}
-            <li>
-              <Link
-                href="/dashboard/profile"
-                className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                Profil
-              </Link>
-            </li>
-            <li>
-              <LogoutButton />
-            </li>
-            <li>
-              <LanguageSwitcher />
-            </li>
-          </ul>
+          <div className="flex flex-wrap items-center gap-1">
+            <DashboardNav role={role} />
+            <LogoutButton />
+            <LanguageSwitcher />
+          </div>
         </nav>
       </header>
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">{children}</main>

@@ -12,13 +12,28 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const dynamic = 'force-dynamic';
 
-export default async function DashboardPage() {
+interface Props {
+  searchParams: Promise<{ view?: string }>;
+}
+
+export default async function DashboardPage({ searchParams }: Props) {
+  const { view } = await searchParams;
   const session = await requireAuth();
   const profileResult = await getProfile(session.uid);
   const t = await getTranslations('dashboard');
   const tCommon = await getTranslations('common');
   const name = profileResult.ok ? profileResult.data.name : session.email ?? tCommon('guest');
   const role = profileResult.ok ? profileResult.data.role : session.role;
+
+  if (view === 'favorites') {
+    return (
+      <div>
+        <h1 className="mb-1 text-2xl font-bold text-gray-900">{t('favorites')}</h1>
+        <p className="mb-8 text-gray-500">{t('favoritesDesc')}</p>
+        <WishlistSection />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -30,53 +45,57 @@ export default async function DashboardPage() {
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Link
-          href="/dashboard/bookings"
-          className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-brand hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
-        >
-          <span className="mb-3 text-3xl" aria-hidden="true">📅</span>
-          <h2 className="text-lg font-semibold text-gray-900 group-hover:text-brand">
-            {t('myBookings')}
-          </h2>
-          <p className="mt-1 text-sm text-gray-500">{t('myBookingsDesc')}</p>
-          <span className="mt-4 text-sm font-medium text-brand group-hover:underline">
-            {t('viewBookings')}
-          </span>
-        </Link>
+        {role !== 'owner' && (
+          <Link
+            href="/dashboard/bookings"
+            className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-pine-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
+          >
+            <span className="mb-3 text-3xl" aria-hidden="true">📅</span>
+            <h2 className="text-lg font-semibold text-gray-900 group-hover:text-pine-700">
+              {t('myBookings')}
+            </h2>
+            <p className="mt-1 text-sm text-gray-500">{t('myBookingsDesc')}</p>
+            <span className="mt-4 text-sm font-medium text-pine-600 group-hover:underline">
+              {t('viewBookings')}
+            </span>
+          </Link>
+        )}
 
-        <Link
-          href="/cabins"
-          className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-brand hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
-        >
-          <span className="mb-3 text-3xl" aria-hidden="true">🏔️</span>
-          <h2 className="text-lg font-semibold text-gray-900 group-hover:text-brand">
-            {t('searchCabins')}
-          </h2>
-          <p className="mt-1 text-sm text-gray-500">{t('searchCabinsDesc')}</p>
-          <span className="mt-4 text-sm font-medium text-brand group-hover:underline">
-            {t('explore')}
-          </span>
-        </Link>
+        {role !== 'owner' && (
+          <Link
+            href="/cabins"
+            className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-pine-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
+          >
+            <span className="mb-3 text-3xl" aria-hidden="true">🏔️</span>
+            <h2 className="text-lg font-semibold text-gray-900 group-hover:text-pine-700">
+              {t('searchCabins')}
+            </h2>
+            <p className="mt-1 text-sm text-gray-500">{t('searchCabinsDesc')}</p>
+            <span className="mt-4 text-sm font-medium text-pine-600 group-hover:underline">
+              {t('explore')}
+            </span>
+          </Link>
+        )}
 
         {role === 'owner' && (
           <Link
             href="/dashboard/owner"
-            className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-brand hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
+            className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-pine-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2 sm:col-span-2"
           >
             <span className="mb-3 text-3xl" aria-hidden="true">🧑‍💼</span>
-            <h2 className="text-lg font-semibold text-gray-900 group-hover:text-brand">
+            <h2 className="text-lg font-semibold text-gray-900 group-hover:text-pine-700">
               {t('ownerDashboard')}
             </h2>
             <p className="mt-1 text-sm text-gray-500">{t('ownerDashboardDesc')}</p>
-            <span className="mt-4 text-sm font-medium text-brand group-hover:underline">
+            <span className="mt-4 text-sm font-medium text-pine-600 group-hover:underline">
               {t('openDashboard')}
             </span>
           </Link>
         )}
       </div>
 
-      {/* Client-side wishlist section */}
-      <WishlistSection />
+      {/* Client-side wishlist section — not shown to owners */}
+      {role !== 'owner' && <WishlistSection />}
     </div>
   );
 }

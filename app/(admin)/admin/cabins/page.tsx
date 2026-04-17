@@ -34,7 +34,7 @@ export default async function AdminCabinsPage() {
             <SeedCabinsButton />
             <Link
               href="/dashboard/owner/listings/new?redirectTo=/admin/cabins"
-              className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex items-center rounded-md bg-ember-500 px-4 py-2 text-sm font-medium text-white hover:bg-ember-600 focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
             >
               {t('addCabin')}
             </Link>
@@ -88,7 +88,7 @@ export default async function AdminCabinsPage() {
                   <td className="px-4 py-3">
                     <Link
                       href={`/cabins/${cabin.slug}`}
-                      className="text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+                      className="text-pine-600 hover:underline focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

@@ -30,7 +30,12 @@
     "bookings": "Rezervări",
     "publicSite": "← Site public",
     "dashboard": "Tablou de bord",
-    "searchCabins": "Caută cabane"
+    "searchCabins": "Caută cabane",
+    "myAccount": "Contul meu",
+    "becomeHost": "Devino gazdă",
+    "profile": "Profil",
+    "favorites": "Favorite",
+    "home": "Acasă"
   },
   "home": {
     "meta": {
@@ -80,7 +85,7 @@
     },
     "pricing": {
       "heading": "Planuri transparente, fără surprize",
-      "subtitle": "Indiferent dacă ești turist în căutarea aventurii sau proprietar care vrea să-și listeze cabana, avem planul potrivit pentru tine."
+      "subtitle": "Listează-ți cabana și primește rezervări prin Cabane Apuseni. Alege planul potrivit pentru numărul tău de proprietăți."
     },
     "trust": {
       "securePayments": "Plăți securizate",
@@ -104,7 +109,7 @@
       },
       "q4": {
         "question": "Cum funcționează perioada de probă?",
-        "answer": "Planul Gratuit este disponibil fără limită de timp. Planurile plătite pot fi testate 14 zile gratuit — nu este necesar cardul de credit."
+        "answer": "Planurile plătite pot fi testate 14 zile gratuit — nu este necesar cardul de credit. Poți anula în orice moment în această perioadă."
       },
       "q5": {
         "question": "Există reduceri pentru plata anuală?",
@@ -119,57 +124,11 @@
     }
   },
   "pricing": {
-    "tabsLabel": "Selectează tipul de cont",
-    "forTourists": "🏕️ Pentru turiști",
-    "forOwners": "🏠 Pentru proprietari",
-    "touristsTabLabel": "Planuri pentru turiști",
     "ownersTabLabel": "Planuri pentru proprietari",
     "vatNote": "Toate prețurile includ TVA. Poți anula oricând, fără penalizări.",
     "period": "lună",
     "recommended": "Recomandat",
     "mostPopular": "Cel mai popular",
-    "free": {
-      "name": "Gratuit",
-      "price": "0 lei",
-      "description": "Perfect pentru a descoperi platforma fără niciun cost.",
-      "cta": "Începe gratuit",
-      "f1": "Browsing cabane nelimitat",
-      "f2": "Vizualizare disponibilitate",
-      "f3": "Până la 2 rezervări / lună",
-      "f4": "Suport standard (e-mail)",
-      "f5": "Rezervări nelimitate",
-      "f6": "Reduceri de sezon",
-      "f7": "Acces anticipat la cabane noi",
-      "f8": "Suport prioritar"
-    },
-    "explorer": {
-      "name": "Explorer",
-      "price": "29 lei",
-      "description": "Pentru turiștii activi care rezervă frecvent.",
-      "cta": "Alege Explorer",
-      "f1": "Browsing cabane nelimitat",
-      "f2": "Vizualizare disponibilitate",
-      "f3": "Rezervări nelimitate",
-      "f4": "Suport prioritar (chat)",
-      "f5": "Acces anticipat la cabane noi",
-      "f6": "Reduceri de sezon",
-      "f7": "Oferte exclusive cabane premium",
-      "f8": "Serviciu concierge personal"
-    },
-    "premium": {
-      "name": "Premium",
-      "price": "69 lei",
-      "description": "Experiență completă cu beneficii exclusive.",
-      "cta": "Alege Premium",
-      "f1": "Browsing cabane nelimitat",
-      "f2": "Vizualizare disponibilitate",
-      "f3": "Rezervări nelimitate",
-      "f4": "Suport prioritar 24/7",
-      "f5": "Acces anticipat la cabane noi",
-      "f6": "Reduceri de sezon",
-      "f7": "Oferte exclusive cabane premium",
-      "f8": "Serviciu concierge personal"
-    },
     "basic": {
       "name": "Basic",
       "price": "50 lei",
@@ -307,7 +266,9 @@
     "explore": "Explorează →",
     "ownerDashboard": "Dashboard proprietar",
     "ownerDashboardDesc": "Vezi statusul contului de proprietar și următorii pași.",
-    "openDashboard": "Deschide dashboard →"
+    "openDashboard": "Deschide dashboard →",
+    "favorites": "Favorite",
+    "favoritesDesc": "Cabanele salvate de tine."
   },
   "myBookings": {
     "title": "Rezervările mele",

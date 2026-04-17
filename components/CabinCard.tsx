@@ -88,7 +88,7 @@ export default function CabinCard({ cabin }: Props) {
                 type="button"
                 onClick={prev}
                 aria-label={t('prevPhoto')}
-                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-md transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-md transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
               >
                 <ChevronLeftIcon size={14} className="text-gray-700" aria-hidden="true" />
               </button>
@@ -96,7 +96,7 @@ export default function CabinCard({ cabin }: Props) {
                 type="button"
                 onClick={next}
                 aria-label={t('nextPhoto')}
-                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-md transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-md transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
               >
                 <ChevronRightIcon size={14} className="text-gray-700" aria-hidden="true" />
               </button>

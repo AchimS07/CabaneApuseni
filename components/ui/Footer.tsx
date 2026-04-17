@@ -44,7 +44,7 @@ function AccordionColumn({
           <li key={link.label}>
             <Link
               href={link.href}
-              className="text-sm text-gray-500 transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="text-sm text-gray-500 transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             >
               {link.label}
             </Link>
@@ -116,21 +116,21 @@ export function Footer() {
           <div className="flex items-center gap-4 text-sm text-gray-500">
             <Link
               href="/"
-              className="transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             >
               {t('termsLink')}
             </Link>
             <span aria-hidden="true">·</span>
             <Link
               href="/"
-              className="transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             >
               {t('privacyLink')}
             </Link>
             <span aria-hidden="true">·</span>
             <Link
               href="/"
-              className="transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="transition hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             >
               {t('sitemapLink')}
             </Link>

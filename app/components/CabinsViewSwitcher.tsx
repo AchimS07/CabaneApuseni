@@ -60,7 +60,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
               placeholder={t('searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-pine-500 focus:outline-none focus:ring-2 focus:ring-pine-500"
             />
           </div>
 
@@ -77,7 +77,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
               placeholder={maxPriceInCabins ? String(maxPriceInCabins) : '—'}
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-pine-500 focus:outline-none focus:ring-2 focus:ring-pine-500"
             />
           </div>
 
@@ -94,7 +94,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
               placeholder="1"
               value={minGuests}
               onChange={(e) => setMinGuests(e.target.value)}
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-pine-500 focus:outline-none focus:ring-2 focus:ring-pine-500"
             />
           </div>
 
@@ -102,7 +102,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
             <button
               type="button"
               onClick={clearFilters}
-              className="self-end rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="self-end rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pine-500"
             >
               {t('resetFilters')}
             </button>
@@ -126,7 +126,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
           type="button"
           onClick={() => setView('list')}
           aria-pressed={view === 'list'}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1 ${
+          className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 focus-visible:ring-offset-1 ${
             view === 'list'
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-500 hover:text-gray-700'
@@ -151,7 +151,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
           type="button"
           onClick={() => setView('map')}
           aria-pressed={view === 'map'}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1 ${
+          className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 focus-visible:ring-offset-1 ${
             view === 'map'
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-500 hover:text-gray-700'
@@ -186,7 +186,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="font-medium text-indigo-600 hover:underline"
+                className="font-medium text-pine-600 hover:underline"
               >
                 {t('resetFiltersLink')}
               </button>
@@ -200,7 +200,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
                 <li key={cabin.id}>
                   <Link
                     href={`/cabins/${cabin.slug}`}
-                    className="group block overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="group block overflow-hidden rounded-xl border bg-white shadow-sm transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
                     aria-label={`${cabin.title}, ${cabin.location}, ${cabin.pricePerNight} RON ${t('perNight')}`}
                   >
                     {cabin.imageUrls[0] ? (
@@ -213,14 +213,14 @@ export function CabinsViewSwitcher({ cabins }: Props) {
                       />
                     ) : (
                       <div
-                        className="flex h-48 items-center justify-center bg-indigo-50 text-5xl"
+                        className="flex h-48 items-center justify-center bg-pine-50 text-5xl"
                         aria-hidden="true"
                       >
                         🏔️
                       </div>
                     )}
                     <div className="p-4">
-                      <h2 className="font-semibold text-gray-900 group-hover:text-indigo-700">
+                      <h2 className="font-semibold text-gray-900 group-hover:text-pine-700">
                         {cabin.title}
                       </h2>
                       <p className="mt-1 flex items-center gap-1 text-sm text-gray-500">
@@ -228,7 +228,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
                         {cabin.location}
                       </p>
                       <div className="mt-3 flex items-center justify-between">
-                        <p className="font-semibold text-indigo-700">
+                        <p className="font-semibold text-pine-700">
                           {cabin.pricePerNight}{' '}
                           <span className="text-xs font-normal text-gray-500">RON {t('perNight')}</span>
                         </p>
@@ -236,7 +236,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
                           👥 max {cabin.maxGuests}
                         </span>
                       </div>
-                      <span className="mt-3 inline-block text-sm font-medium text-indigo-600 group-hover:underline">
+                      <span className="mt-3 inline-block text-sm font-medium text-pine-600 group-hover:underline">
                         {t('viewDetails')}
                       </span>
                     </div>
