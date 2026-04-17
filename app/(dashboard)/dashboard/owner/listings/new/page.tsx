@@ -58,7 +58,7 @@ export default async function NewListingPage({ searchParams }: Props) {
       <nav aria-label="Navigare" className="mb-6 text-sm text-gray-500">
         <Link
           href={backHref}
-          className="hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+          className="hover:text-pine-600 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
         >
           {t('back')}
         </Link>

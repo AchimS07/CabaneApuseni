@@ -180,7 +180,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
             }
             className={[
               'rounded-md border px-3 py-2 text-sm shadow-sm transition',
-              'focus:outline-none focus:ring-2 focus:ring-indigo-500',
+              'focus:outline-none focus:ring-2 focus:ring-pine-500',
               fieldErrors.description
                 ? 'border-red-400 focus:ring-red-400'
                 : 'border-gray-300',
@@ -220,7 +220,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
               aria-invalid={!!fieldErrors.pricePerNight}
               className={[
                 'rounded-md border px-3 py-2 text-sm shadow-sm transition',
-                'focus:outline-none focus:ring-2 focus:ring-indigo-500',
+                'focus:outline-none focus:ring-2 focus:ring-pine-500',
                 fieldErrors.pricePerNight
                   ? 'border-red-400'
                   : 'border-gray-300',
@@ -252,7 +252,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
               aria-invalid={!!fieldErrors.maxGuests}
               className={[
                 'rounded-md border px-3 py-2 text-sm shadow-sm transition',
-                'focus:outline-none focus:ring-2 focus:ring-indigo-500',
+                'focus:outline-none focus:ring-2 focus:ring-pine-500',
                 fieldErrors.maxGuests ? 'border-red-400' : 'border-gray-300',
               ].join(' ')}
             />
@@ -285,7 +285,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
             value={amenitiesText}
             onChange={(e) => setAmenitiesText(e.target.value)}
             placeholder={t('amenitiesPlaceholder')}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-pine-500"
           />
         </div>
 
@@ -306,7 +306,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
             aria-invalid={!!fieldErrors.imageUrls}
             className={[
               'rounded-md border px-3 py-2 text-sm shadow-sm transition',
-              'focus:outline-none focus:ring-2 focus:ring-indigo-500',
+              'focus:outline-none focus:ring-2 focus:ring-pine-500',
               fieldErrors.imageUrls ? 'border-red-400' : 'border-gray-300',
             ].join(' ')}
           />
@@ -325,7 +325,7 @@ export default function CabinForm({ cabin, redirectPath = '/dashboard/owner/list
           type="checkbox"
           checked={published}
           onChange={(e) => setPublished(e.target.checked)}
-          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+          className="h-4 w-4 rounded border-gray-300 text-pine-600 focus:ring-pine-500"
         />
         <label htmlFor="published" className="text-sm font-medium text-gray-700">
           {t('publishToggleLabel')}

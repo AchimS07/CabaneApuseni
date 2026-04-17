@@ -7,12 +7,14 @@
 
 @layer base {
   :root {
-    --color-brand: #FF385C;
-    --color-brand-dark: #E31C5F;
-    --color-text-primary: #222222;
-    --color-text-secondary: #717171;
-    --color-border: #DDDDDD;
-    --color-surface: #F7F7F7;
+    --color-ember: #e34e1c;
+    --color-ember-dark: #c1440e;
+    --color-pine: #1e5c3a;
+    --color-pine-dark: #184d30;
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #5c6470;
+    --color-border: #e0d9d0;
+    --color-surface: #f5f0ea;
   }
 
   html {
@@ -56,32 +58,32 @@
 
   /* Brand button */
   .btn-brand {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-6 py-3
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-ember-500 px-6 py-3
            text-base font-semibold text-white shadow-sm transition
-           hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2
-           focus-visible:ring-brand focus-visible:ring-offset-2
+           hover:bg-ember-600 focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-ember-500 focus-visible:ring-offset-2
            disabled:cursor-not-allowed disabled:opacity-50;
   }
 
   /* Pill / chip */
   .filter-pill {
     @apply inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white
-           px-4 py-2 text-sm font-medium text-[#222222] transition
+           px-4 py-2 text-sm font-medium text-[#1a1a1a] transition
            hover:border-gray-800 focus-visible:outline-none focus-visible:ring-2
-           focus-visible:ring-brand;
+           focus-visible:ring-pine-500;
   }
   .filter-pill-active {
     @apply border-gray-800 bg-gray-900 text-white hover:border-gray-700 hover:bg-gray-800;
   }
 
-  /* ── Forest-green primary buttons ─────────────────────────── */
+  /* ── Pine primary buttons ─────────────────────────── */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
-           rounded-full bg-forest-600 px-6 py-3
+           rounded-full bg-pine-600 px-6 py-3
            text-sm font-semibold text-white
            shadow-sm transition
-           hover:bg-forest-700
-           focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 focus-visible:ring-offset-2
+           hover:bg-pine-700
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 focus-visible:ring-offset-2
            disabled:cursor-not-allowed disabled:opacity-50;
   }
 
@@ -114,7 +116,7 @@
     @apply group block overflow-hidden rounded-2xl bg-white
            shadow-card transition-shadow hover:shadow-card-hover
            focus:outline-none focus-visible:ring-2
-           focus-visible:ring-forest-500 focus-visible:ring-offset-2;
+           focus-visible:ring-pine-500 focus-visible:ring-offset-2;
   }
 }
 

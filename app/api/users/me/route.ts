@@ -3,6 +3,9 @@ import { z } from 'zod';
 import { verifySession } from '@/lib/auth/session';
 import { getAdminAuth } from '@/lib/firebase/admin';
 import { getUserById, upsertUser } from '@/modules/users/infrastructure/firestoreUserRepository';
+import { createLogger } from '@/lib/observability/logger';
+
+const log = createLogger({ route: '/api/users/me' });
 
 const bodySchema = z.object({
   name: z.string().min(2),
@@ -30,16 +33,21 @@ export async function POST(req: NextRequest) {
   }
 
   const now = new Date().toISOString();
-  await upsertUser(session.uid, {
-    email,
-    name: parsed.data.name,
-    role: parsed.data.role,
-    plan: parsed.data.plan,
-    createdAt: existing?.createdAt ?? now,
-  });
+  try {
+    await upsertUser(session.uid, {
+      email,
+      name: parsed.data.name,
+      role: parsed.data.role,
+      plan: parsed.data.plan,
+      createdAt: existing?.createdAt ?? now,
+    });
 
-  // Sync role to Firebase custom claims so session cookies include the correct role.
-  await getAdminAuth().setCustomUserClaims(session.uid, { role: parsed.data.role });
+    // Sync role to Firebase custom claims so session cookies include the correct role.
+    await getAdminAuth().setCustomUserClaims(session.uid, { role: parsed.data.role });
+  } catch (err) {
+    log.error({ err, uid: session.uid }, 'Failed to save user profile');
+    return NextResponse.json({ error: 'Failed to save user profile' }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }

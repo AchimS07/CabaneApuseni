@@ -26,14 +26,14 @@ export default function PricingPage() {
             className={
               'relative flex flex-col rounded-2xl border p-8 shadow-sm' +
               (plan.recommended
-                ? ' border-indigo-500 bg-white ring-2 ring-indigo-500'
+                ? ' border-pine-500 bg-white ring-2 ring-pine-500'
                 : ' border-gray-200 bg-white')
             }
             aria-label={'Plan ' + plan.name}
           >
             {plan.recommended && (
               <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                <span className="rounded-full bg-indigo-600 px-4 py-1 text-xs font-semibold text-white">
+                <span className="rounded-full bg-pine-600 px-4 py-1 text-xs font-semibold text-white">
                   Recomandat
                 </span>
               </div>
@@ -69,7 +69,7 @@ export default function PricingPage() {
               className={
                 'block rounded-lg px-6 py-3 text-center text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2' +
                 (plan.recommended
-                  ? ' bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500'
+                  ? ' bg-ember-500 text-white hover:bg-ember-600 focus:ring-ember-500'
                   : ' bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-700')
               }
             >
@@ -81,7 +81,7 @@ export default function PricingPage() {
 
       <p className="mt-10 text-center text-sm text-gray-500">
         Ai deja un cont?{' '}
-        <Link href="/login" className="font-medium text-indigo-600 hover:underline">
+        <Link href="/login" className="font-medium text-pine-600 hover:underline">
           Autentific\u0103-te
         </Link>{' '}
         \u015fi gestioneaz\u0103-\u021bi abonamentul din dashboard.
