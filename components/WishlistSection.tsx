@@ -85,7 +85,7 @@ export function WishlistSection() {
         </h2>
         <Link
           href="/cabins"
-          className="text-sm font-medium text-brand underline transition hover:no-underline"
+          className="text-sm font-medium text-pine-600 underline transition hover:no-underline"
         >
           Explorează cabane
         </Link>

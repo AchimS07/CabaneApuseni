@@ -76,7 +76,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
             {/* Large image left */}
             <button
               type="button"
-              className="relative overflow-hidden rounded-l-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+              className="relative overflow-hidden rounded-l-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 focus-visible:ring-offset-2"
               onClick={() => openLightbox(0)}
               aria-label={`Deschide fotografie 1 din ${images.length} în galerie completă`}
             >
@@ -113,7 +113,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
                           key={col}
                           type="button"
                           className={[
-                            'relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1',
+                            'relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 focus-visible:ring-offset-1',
                             row === 0 && col === 1 ? 'rounded-tr-2xl' : '',
                             row === 1 && col === 1 ? 'rounded-br-2xl' : '',
                           ].join(' ')}
@@ -149,7 +149,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
             <button
               type="button"
               onClick={() => openLightbox(0)}
-              className="absolute bottom-4 right-4 flex items-center gap-2 rounded-xl border border-gray-900 bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="absolute bottom-4 right-4 flex items-center gap-2 rounded-xl border border-gray-900 bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             >
               <PhotosIcon size={16} aria-hidden="true" />
               Afișează toate fotografiile ({images.length})
@@ -165,7 +165,7 @@ export function PhotoGrid({ images, altPrefix }: PhotoGridProps) {
             <button
               key={img}
               type="button"
-              className="relative h-56 w-72 shrink-0 overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="relative h-56 w-72 shrink-0 overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
               onClick={() => openLightbox(i)}
               aria-label={`Deschide fotografia ${i + 1} din ${images.length}`}
             >

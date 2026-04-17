@@ -21,10 +21,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         >
           <Link
             href="/"
-            className="font-bold text-brand hover:text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand rounded"
+            className="font-bold text-pine-700 hover:text-pine-800 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
           >
             <span
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-forest-600 text-white text-xs"
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-pine-600 text-white text-xs"
               aria-hidden="true"
             >
               🏔️
@@ -35,7 +35,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             <li>
               <Link
                 href="/dashboard"
-                className="rounded-md px-3 py-2 text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="rounded-md px-3 py-2 text-gray-600 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
               >
                 Acasă
               </Link>
@@ -43,7 +43,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             <li>
               <Link
                 href="/cabins"
-                className="rounded-md px-3 py-2 text-gray-600 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
+                className="rounded-md px-3 py-2 text-gray-600 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
               >
                 {t('cabins')}
               </Link>
@@ -52,7 +52,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
               <li>
                 <Link
                   href="/dashboard/bookings"
-                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
+                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
                 >
                   {t('myBookings')}
                 </Link>
@@ -61,7 +61,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             <li>
               <Link
                 href="/dashboard"
-                className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
+                className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
               >
                 Favorite
               </Link>
@@ -71,7 +71,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 <li>
                   <Link
                     href="/dashboard/owner"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
                   >
                     {t('owner')}
                   </Link>
@@ -79,7 +79,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 <li>
                   <Link
                     href="/dashboard/owner/listings"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
                   >
                     {t('myListings')}
                   </Link>
@@ -87,7 +87,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 <li>
                   <Link
                     href="/dashboard/owner/bookings"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-rose-50 hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand"
+                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
                   >
                     {t('bookings')}
                   </Link>
@@ -97,7 +97,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             <li>
               <Link
                 href="/dashboard/profile"
-                className="rounded-md px-3 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
               >
                 Profil
               </Link>

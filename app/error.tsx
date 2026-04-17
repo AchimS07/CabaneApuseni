@@ -24,7 +24,7 @@ export default function GlobalError({ error, reset }: ErrorPageProps) {
       </p>
       <button
         onClick={reset}
-        className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="rounded-md bg-pine-600 px-4 py-2 text-sm font-medium text-white hover:bg-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
       >
         {t('retry')}
       </button>

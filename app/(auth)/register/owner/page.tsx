@@ -32,7 +32,7 @@ export default async function OwnerRegisterPage({ searchParams }: Props) {
       <h1 className="mb-2 text-center text-2xl font-bold">{t('ownerRegisterTitle')}</h1>
       <p className="mb-6 text-center text-sm text-gray-500">
         {t('selectedPlan')}{': '}
-        <span className="font-semibold text-indigo-600">
+        <span className="font-semibold text-pine-600">
           {validatedPlan === 'basic' ? t('planBasic') : t('planPro')}
         </span>
       </p>
@@ -44,13 +44,13 @@ export default async function OwnerRegisterPage({ searchParams }: Props) {
       />
       <p className="mt-4 text-center text-sm text-gray-500">
         {t('wantClientAccount')}{' '}
-        <Link href="/register" className="font-medium text-forest-600 hover:underline">
+        <Link href="/register" className="font-medium text-pine-600 hover:underline">
           {t('standardRegister')}
         </Link>
       </p>
       <p className="mt-4 text-center text-sm text-gray-500">
         {t('haveAccount')}{' '}
-        <Link href="/login" className="font-medium text-forest-600 hover:underline">
+        <Link href="/login" className="font-medium text-pine-600 hover:underline">
           {t('signInLink')}
         </Link>
       </p>

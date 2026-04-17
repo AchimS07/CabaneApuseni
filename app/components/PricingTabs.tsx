@@ -124,9 +124,9 @@ export function PricingTabs() {
             aria-selected={audience === 'clients'}
             onClick={() => setAudience('clients')}
             className={[
-              'rounded-lg px-6 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500',
+              'rounded-lg px-6 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pine-500',
               audience === 'clients'
-                ? 'bg-white text-indigo-700 shadow'
+                ? 'bg-white text-pine-700 shadow'
                 : 'text-gray-600 hover:text-gray-900',
             ].join(' ')}
           >
@@ -137,9 +137,9 @@ export function PricingTabs() {
             aria-selected={audience === 'owners'}
             onClick={() => setAudience('owners')}
             className={[
-              'rounded-lg px-6 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500',
+              'rounded-lg px-6 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pine-500',
               audience === 'owners'
-                ? 'bg-white text-indigo-700 shadow'
+                ? 'bg-white text-pine-700 shadow'
                 : 'text-gray-600 hover:text-gray-900',
             ].join(' ')}
           >
