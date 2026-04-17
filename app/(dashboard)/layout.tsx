@@ -5,6 +5,7 @@ import { LogoutButton } from '@/components/ui/LogoutButton';
 import { getProfile } from '@/modules/users/application/userService';
 import { getTranslations } from 'next-intl/server';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { DashboardNav } from '@/components/ui/DashboardNav';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const session = await requireAuth();
@@ -20,8 +21,8 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           aria-label={t('mainNav')}
         >
           <Link
-            href="/"
-            className="font-bold text-pine-700 hover:text-pine-800 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
+            href="/dashboard"
+            className="flex items-center gap-2 font-bold text-pine-700 hover:text-pine-800 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
           >
             <span
               className="flex h-7 w-7 items-center justify-center rounded-full bg-pine-600 text-white text-xs"
@@ -29,78 +30,13 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             >
               🏔️
             </span>
-            Cabane Apuseni
+            <span className="hidden sm:inline">Cabane Apuseni</span>
           </Link>
-          <ul className="flex flex-wrap items-center gap-1 text-sm font-medium">
-            <li>
-              <Link
-                href="/cabins"
-                className="rounded-md px-3 py-2 text-gray-600 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-              >
-                {t('cabins')}
-              </Link>
-            </li>
-            {role !== 'owner' && (
-              <li>
-                <Link
-                  href="/dashboard/bookings"
-                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-                >
-                  {t('myBookings')}
-                </Link>
-              </li>
-            )}
-            <li>
-              <Link
-                href="/dashboard?view=favorites"
-                className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-              >
-                Favorite
-              </Link>
-            </li>
-            {role === 'owner' && (
-              <>
-                <li>
-                  <Link
-                    href="/dashboard/owner"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-                  >
-                    {t('owner')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard/owner/listings"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-                  >
-                    {t('myListings')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard/owner/bookings"
-                    className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-                  >
-                    {t('bookings')}
-                  </Link>
-                </li>
-              </>
-            )}
-            <li>
-              <Link
-                href="/dashboard/profile"
-                className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-              >
-                Profil
-              </Link>
-            </li>
-            <li>
-              <LogoutButton />
-            </li>
-            <li>
-              <LanguageSwitcher />
-            </li>
-          </ul>
+          <div className="flex flex-wrap items-center gap-1">
+            <DashboardNav role={role} />
+            <LogoutButton />
+            <LanguageSwitcher />
+          </div>
         </nav>
       </header>
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">{children}</main>

@@ -81,8 +81,8 @@ export default function HomePage() {
             Planuri transparente, fără surprize
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-gray-500">
-            Indiferent dacă ești turist în căutarea aventurii sau proprietar care
-            vrea să-și listeze cabana, avem planul potrivit pentru tine.
+            Listează-ți cabana și primește rezervări prin Cabane Apuseni.
+            Alege planul potrivit pentru numărul tău de proprietăți.
           </p>
         </div>
         <PricingTabs />
@@ -207,7 +207,7 @@ const faqItems = [
   {
     question: 'Cum funcționează perioada de probă?',
     answer:
-      'Planul Gratuit este disponibil fără limită de timp. Planurile plătite pot fi testate 14 zile gratuit — nu este necesar cardul de credit.',
+      'Planurile plătite pot fi testate 14 zile gratuit — nu este necesar cardul de credit. Poți anula în orice moment în această perioadă.',
   },
   {
     question: 'Există reduceri pentru plata anuală?',
