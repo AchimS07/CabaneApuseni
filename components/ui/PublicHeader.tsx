@@ -402,13 +402,15 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
 
         {/* ── Right: profile / nav ── */}
         <div className="flex shrink-0 items-center gap-2">
-          {/* "Devino gazdă" – desktop only */}
-          <Link
-            href={isAuthenticated ? '/dashboard/owner' : '/register'}
-            className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 lg:block"
-          >
-            Devino gazdă
-          </Link>
+          {/* "Become a host" / "Owner dashboard" – desktop only */}
+          {!isAdmin && (
+            <Link
+              href={isOwner ? '/dashboard/owner' : '/pricing'}
+              className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 lg:block"
+            >
+              {isOwner ? t('ownerDashboard') : t('becomeHost')}
+            </Link>
+          )}
 
           {/* Language switcher */}
           <div className="hidden md:block">
@@ -422,7 +424,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               onClick={() => setProfileOpen((o) => !o)}
               aria-expanded={profileOpen}
               aria-haspopup="menu"
-              aria-label="Meniu utilizator"
+              aria-label={t('mainNav')}
               className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-2 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             >
               <MenuIcon size={16} className="text-gray-700" aria-hidden="true" />
@@ -438,7 +440,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               >
                 {isAuthenticated ? (
                   <>
-                    {!isAdmin && (
+                    {!isAdmin && !isOwner && (
                       <>
                         <Link
                           href="/dashboard/bookings"
@@ -446,23 +448,15 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                           onClick={() => setProfileOpen(false)}
                           className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
                         >
-                          Rezervările mele
+                          {t('myBookings')}
                         </Link>
                         <Link
-                          href="/dashboard"
+                          href="/dashboard?view=favorites"
                           role="menuitem"
                           onClick={() => setProfileOpen(false)}
                           className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
                         >
-                          Favorite
-                        </Link>
-                        <Link
-                          href="/dashboard"
-                          role="menuitem"
-                          onClick={() => setProfileOpen(false)}
-                          className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
-                        >
-                          Contul meu
+                          {t('favorites')}
                         </Link>
                       </>
                     )}
@@ -473,9 +467,37 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                         onClick={() => setProfileOpen(false)}
                         className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
                       >
-                        Admin
+                        {t('admin')}
                       </Link>
                     )}
+                    {isOwner && !isAdmin && (
+                      <Link
+                        href="/dashboard/owner"
+                        role="menuitem"
+                        onClick={() => setProfileOpen(false)}
+                        className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                      >
+                        {t('ownerDashboard')}
+                      </Link>
+                    )}
+                    {!isAdmin && !isOwner && (
+                      <Link
+                        href="/dashboard/bookings"
+                        role="menuitem"
+                        onClick={() => setProfileOpen(false)}
+                        className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                      >
+                        {t('myBookings')}
+                      </Link>
+                    )}
+                    <Link
+                      href="/dashboard/profile"
+                      role="menuitem"
+                      onClick={() => setProfileOpen(false)}
+                      className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
+                    >
+                      {t('myAccount')}
+                    </Link>
                     <hr className="my-1 border-gray-100" />
                     <button
                       type="button"
@@ -484,7 +506,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       disabled={loggingOut}
                       className="block w-full px-5 py-3 text-left text-sm text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
                     >
-                      {loggingOut ? 'Se deconectează…' : 'Deconectare'}
+                      {loggingOut ? t('loggingOut') : t('logout')}
                     </button>
                   </>
                 ) : (
@@ -495,7 +517,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={() => setProfileOpen(false)}
                       className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
                     >
-                      Autentificare
+                      {t('signIn')}
                     </Link>
                     <Link
                       href="/register"
@@ -503,7 +525,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={() => setProfileOpen(false)}
                       className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
                     >
-                      Înregistrare
+                      {t('register')}
                     </Link>
                   </>
                 )}
@@ -518,7 +540,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
             onClick={() => setMobileOpen((o) => !o)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
-            aria-label={mobileOpen ? 'Închide meniu' : 'Deschide meniu'}
+            aria-label={mobileOpen ? t('closeMenu') : t('openMenu')}
           >
             {mobileOpen ? (
               <XIcon size={18} className="text-gray-700" aria-hidden="true" />
@@ -556,7 +578,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 onClick={closeMobile}
                 className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
               >
-                Cabane
+                {t('cabins')}
               </Link>
             </li>
             {isAuthenticated ? (
@@ -568,7 +590,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={closeMobile}
                       className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                     >
-                      Admin
+                      {t('admin')}
                     </Link>
                   </li>
                 )}
@@ -579,7 +601,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={closeMobile}
                       className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                     >
-                      Dashboard proprietar
+                      {t('ownerDashboard')}
                     </Link>
                   </li>
                 )}
@@ -591,20 +613,29 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                         onClick={closeMobile}
                         className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                       >
-                        Rezervările mele
+                        {t('myBookings')}
                       </Link>
                     </li>
                     <li>
                       <Link
-                        href="/dashboard"
+                        href="/dashboard?view=favorites"
                         onClick={closeMobile}
                         className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                       >
-                        Favorite
+                        {t('favorites')}
                       </Link>
                     </li>
                   </>
                 )}
+                <li>
+                  <Link
+                    href="/dashboard/profile"
+                    onClick={closeMobile}
+                    className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
+                  >
+                    {t('myAccount')}
+                  </Link>
+                </li>
                 <li>
                   <hr className="my-2 border-gray-100" />
                   <button
@@ -613,7 +644,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     disabled={loggingOut}
                     className="block w-full rounded-xl px-4 py-3 text-left text-red-600 transition hover:bg-red-50 disabled:opacity-50"
                   >
-                    {loggingOut ? 'Se deconectează…' : 'Deconectare'}
+                    {loggingOut ? t('loggingOut') : t('logout')}
                   </button>
                 </li>
               </>
@@ -625,7 +656,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     onClick={closeMobile}
                     className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                   >
-                    Autentificare
+                    {t('signIn')}
                   </Link>
                 </li>
                 <li>
@@ -634,7 +665,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     onClick={closeMobile}
                     className="block rounded-xl bg-ember-500 px-4 py-3 text-center text-white transition hover:bg-ember-600"
                   >
-                    Înregistrare
+                    {t('register')}
                   </Link>
                 </li>
               </>

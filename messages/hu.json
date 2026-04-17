@@ -29,7 +29,12 @@
     "bookings": "Foglalások",
     "publicSite": "← Nyilvános oldal",
     "dashboard": "Irányítópult",
-    "searchCabins": "Kabinok keresése"
+    "searchCabins": "Kabinok keresése",
+    "myAccount": "Fiókom",
+    "becomeHost": "Legyen házigazda",
+    "profile": "Profil",
+    "favorites": "Kedvencek",
+    "home": "Főoldal"
   },
   "home": {
     "meta": {
@@ -226,7 +231,9 @@
     "explore": "Felfedezés →",
     "ownerDashboard": "Tulajdonosi irányítópult",
     "ownerDashboardDesc": "Tekintse meg tulajdonosi fiókjának állapotát és a következő lépéseket.",
-    "openDashboard": "Irányítópult megnyitása →"
+    "openDashboard": "Irányítópult megnyitása →",
+    "favorites": "Kedvencek",
+    "favoritesDesc": "Az elmentett kabinjaid."
   },
   "myBookings": {
     "title": "Foglalásaim",

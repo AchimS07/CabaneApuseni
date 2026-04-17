@@ -12,12 +12,27 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const dynamic = 'force-dynamic';
 
-export default async function DashboardPage() {
+interface Props {
+  searchParams: Promise<{ view?: string }>;
+}
+
+export default async function DashboardPage({ searchParams }: Props) {
+  const { view } = await searchParams;
   const session = await requireAuth();
   const profileResult = await getProfile(session.uid);
   const name = profileResult.ok ? profileResult.data.name : session.email ?? 'Utilizator';
   const role = profileResult.ok ? profileResult.data.role : session.role;
   const t = await getTranslations('dashboard');
+
+  if (view === 'favorites') {
+    return (
+      <div>
+        <h1 className="mb-1 text-2xl font-bold text-gray-900">{t('favorites')}</h1>
+        <p className="mb-8 text-gray-500">{t('favoritesDesc')}</p>
+        <WishlistSection />
+      </div>
+    );
+  }
 
   return (
     <div>

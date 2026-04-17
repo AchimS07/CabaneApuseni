@@ -29,7 +29,12 @@
     "bookings": "Rezervări",
     "publicSite": "← Site public",
     "dashboard": "Tablou de bord",
-    "searchCabins": "Caută cabane"
+    "searchCabins": "Caută cabane",
+    "myAccount": "Contul meu",
+    "becomeHost": "Devino gazdă",
+    "profile": "Profil",
+    "favorites": "Favorite",
+    "home": "Acasă"
   },
   "home": {
     "meta": {
@@ -226,7 +231,9 @@
     "explore": "Explorează →",
     "ownerDashboard": "Dashboard proprietar",
     "ownerDashboardDesc": "Vezi statusul contului de proprietar și următorii pași.",
-    "openDashboard": "Deschide dashboard →"
+    "openDashboard": "Deschide dashboard →",
+    "favorites": "Favorite",
+    "favoritesDesc": "Cabanele salvate de tine."
   },
   "myBookings": {
     "title": "Rezervările mele",
