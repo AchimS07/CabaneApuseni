@@ -36,6 +36,7 @@ type ActiveField = 'location' | 'checkin' | 'checkout' | 'guests' | null;
 export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: PublicHeaderProps) {
   const router = useRouter();
   const t = useTranslations('nav');
+  const th = useTranslations('publicHeader');
   const pathname = usePathname();
 
   // Scroll shadow
@@ -142,7 +143,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2 text-pine-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 rounded-sm"
-          aria-label="Cabane Apuseni – pagina principală"
+          aria-label={th('logoAriaLabel')}
         >
           <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <path d="M16 3L2 28h28L16 3z" fill="#e34e1c" />
@@ -161,8 +162,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
           <form
             onSubmit={handleSearch}
             role="search"
-            aria-label="Caută cabane"
-            className="relative"
+            aria-label={th('searchAriaLabel')}
           >
             <div
               className={[
@@ -185,9 +185,9 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 aria-expanded={activeField === 'location'}
                 aria-haspopup="listbox"
               >
-                <span className="text-xs font-semibold text-gray-900">Locație</span>
+                <span className="text-xs font-semibold text-gray-900">{th('locationLabel')}</span>
                 <span className={`text-sm ${location ? 'text-gray-900' : 'text-gray-400'}`}>
-                  {location || 'Unde mergi?'}
+                  {location || th('locationPlaceholder')}
                 </span>
               </button>
 
@@ -205,9 +205,9 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 ].join(' ')}
                 aria-expanded={activeField === 'checkin'}
               >
-                <span className="text-xs font-semibold text-gray-900">Check-in</span>
+                <span className="text-xs font-semibold text-gray-900">{th('checkInLabel')}</span>
                 <span className={`text-sm ${checkIn ? 'text-gray-900' : 'text-gray-400'}`}>
-                  {checkIn ? new Date(checkIn).toLocaleDateString('ro-RO', { day: '2-digit', month: 'short' }) : 'Adaugă date'}
+                  {checkIn ? new Date(checkIn).toLocaleDateString(undefined, { day: '2-digit', month: 'short' }) : th('addDates')}
                 </span>
               </button>
 
@@ -225,9 +225,9 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 ].join(' ')}
                 aria-expanded={activeField === 'checkout'}
               >
-                <span className="text-xs font-semibold text-gray-900">Check-out</span>
+                <span className="text-xs font-semibold text-gray-900">{th('checkOutLabel')}</span>
                 <span className={`text-sm ${checkOut ? 'text-gray-900' : 'text-gray-400'}`}>
-                  {checkOut ? new Date(checkOut).toLocaleDateString('ro-RO', { day: '2-digit', month: 'short' }) : 'Adaugă date'}
+                  {checkOut ? new Date(checkOut).toLocaleDateString(undefined, { day: '2-digit', month: 'short' }) : th('addDates')}
                 </span>
               </button>
 
@@ -247,9 +247,9 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   aria-expanded={activeField === 'guests'}
                   aria-haspopup="dialog"
                 >
-                  <span className="text-xs font-semibold text-gray-900">Oaspeți</span>
+                  <span className="text-xs font-semibold text-gray-900">{th('guestsLabel')}</span>
                   <span className={`text-sm ${guests > 1 ? 'text-gray-900' : 'text-gray-400'}`}>
-                    {guests > 1 ? `${guests} oaspeți` : 'Adaugă oaspeți'}
+                    {guests > 1 ? th('guestsCount', { count: guests }) : th('addGuests')}
                   </span>
                 </button>
 
@@ -262,7 +262,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       ? 'bg-ember-500 text-white hover:bg-ember-600'
                       : 'bg-ember-500 text-white hover:bg-ember-600',
                   ].join(' ')}
-                  aria-label="Caută"
+                  aria-label={th('searchButton')}
                 >
                   <SearchIcon size={16} />
                 </button>
@@ -275,7 +275,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
             {activeField === 'location' && (
               <div className="absolute top-[calc(100%+8px)] left-0 w-80 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                  Caută după destinație
+                  {th('searchByDestination')}
                 </p>
                 <div className="relative">
                   <MapPinIcon
@@ -286,7 +286,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   <input
                     autoFocus
                     type="text"
-                    placeholder="Arieșeni, Rimetea, Cluj…"
+                    placeholder={th('locationInputPlaceholder')}
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     className="w-full rounded-xl border border-gray-300 py-2.5 pl-9 pr-4 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
@@ -299,7 +299,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     className="mt-2 text-xs text-ember-600 underline"
                     onClick={() => setLocation('')}
                   >
-                    Șterge
+                    {th('clear')}
                   </button>
                 )}
               </div>
@@ -309,7 +309,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
             {activeField === 'checkin' && (
               <div className="absolute top-[calc(100%+8px)] left-1/4 w-72 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                  Data de check-in
+                  {th('checkInPopoverLabel')}
                 </p>
                 <div className="relative">
                   <CalendarIcon
@@ -337,7 +337,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
             {activeField === 'checkout' && (
               <div className="absolute top-[calc(100%+8px)] left-1/3 w-72 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                  Data de check-out
+                  {th('checkOutPopoverLabel')}
                 </p>
                 <div className="relative">
                   <CalendarIcon
@@ -365,15 +365,15 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               <div className="absolute top-[calc(100%+8px)] right-0 w-72 rounded-3xl border border-gray-200 bg-white p-5 shadow-xl">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">Oaspeți</p>
-                    <p className="text-xs text-gray-500">Câți oaspeți vin?</p>
+                    <p className="text-sm font-semibold text-gray-900">{th('guestsPopoverLabel')}</p>
+                    <p className="text-xs text-gray-500">{th('guestsPopoverQuestion')}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <button
                       type="button"
                       onClick={() => setGuests((g) => Math.max(1, g - 1))}
                       disabled={guests <= 1}
-                      aria-label="Scade numărul de oaspeți"
+                      aria-label={th('decreaseGuests')}
                       className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
                     >
                       <span aria-hidden="true" className="text-lg leading-none">−</span>
@@ -388,7 +388,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     <button
                       type="button"
                       onClick={() => setGuests((g) => Math.min(20, g + 1))}
-                      aria-label="Crește numărul de oaspeți"
+                      aria-label={th('increaseGuests')}
                       className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900"
                     >
                       <span aria-hidden="true" className="text-lg leading-none">+</span>
@@ -408,7 +408,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               href={isOwner ? '/dashboard/owner' : '/pricing'}
               className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 lg:block"
             >
-              {isOwner ? t('ownerDashboard') : t('becomeHost')}
+              {isOwner ? th('ownerDashboard') : th('becomeHost')}
             </Link>
           )}
 
@@ -424,7 +424,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               onClick={() => setProfileOpen((o) => !o)}
               aria-expanded={profileOpen}
               aria-haspopup="menu"
-              aria-label={t('mainNav')}
+              aria-label={th('userMenu')}
               className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-2 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             >
               <MenuIcon size={16} className="text-gray-700" aria-hidden="true" />
@@ -448,7 +448,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                           onClick={() => setProfileOpen(false)}
                           className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
                         >
-                          {t('myBookings')}
+                          {th('myBookings')}
                         </Link>
                         <Link
                           href="/dashboard?view=favorites"
@@ -456,7 +456,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                           onClick={() => setProfileOpen(false)}
                           className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
                         >
-                          {t('favorites')}
+                          {th('favorites')}
                         </Link>
                       </>
                     )}
@@ -467,7 +467,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                         onClick={() => setProfileOpen(false)}
                         className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
                       >
-                        {t('admin')}
+                        {th('admin')}
                       </Link>
                     )}
                     {isOwner && !isAdmin && (
@@ -506,7 +506,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       disabled={loggingOut}
                       className="block w-full px-5 py-3 text-left text-sm text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
                     >
-                      {loggingOut ? t('loggingOut') : t('logout')}
+                      {loggingOut ? th('loggingOut') : th('logout')}
                     </button>
                   </>
                 ) : (
@@ -517,7 +517,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={() => setProfileOpen(false)}
                       className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
                     >
-                      {t('signIn')}
+                      {th('login')}
                     </Link>
                     <Link
                       href="/register"
@@ -525,7 +525,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={() => setProfileOpen(false)}
                       className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
                     >
-                      {t('register')}
+                      {th('register')}
                     </Link>
                   </>
                 )}
@@ -557,10 +557,10 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
           type="button"
           onClick={() => router.push('/cabins')}
           className="flex w-full items-center gap-3 rounded-full border border-gray-200 bg-white px-4 py-3 shadow-sm transition hover:shadow-md"
-          aria-label="Caută cabane"
+          aria-label={th('mobileSearchAriaLabel')}
         >
           <SearchIcon size={16} className="shrink-0 text-gray-400" aria-hidden="true" />
-          <span className="text-sm text-gray-500">Unde mergi?</span>
+          <span className="text-sm text-gray-500">{th('mobileSearchPlaceholder')}</span>
         </button>
       </div>
 
@@ -569,7 +569,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
         <nav
           id="mobile-nav"
           className="border-t border-gray-200 bg-white px-4 pb-6 pt-4 md:hidden"
-          aria-label="Navigare mobilă"
+          aria-label={th('mobileNavAriaLabel')}
         >
           <ul className="flex flex-col gap-1 text-sm font-medium">
             <li>
@@ -578,7 +578,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 onClick={closeMobile}
                 className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
               >
-                {t('cabins')}
+{th('cabins')}
               </Link>
             </li>
             {isAuthenticated ? (
@@ -590,7 +590,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={closeMobile}
                       className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                     >
-                      {t('admin')}
+{th('admin')}
                     </Link>
                   </li>
                 )}
@@ -601,7 +601,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                       onClick={closeMobile}
                       className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                     >
-                      {t('ownerDashboard')}
+{th('ownerDashboard')}
                     </Link>
                   </li>
                 )}
@@ -613,7 +613,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                         onClick={closeMobile}
                         className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                       >
-                        {t('myBookings')}
+{th('myBookings')}
                       </Link>
                     </li>
                     <li>
@@ -622,7 +622,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                         onClick={closeMobile}
                         className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                       >
-                        {t('favorites')}
+{th('favorites')}
                       </Link>
                     </li>
                   </>
@@ -644,7 +644,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     disabled={loggingOut}
                     className="block w-full rounded-xl px-4 py-3 text-left text-red-600 transition hover:bg-red-50 disabled:opacity-50"
                   >
-                    {loggingOut ? t('loggingOut') : t('logout')}
+{loggingOut ? th('loggingOut') : th('logout')}
                   </button>
                 </li>
               </>
@@ -656,7 +656,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     onClick={closeMobile}
                     className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                   >
-                    {t('signIn')}
+{th('login')}
                   </Link>
                 </li>
                 <li>
@@ -665,7 +665,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     onClick={closeMobile}
                     className="block rounded-xl bg-ember-500 px-4 py-3 text-center text-white transition hover:bg-ember-600"
                   >
-                    {t('register')}
+{th('register')}
                   </Link>
                 </li>
               </>
@@ -679,4 +679,3 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
     </header>
   );
 }
-

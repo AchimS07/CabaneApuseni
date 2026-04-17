@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import type { Cabin } from '@/modules/cabins/domain/types';
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function AvailableCabinsMap({ cabins }: Props) {
+  const t = useTranslations('cabinsList');
   const [selectedCabinId, setSelectedCabinId] = useState(cabins[0]?.id ?? '');
 
   const selectedCabin = useMemo(
@@ -22,11 +24,11 @@ export function AvailableCabinsMap({ cabins }: Props) {
   const mapsOpenUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
 
   return (
-    <section className="mb-10 rounded-xl border bg-white p-4 shadow-sm" aria-label="Vizualizare pe hartă">
+    <section className="mb-10 rounded-xl border bg-white p-4 shadow-sm" aria-label={t('mapHeading')}>
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Vizualizare pe hartă</h2>
-          <p className="text-sm text-gray-500">Selectează o cabană pentru a vedea zona pe hartă.</p>
+          <h2 className="text-lg font-semibold text-gray-900">{t('mapHeading')}</h2>
+          <p className="text-sm text-gray-500">{t('mapSelectHint')}</p>
         </div>
         <a
           href={mapsOpenUrl}
@@ -34,7 +36,7 @@ export function AvailableCabinsMap({ cabins }: Props) {
           rel="noreferrer"
           className="text-sm font-medium text-pine-600 hover:underline"
         >
-          Deschide în Google Maps
+          {t('openInMaps')}
         </a>
       </div>
 
@@ -61,7 +63,7 @@ export function AvailableCabinsMap({ cabins }: Props) {
 
       <div className="overflow-hidden rounded-lg border">
         <iframe
-          title={`Harta pentru ${selectedCabin.title}`}
+          title={t('mapIframeTitle', { title: selectedCabin.title })}
           src={mapsEmbedUrl}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"

@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { type Cabin } from '@/modules/cabins/domain/types';
 import { WishlistButton } from '@/components/ui/WishlistButton';
 import { ChevronLeftIcon, ChevronRightIcon, StarIcon, MapPinIcon } from '@/components/ui/Icons';
@@ -15,6 +16,7 @@ interface Props {
 const PLACEHOLDER_RATING = null;
 
 export default function CabinCard({ cabin }: Props) {
+  const t = useTranslations('cabin');
   const photos = cabin.imageUrls;
   const [photoIndex, setPhotoIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
@@ -48,14 +50,14 @@ export default function CabinCard({ cabin }: Props) {
       <Link
         href={`/cabins/${cabin.slug}`}
         className="block focus-visible:outline-none"
-        aria-label={`${cabin.title}, ${cabin.location}, ${cabin.pricePerNight} RON pe noapte`}
+        aria-label={t('cardAriaLabel', { title: cabin.title, location: cabin.location, price: cabin.pricePerNight })}
       >
         {/* ── Photo section ── */}
         <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
           {currentPhoto ? (
             <Image
               src={currentPhoto}
-              alt={`${cabin.title} – fotografie ${photoIndex + 1}`}
+              alt={`${cabin.title} – ${t('imageAlt')} ${photoIndex + 1}`}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
@@ -85,7 +87,7 @@ export default function CabinCard({ cabin }: Props) {
               <button
                 type="button"
                 onClick={prev}
-                aria-label="Fotografie anterioară"
+                aria-label={t('prevPhoto')}
                 className="absolute left-2 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-md transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
               >
                 <ChevronLeftIcon size={14} className="text-gray-700" aria-hidden="true" />
@@ -93,7 +95,7 @@ export default function CabinCard({ cabin }: Props) {
               <button
                 type="button"
                 onClick={next}
-                aria-label="Fotografie următoare"
+                aria-label={t('nextPhoto')}
                 className="absolute right-2 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-md transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
               >
                 <ChevronRightIcon size={14} className="text-gray-700" aria-hidden="true" />
@@ -136,7 +138,7 @@ export default function CabinCard({ cabin }: Props) {
                 {PLACEHOLDER_RATING}
               </span>
             ) : (
-              <span className="shrink-0 text-xs text-gray-500">Nou</span>
+              <span className="shrink-0 text-xs text-gray-500">{t('newBadge')}</span>
             )}
           </div>
 
@@ -153,7 +155,7 @@ export default function CabinCard({ cabin }: Props) {
           {/* Row 4: price */}
           <p className="mt-2 text-sm text-[#222222]">
             <span className="font-semibold">{cabin.pricePerNight} RON</span>
-            <span className="text-gray-500"> / noapte</span>
+            <span className="text-gray-500"> {t('perNight')}</span>
           </p>
         </div>
       </Link>

@@ -52,12 +52,12 @@ export function CabinsViewSwitcher({ cabins }: Props) {
           {/* Text search */}
           <div className="flex flex-1 min-w-[160px] flex-col gap-1">
             <label htmlFor="cabin-search" className="text-xs font-medium text-gray-600">
-              Caută după nume sau locație
+              {t('searchLabel')}
             </label>
             <input
               id="cabin-search"
               type="search"
-              placeholder="Arieșeni, cabana…"
+              placeholder={t('searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-pine-500 focus:outline-none focus:ring-2 focus:ring-pine-500"
@@ -67,7 +67,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
           {/* Max price */}
           <div className="flex min-w-[120px] flex-col gap-1">
             <label htmlFor="cabin-price" className="text-xs font-medium text-gray-600">
-              Preț max (RON/noapte)
+              {t('priceMaxLabel')}
             </label>
             <input
               id="cabin-price"
@@ -84,7 +84,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
           {/* Min guests */}
           <div className="flex min-w-[120px] flex-col gap-1">
             <label htmlFor="cabin-guests" className="text-xs font-medium text-gray-600">
-              Oaspeți minim
+              {t('guestsMinLabel')}
             </label>
             <input
               id="cabin-guests"
@@ -104,7 +104,7 @@ export function CabinsViewSwitcher({ cabins }: Props) {
               onClick={clearFilters}
               className="self-end rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pine-500"
             >
-              Resetează
+              {t('resetFilters')}
             </button>
           )}
         </div>
@@ -112,8 +112,10 @@ export function CabinsViewSwitcher({ cabins }: Props) {
         {hasFilters && (
           <p className="mt-2 text-xs text-gray-500">
             {filtered.length === 0
-              ? 'Nicio cabană nu corespunde filtrelor selectate.'
-              : `${filtered.length} ${filtered.length === 1 ? 'cabană găsită' : 'cabane găsite'}`}
+              ? t('noFilterResults')
+              : filtered.length === 1
+              ? t('filteredCountSingular')
+              : t('filteredCountPlural', { count: filtered.length })}
           </p>
         )}
       </div>
@@ -180,13 +182,13 @@ export function CabinsViewSwitcher({ cabins }: Props) {
         <>
           {filtered.length === 0 ? (
             <p className="py-12 text-center text-sm text-gray-500">
-              Nicio cabană nu corespunde filtrelor selectate.{' '}
+              {t('noFilterResults')}{' '}
               <button
                 type="button"
                 onClick={clearFilters}
                 className="font-medium text-pine-600 hover:underline"
               >
-                Resetează filtrele
+                {t('resetFiltersLink')}
               </button>
             </p>
           ) : (

@@ -16,8 +16,10 @@ import { fetchCabinById } from '@/lib/serverActions';
 import type { Cabin } from '@/modules/cabins/domain/types';
 import { WishlistButton } from '@/components/ui/WishlistButton';
 import { MapPinIcon } from '@/components/ui/Icons';
+import { useTranslations } from 'next-intl';
 
 export function WishlistSection() {
+  const t = useTranslations('wishlist');
   const { user, loading: authLoading } = useAuth();
   const { wishlist } = useWishlist();
   const [cabins, setCabins] = useState<Cabin[]>([]);
@@ -61,7 +63,7 @@ export function WishlistSection() {
   if (authLoading || fetching) {
     return (
       <div className="mt-10">
-        <h2 className="mb-4 text-xl font-bold text-gray-900">Favorite</h2>
+        <h2 className="mb-4 text-xl font-bold text-gray-900">{t('heading')}</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2].map((i) => (
             <div
@@ -81,22 +83,22 @@ export function WishlistSection() {
     <section className="mt-10" aria-labelledby="wishlist-heading">
       <div className="mb-4 flex items-center justify-between">
         <h2 id="wishlist-heading" className="text-xl font-bold text-gray-900">
-          Favorite
+          {t('heading')}
         </h2>
         <Link
           href="/cabins"
           className="text-sm font-medium text-pine-600 underline transition hover:no-underline"
         >
-          Explorează cabane
+          {t('exploreCabins')}
         </Link>
       </div>
 
       {displayedCabins.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-6 py-10 text-center">
           <span className="mb-3 text-4xl" aria-hidden="true">🤍</span>
-          <p className="text-sm font-medium text-gray-700">Nicio cabană favorită</p>
+          <p className="text-sm font-medium text-gray-700">{t('empty')}</p>
           <p className="mt-1 text-sm text-gray-500">
-            Apasă pe ♡ de pe cardul oricărei cabane pentru a o salva.
+            {t('emptyHint')}
           </p>
         </div>
       ) : (
@@ -107,13 +109,13 @@ export function WishlistSection() {
                 <Link
                   href={`/cabins/${cabin.slug}`}
                   className="block focus-visible:outline-none"
-                  aria-label={`${cabin.title}, ${cabin.location}`}
+                  aria-label={t('cabinAriaLabel', { title: cabin.title, location: cabin.location })}
                 >
                   <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
                     {cabin.imageUrls[0] ? (
                       <Image
                         src={cabin.imageUrls[0]}
-                        alt={`${cabin.title} – fotografie`}
+                        alt={t('photoAlt', { title: cabin.title })}
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                         sizes="(max-width: 768px) 100vw, 33vw"
@@ -142,7 +144,7 @@ export function WishlistSection() {
                     <p className="mt-0.5 text-sm text-gray-500 line-clamp-1">{cabin.title}</p>
                     <p className="mt-1.5 text-sm">
                       <span className="font-semibold text-[#222]">{cabin.pricePerNight} RON</span>
-                      <span className="text-gray-500"> / noapte</span>
+                      <span className="text-gray-500"> {t('perNight')}</span>
                     </p>
                   </div>
                 </Link>

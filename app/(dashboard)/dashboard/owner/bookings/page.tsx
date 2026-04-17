@@ -136,7 +136,7 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
                 <th scope="col" className="px-4 py-3">{t('colPeriod')}</th>
                 <th scope="col" className="px-4 py-3">{t('colGuests')}</th>
                 <th scope="col" className="px-4 py-3">{t('colTotal')}</th>
-                <th scope="col" className="px-4 py-3">Mențiuni</th>
+                <th scope="col" className="px-4 py-3">{t('colNotes')}</th>
                 <th scope="col" className="px-4 py-3">{t('colStatus')}</th>
                 <th scope="col" className="px-4 py-3">
                   <span className="sr-only">{t('colActions')}</span>

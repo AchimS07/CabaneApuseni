@@ -65,7 +65,7 @@ export default async function BookingsPage({ searchParams }: Props) {
                 <th className="px-4 py-3 font-medium">{t('period')}</th>
                 <th className="px-4 py-3 font-medium">{t('guests')}</th>
                 <th className="px-4 py-3 font-medium">{t('total')}</th>
-                <th className="px-4 py-3 font-medium">Mențiuni</th>
+                <th className="px-4 py-3 font-medium">{t('notes')}</th>
                 <th className="px-4 py-3 font-medium">{t('status')}</th>
                 <th className="px-4 py-3 font-medium">
                   <span className="sr-only">{t('actions')}</span>

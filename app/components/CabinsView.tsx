@@ -13,6 +13,7 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import CabinCard from '@/components/CabinCard';
 import { AvailableCabinsMap } from '@/app/components/AvailableCabinsMap';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -32,17 +33,17 @@ import {
 
 // ─── Categories ───────────────────────────────────────────────────────────────
 
-const CATEGORIES = [
-  { id: 'toate', label: 'Toate', Icon: null },
-  { id: 'munte', label: 'Munte', Icon: MountainIcon },
-  { id: 'padure', label: 'Pădure', Icon: TreesIcon },
-  { id: 'lac', label: 'Lac', Icon: WavesIcon },
-  { id: 'izolat', label: 'Izolat', Icon: HomeIcon },
-  { id: 'animale', label: 'Animale acceptate', Icon: PawIcon },
-  { id: 'foc', label: 'Foc de tabără', Icon: FlameIcon },
-] as const;
+type CategoryId = 'toate' | 'munte' | 'padure' | 'lac' | 'izolat' | 'animale' | 'foc';
 
-type CategoryId = (typeof CATEGORIES)[number]['id'];
+const CATEGORY_IDS: { id: CategoryId; Icon: React.ComponentType<{ size?: number; className?: string }> | null }[] = [
+  { id: 'toate', Icon: null },
+  { id: 'munte', Icon: MountainIcon },
+  { id: 'padure', Icon: TreesIcon },
+  { id: 'lac', Icon: WavesIcon },
+  { id: 'izolat', Icon: HomeIcon },
+  { id: 'animale', Icon: PawIcon },
+  { id: 'foc', Icon: FlameIcon },
+] as const;
 
 // ─── Filter state ─────────────────────────────────────────────────────────────
 
@@ -105,6 +106,7 @@ interface CabinsViewProps {
 }
 
 export function CabinsView({ initialCabins }: CabinsViewProps) {
+  const t = useTranslations('cabinsView');
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -162,7 +164,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
 
   if (locationParam) {
     activePills.push({
-      label: `Locație: ${locationParam}`,
+      label: t('pillLocation', { value: locationParam }),
       onRemove: () => {
         const p = new URLSearchParams(searchParams.toString());
         p.delete('location');
@@ -172,7 +174,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
   }
   if (guestsParam > 1) {
     activePills.push({
-      label: `Min. ${guestsParam} oaspeți`,
+      label: t('pillMinGuests', { count: guestsParam }),
       onRemove: () => {
         const p = new URLSearchParams(searchParams.toString());
         p.delete('guests');
@@ -182,13 +184,13 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
   }
   if (filters.minPrice > DEFAULT_FILTERS.minPrice) {
     activePills.push({
-      label: `Min. ${filters.minPrice} RON`,
+      label: t('pillMinPrice', { price: filters.minPrice }),
       onRemove: () => setFilters((f) => ({ ...f, minPrice: DEFAULT_FILTERS.minPrice })),
     });
   }
   if (filters.maxPrice < DEFAULT_FILTERS.maxPrice) {
     activePills.push({
-      label: `Max. ${filters.maxPrice} RON`,
+      label: t('pillMaxPrice', { price: filters.maxPrice }),
       onRemove: () => setFilters((f) => ({ ...f, maxPrice: DEFAULT_FILTERS.maxPrice })),
     });
   }
@@ -226,7 +228,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
           <div className="flex items-center gap-3 py-3">
             {/* Scrollable categories */}
             <div className="scrollbar-thin flex flex-1 items-center gap-2 overflow-x-auto pb-1 pt-1">
-              {CATEGORIES.map(({ id, label, Icon }) => (
+              {CATEGORY_IDS.map(({ id, Icon }) => (
                 <button
                   key={id}
                   type="button"
@@ -245,7 +247,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
                   ) : (
                     <span className="text-xl" aria-hidden="true">✨</span>
                   )}
-                  <span>{label}</span>
+                  <span>{t(`categories.${id}`)}</span>
                 </button>
               ))}
             </div>
@@ -261,10 +263,10 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
                   ? 'border-gray-900 bg-gray-900 text-white'
                   : 'border-gray-200 bg-white text-gray-700 hover:border-gray-400',
               ].join(' ')}
-              aria-label="Deschide filtre avansate"
+              aria-label={t('openFiltersLabel')}
             >
               <SlidersIcon size={16} aria-hidden="true" />
-              Filtre
+              {t('filterBtn')}
               {hasActiveFilters && (
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-gray-900">
                   {activePills.length + (filters.minGuests > 1 ? 1 : 0) + (category !== 'toate' ? 1 : 0)}
@@ -276,13 +278,13 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
             <div
               className="hidden items-center rounded-xl border border-gray-200 sm:flex"
               role="group"
-              aria-label="Mod vizualizare"
+              aria-label={t('viewToggleLabel')}
             >
               <button
                 type="button"
                 onClick={() => setViewMode('grid')}
                 aria-pressed={viewMode === 'grid'}
-                aria-label="Vizualizare grilă"
+                aria-label={t('gridViewLabel')}
                 className={[
                   'flex items-center gap-1.5 rounded-l-xl px-3 py-2.5 text-xs font-medium transition',
                   viewMode === 'grid'
@@ -291,13 +293,13 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
                 ].join(' ')}
               >
                 <GridIcon size={14} aria-hidden="true" />
-                <span className="hidden lg:inline">Grilă</span>
+                <span className="hidden lg:inline">{t('viewGrid')}</span>
               </button>
               <button
                 type="button"
                 onClick={() => setViewMode('map')}
                 aria-pressed={viewMode === 'map'}
-                aria-label="Vizualizare hartă"
+                aria-label={t('mapViewLabel')}
                 className={[
                   'flex items-center gap-1.5 rounded-r-xl px-3 py-2.5 text-xs font-medium transition',
                   viewMode === 'map'
@@ -306,7 +308,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
                 ].join(' ')}
               >
                 <MapIcon size={14} aria-hidden="true" />
-                <span className="hidden lg:inline">Hartă</span>
+                <span className="hidden lg:inline">{t('viewMap')}</span>
               </button>
             </div>
           </div>
@@ -328,7 +330,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
                 <button
                   type="button"
                   onClick={pill.onRemove}
-                  aria-label={`Elimină filtrul: ${pill.label}`}
+                  aria-label={t('removePillLabel', { label: pill.label })}
                   className="flex h-4 w-4 items-center justify-center rounded-full text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
                 >
                   <XIcon size={10} aria-hidden="true" />
@@ -340,7 +342,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
               onClick={clearAll}
               className="text-sm font-medium text-gray-900 underline transition hover:no-underline"
             >
-              Șterge tot
+              {t('clearAll')}
             </button>
           </div>
         )}
@@ -348,10 +350,10 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
         {/* Result count */}
         <p className="mb-6 text-sm font-medium text-gray-500" aria-live="polite">
           {filteredCabins.length === 0
-            ? 'Nicio cabană nu corespunde filtrelor selectate'
+            ? t('noResults')
             : filteredCabins.length === 1
-            ? '1 cabană disponibilă'
-            : `${filteredCabins.length} cabane disponibile`}
+            ? t('countSingular')
+            : t('countPlural', { count: filteredCabins.length })}
         </p>
 
         {viewMode === 'map' && filteredCabins.length > 0 && (
@@ -361,18 +363,18 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
         {filteredCabins.length === 0 ? (
           <EmptyState
             icon="🏔️"
-            title="Nicio cabană nu corespunde filtrelor"
-            description="Încearcă să ajustezi filtrele sau să cauți o altă locație."
+            title={t('emptyTitle')}
+            description={t('emptyDescription')}
             action={
               hasActiveFilters
-                ? { label: 'Șterge filtrele', onClick: clearAll }
+                ? { label: t('clearFilters'), onClick: clearAll }
                 : undefined
             }
           />
         ) : (
           <ul
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-            aria-label="Lista de cabane disponibile"
+            aria-label={t('listAriaLabel')}
           >
             {filteredCabins.map((cabin) => (
               <li key={cabin.id}>
@@ -389,17 +391,17 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
         ref={modalRef}
         onClick={handleDialogClick}
         onClose={() => setFilterModalOpen(false)}
-        aria-label="Filtre avansate"
+        aria-label={t('filterPanelLabel')}
         className="m-auto w-full max-w-lg rounded-2xl border-0 p-0 shadow-2xl backdrop:bg-black/40 backdrop:backdrop-blur-sm"
       >
         <div className="flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
-            <h2 className="text-base font-semibold text-gray-900">Filtre</h2>
+            <h2 className="text-base font-semibold text-gray-900">{t('filterHeading')}</h2>
             <button
               type="button"
               onClick={() => setFilterModalOpen(false)}
-              aria-label="Închide filtrele"
+              aria-label={t('closeFiltersLabel')}
               className="rounded-full p-1.5 text-gray-500 transition hover:bg-gray-100"
             >
               <XIcon size={18} aria-hidden="true" />
@@ -411,11 +413,11 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
             {/* Price range */}
             <section aria-labelledby="price-heading" className="mb-8">
               <h3 id="price-heading" className="mb-4 text-sm font-semibold text-gray-900">
-                Preț pe noapte
+                {t('priceHeading')}
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-xs text-gray-500">Minim (RON)</span>
+                  <span className="text-xs text-gray-500">{t('priceMin')}</span>
                   <input
                     type="number"
                     min={0}
@@ -428,7 +430,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-xs text-gray-500">Maxim (RON)</span>
+                  <span className="text-xs text-gray-500">{t('priceMax')}</span>
                   <input
                     type="number"
                     min={filters.minPrice}
@@ -446,14 +448,14 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
             {/* Min guests */}
             <section aria-labelledby="guests-heading" className="mb-8">
               <h3 id="guests-heading" className="mb-4 text-sm font-semibold text-gray-900">
-                Număr minim de oaspeți
+                {t('guestsHeading')}
               </h3>
               <div className="flex items-center gap-4">
                 <button
                   type="button"
                   onClick={() => setFilters((f) => ({ ...f, minGuests: Math.max(1, f.minGuests - 1) }))}
                   disabled={filters.minGuests <= 1}
-                  aria-label="Scade numărul minim de oaspeți"
+                  aria-label={t('decreaseGuests')}
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
                 >
                   <span aria-hidden="true" className="text-lg leading-none">−</span>
@@ -464,12 +466,12 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
                 <button
                   type="button"
                   onClick={() => setFilters((f) => ({ ...f, minGuests: Math.min(20, f.minGuests + 1) }))}
-                  aria-label="Crește numărul minim de oaspeți"
+                  aria-label={t('increaseGuests')}
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900"
                 >
                   <span aria-hidden="true" className="text-lg leading-none">+</span>
                 </button>
-                <span className="ml-2 text-sm text-gray-500">persoane</span>
+                <span className="ml-2 text-sm text-gray-500">{t('persons')}</span>
               </div>
             </section>
 
@@ -477,7 +479,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
             {allAmenities.length > 0 && (
               <section aria-labelledby="amenities-heading">
                 <h3 id="amenities-heading" className="mb-4 text-sm font-semibold text-gray-900">
-                  Dotări
+                  {t('amenitiesHeading')}
                 </h3>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                   {allAmenities.map((amenity) => {
@@ -517,15 +519,17 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
               }}
               className="text-sm font-semibold text-gray-900 underline transition hover:no-underline"
             >
-              Șterge tot
+              {t('clearAll')}
             </button>
             <button
               type="button"
               onClick={() => setFilterModalOpen(false)}
               className="rounded-xl bg-gray-900 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800"
             >
-              Afișează {filteredCabins.length}{' '}
-              {filteredCabins.length === 1 ? 'cabană' : 'cabane'}
+              {t('showResults', {
+                count: filteredCabins.length,
+                suffix: filteredCabins.length === 1 ? t('resultSingular') : t('resultPlural'),
+              })}
             </button>
           </div>
         </div>

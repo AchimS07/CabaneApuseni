@@ -44,7 +44,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                 href="/admin/bookings"
                 className="text-gray-700 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
               >
-                Rezervări
+                {tNav('bookings')}
               </Link>
             </li>
             <li>
@@ -90,7 +90,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
                   href="/admin/bookings"
                   className="block rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
                 >
-                  Rezervări
+                  {tNav('bookings')}
                 </Link>
               </li>
               <li className="pt-2 border-t mt-2">

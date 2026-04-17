@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { forgotPassword } from '@/modules/auth/application/authService';
+import { useTranslations } from 'next-intl';
 
 export default function ForgotPasswordForm() {
+  const t = useTranslations('forgotPassword');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -16,7 +18,7 @@ export default function ForgotPasswordForm() {
     setError('');
 
     if (!email.includes('@')) {
-      setError('Introdu o adresă de email validă.');
+      setError(t('invalidEmail'));
       return;
     }
 
@@ -38,10 +40,9 @@ export default function ForgotPasswordForm() {
         role="status"
         className="rounded-lg border border-green-200 bg-green-50 px-4 py-4 text-sm text-green-800"
       >
-        <p className="font-semibold">Email trimis!</p>
+        <p className="font-semibold">{t('successTitle')}</p>
         <p className="mt-1">
-          Dacă adresa <strong>{email}</strong> este înregistrată, vei primi un link de
-          resetare a parolei în câteva minute. Verifică și folderul de spam.
+          {t('successMessage', { email })}
         </p>
       </div>
     );
@@ -56,7 +57,7 @@ export default function ForgotPasswordForm() {
       )}
 
       <Input
-        label="Email"
+        label={t('emailLabel')}
         type="email"
         autoComplete="email"
         required
@@ -65,7 +66,7 @@ export default function ForgotPasswordForm() {
       />
 
       <Button type="submit" loading={loading} className="mt-2 w-full">
-        Trimite link de resetare
+        {loading ? t('sending') : t('submitButton')}
       </Button>
     </form>
   );

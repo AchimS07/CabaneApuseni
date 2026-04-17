@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { seedMockCabinsAction } from '@/modules/cabins/actions';
 
 /**
@@ -9,6 +10,7 @@ import { seedMockCabinsAction } from '@/modules/cabins/actions';
  * Idempotent — already-existing cabins are skipped.
  */
 export function SeedCabinsButton() {
+  const t = useTranslations('seedCabins');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -27,14 +29,14 @@ export function SeedCabinsButton() {
       }
       const { seeded, skipped } = result;
       if (seeded === 0) {
-        setMessage(`Toate cabanele existau deja (${skipped} sărite).`);
+        setMessage(t('allExisted', { skipped }));
       } else {
-        setMessage(`${seeded} cabană/cabane adăugate${skipped > 0 ? `, ${skipped} sărite` : ''}.`);
+        setMessage(t('added', { seeded, suffix: skipped > 0 ? t('skippedSuffix', { skipped }) : '' }));
         router.refresh();
       }
     } catch {
       setIsError(true);
-      setMessage('A apărut o eroare. Încearcă din nou.');
+      setMessage(t('errorGeneric'));
     } finally {
       setLoading(false);
     }
@@ -46,9 +48,9 @@ export function SeedCabinsButton() {
         onClick={handleSeed}
         disabled={loading}
         className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-        aria-label="Adaugă cabanele demo în baza de date"
+        aria-label={t('ariaLabel')}
       >
-        {loading ? 'Se adaugă…' : '⬆ Adaugă cabane demo'}
+        {loading ? t('adding') : t('buttonText')}
       </button>
       {message && (
         <p

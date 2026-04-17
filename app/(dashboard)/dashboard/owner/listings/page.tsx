@@ -159,7 +159,7 @@ export default async function OwnerListingsPage() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-gray-500">
-                    {new Date(cabin.updatedAt).toLocaleDateString('ro-RO')}
+                    {new Date(cabin.updatedAt).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap items-center gap-2">
