@@ -5,6 +5,7 @@ out
 *.log
 .env*
 !.env.example
+!.env.local.example
 coverage
 tsconfig.tsbuildinfo
 tsconfig.tsbuildinfo
