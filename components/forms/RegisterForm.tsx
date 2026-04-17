@@ -62,7 +62,11 @@ export default function RegisterForm({
         });
         const data = (await res.json()) as { url?: string; error?: string };
         if (!res.ok || !data.url) {
-          throw new Error(data.error ?? 'Failed to create checkout session.');
+          // Account was created successfully; redirect to dashboard even if
+          // payment setup is unavailable (e.g. Stripe not yet configured).
+          router.push(redirectTo);
+          router.refresh();
+          return;
         }
         router.push(data.url);
       } else {

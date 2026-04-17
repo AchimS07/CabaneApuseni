@@ -34,14 +34,6 @@ export default async function DashboardLayout({ children }: { children: ReactNod
           <ul className="flex flex-wrap items-center gap-1 text-sm font-medium">
             <li>
               <Link
-                href="/dashboard"
-                className="rounded-md px-3 py-2 text-gray-600 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-              >
-                Acasă
-              </Link>
-            </li>
-            <li>
-              <Link
                 href="/cabins"
                 className="rounded-md px-3 py-2 text-gray-600 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
               >
@@ -60,7 +52,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             )}
             <li>
               <Link
-                href="/dashboard"
+                href="/dashboard?view=favorites"
                 className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
               >
                 Favorite

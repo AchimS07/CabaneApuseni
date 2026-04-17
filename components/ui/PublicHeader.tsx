@@ -404,7 +404,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
         <div className="flex shrink-0 items-center gap-2">
           {/* "Devino gazdă" – desktop only */}
           <Link
-            href={isAuthenticated ? '/dashboard/owner' : '/register'}
+            href={isAuthenticated ? '/dashboard/owner' : '/pricing'}
             className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 lg:block"
           >
             Devino gazdă
@@ -449,7 +449,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                           Rezervările mele
                         </Link>
                         <Link
-                          href="/dashboard"
+                          href="/dashboard?view=favorites"
                           role="menuitem"
                           onClick={() => setProfileOpen(false)}
                           className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
@@ -596,7 +596,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                     </li>
                     <li>
                       <Link
-                        href="/dashboard"
+                        href="/dashboard?view=favorites"
                         onClick={closeMobile}
                         className="block rounded-xl px-4 py-3 text-gray-700 transition hover:bg-gray-50"
                       >
