@@ -61,9 +61,11 @@ function DashboardNavInner({ role }: DashboardNavProps) {
 
   return (
     <ul className="flex flex-wrap items-center gap-1">
-      <NavLink href="/cabins" external>
-        {t('cabins')}
-      </NavLink>
+      {role !== 'owner' && role !== 'admin' && (
+        <NavLink href="/cabins" external>
+          {t('cabins')}
+        </NavLink>
+      )}
 
       {role !== 'owner' && role !== 'admin' && (
         <NavLink href="/dashboard/bookings">{t('myBookings')}</NavLink>

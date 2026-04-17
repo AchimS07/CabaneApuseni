@@ -44,38 +44,42 @@ export default async function DashboardPage({ searchParams }: Props) {
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Link
-          href="/dashboard/bookings"
-          className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-pine-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
-        >
-          <span className="mb-3 text-3xl" aria-hidden="true">📅</span>
-          <h2 className="text-lg font-semibold text-gray-900 group-hover:text-pine-700">
-            {t('myBookings')}
-          </h2>
-          <p className="mt-1 text-sm text-gray-500">{t('myBookingsDesc')}</p>
-          <span className="mt-4 text-sm font-medium text-pine-600 group-hover:underline">
-            {t('viewBookings')}
-          </span>
-        </Link>
+        {role !== 'owner' && (
+          <Link
+            href="/dashboard/bookings"
+            className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-pine-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
+          >
+            <span className="mb-3 text-3xl" aria-hidden="true">📅</span>
+            <h2 className="text-lg font-semibold text-gray-900 group-hover:text-pine-700">
+              {t('myBookings')}
+            </h2>
+            <p className="mt-1 text-sm text-gray-500">{t('myBookingsDesc')}</p>
+            <span className="mt-4 text-sm font-medium text-pine-600 group-hover:underline">
+              {t('viewBookings')}
+            </span>
+          </Link>
+        )}
 
-        <Link
-          href="/cabins"
-          className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-pine-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
-        >
-          <span className="mb-3 text-3xl" aria-hidden="true">🏔️</span>
-          <h2 className="text-lg font-semibold text-gray-900 group-hover:text-pine-700">
-            {t('searchCabins')}
-          </h2>
-          <p className="mt-1 text-sm text-gray-500">{t('searchCabinsDesc')}</p>
-          <span className="mt-4 text-sm font-medium text-pine-600 group-hover:underline">
-            {t('explore')}
-          </span>
-        </Link>
+        {role !== 'owner' && (
+          <Link
+            href="/cabins"
+            className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-pine-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
+          >
+            <span className="mb-3 text-3xl" aria-hidden="true">🏔️</span>
+            <h2 className="text-lg font-semibold text-gray-900 group-hover:text-pine-700">
+              {t('searchCabins')}
+            </h2>
+            <p className="mt-1 text-sm text-gray-500">{t('searchCabinsDesc')}</p>
+            <span className="mt-4 text-sm font-medium text-pine-600 group-hover:underline">
+              {t('explore')}
+            </span>
+          </Link>
+        )}
 
         {role === 'owner' && (
           <Link
             href="/dashboard/owner"
-            className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-pine-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
+            className="group flex flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:border-pine-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2 sm:col-span-2"
           >
             <span className="mb-3 text-3xl" aria-hidden="true">🧑‍💼</span>
             <h2 className="text-lg font-semibold text-gray-900 group-hover:text-pine-700">
@@ -89,8 +93,8 @@ export default async function DashboardPage({ searchParams }: Props) {
         )}
       </div>
 
-      {/* Client-side wishlist section */}
-      <WishlistSection />
+      {/* Client-side wishlist section — not shown to owners */}
+      {role !== 'owner' && <WishlistSection />}
     </div>
   );
 }
