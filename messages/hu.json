@@ -29,7 +29,12 @@
     "bookings": "Foglalások",
     "publicSite": "← Nyilvános oldal",
     "dashboard": "Irányítópult",
-    "searchCabins": "Kabinok keresése"
+    "searchCabins": "Kabinok keresése",
+    "myAccount": "Fiókom",
+    "becomeHost": "Legyen házigazda",
+    "profile": "Profil",
+    "favorites": "Kedvencek",
+    "home": "Főoldal"
   },
   "home": {
     "meta": {

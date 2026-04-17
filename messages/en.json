@@ -29,7 +29,12 @@
     "bookings": "Bookings",
     "publicSite": "← Public site",
     "dashboard": "Dashboard",
-    "searchCabins": "Search cabins"
+    "searchCabins": "Search cabins",
+    "myAccount": "My account",
+    "becomeHost": "Become a host",
+    "profile": "Profile",
+    "favorites": "Favorites",
+    "home": "Home"
   },
   "home": {
     "meta": {
