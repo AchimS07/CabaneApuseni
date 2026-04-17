@@ -29,7 +29,12 @@
     "bookings": "Rezervări",
     "publicSite": "← Site public",
     "dashboard": "Tablou de bord",
-    "searchCabins": "Caută cabane"
+    "searchCabins": "Caută cabane",
+    "myAccount": "Contul meu",
+    "becomeHost": "Devino gazdă",
+    "profile": "Profil",
+    "favorites": "Favorite",
+    "home": "Acasă"
   },
   "home": {
     "meta": {

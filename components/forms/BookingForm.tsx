@@ -50,6 +50,7 @@ const PLATFORM_FEE_PCT = 0.12;
 export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps) {
   const router = useRouter();
   const formId = useId();
+  const t = useTranslations('booking');
 
   const tomorrow = getTomorrow();
 

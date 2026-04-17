@@ -49,6 +49,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             </li>
             <li>
               <LanguageSwitcher />
+            </li>
             <li>
               <LogoutButton />
             </li>
