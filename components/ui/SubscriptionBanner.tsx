@@ -123,7 +123,7 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
       </div>
       <Link
         href="/pricing"
-        className="inline-block rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1"
+        className="inline-block rounded-md bg-pine-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-1"
       >
         Alege un plan
       </Link>

@@ -211,12 +211,12 @@ export default function ConversationThread({ conversationId }: Props) {
                 <div className={
                   'max-w-[75%] rounded-2xl px-3 py-2 ' +
                   (isMine
-                    ? 'bg-forest-700 text-white rounded-br-none'
+                    ? 'bg-pine-700 text-white rounded-br-none'
                     : 'bg-stone-100 text-stone-800 rounded-bl-none')
                 }>
                   <p className="text-sm leading-relaxed">{msg.text}</p>
                   <div className={'flex items-center gap-1 mt-0.5 ' + (isMine ? 'justify-end' : 'justify-start')}>
-                    <span className={'text-xs ' + (isMine ? 'text-forest-200' : 'text-stone-400')}>
+                    <span className={'text-xs ' + (isMine ? 'text-pine-200' : 'text-stone-400')}>
                       {fmtTime(msg.createdAt)}
                     </span>
                     {!isMine && user && (

@@ -234,7 +234,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
                   aria-pressed={category === id}
                   className={[
                     'flex shrink-0 flex-col items-center gap-1 pb-2 pt-1 px-3 text-xs font-medium transition',
-                    'border-b-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
+                    'border-b-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500',
                     category === id
                       ? 'border-gray-900 text-gray-900'
                       : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
@@ -256,7 +256,7 @@ export function CabinsView({ initialCabins }: CabinsViewProps) {
               onClick={() => setFilterModalOpen(true)}
               className={[
                 'flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500',
                 hasActiveFilters
                   ? 'border-gray-900 bg-gray-900 text-white'
                   : 'border-gray-200 bg-white text-gray-700 hover:border-gray-400',

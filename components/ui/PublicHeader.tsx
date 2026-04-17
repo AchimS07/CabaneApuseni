@@ -141,14 +141,14 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
         {/* ── Logo ── */}
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2 text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm"
+          className="flex shrink-0 items-center gap-2 text-pine-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 rounded-sm"
           aria-label="Cabane Apuseni – pagina principală"
         >
           <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <path d="M16 3L2 28h28L16 3z" fill="#FF385C" />
+            <path d="M16 3L2 28h28L16 3z" fill="#e34e1c" />
             <path d="M16 10l-7 14h14L16 10z" fill="white" opacity="0.6" />
           </svg>
-          <span className="hidden text-lg font-bold tracking-tight text-brand sm:block">
+          <span className="hidden text-lg font-bold tracking-tight text-pine-700 sm:block">
             Cabane Apuseni
           </span>
         </Link>
@@ -259,8 +259,8 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   className={[
                     'mr-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition',
                     searchHasValue
-                      ? 'bg-brand text-white hover:bg-brand-dark'
-                      : 'bg-brand text-white hover:bg-brand-dark',
+                      ? 'bg-ember-500 text-white hover:bg-ember-600'
+                      : 'bg-ember-500 text-white hover:bg-ember-600',
                   ].join(' ')}
                   aria-label="Caută"
                 >
@@ -296,7 +296,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                 {location && (
                   <button
                     type="button"
-                    className="mt-2 text-xs text-brand underline"
+                    className="mt-2 text-xs text-ember-600 underline"
                     onClick={() => setLocation('')}
                   >
                     Șterge
@@ -406,7 +406,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
           {!isAdmin && (
             <Link
               href={isOwner ? '/dashboard/owner' : '/register'}
-              className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand lg:block"
+              className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 lg:block"
             >
               {isOwner ? t('ownerDashboard') : t('becomeHost')}
             </Link>
@@ -425,7 +425,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               aria-expanded={profileOpen}
               aria-haspopup="menu"
               aria-label={t('mainNav')}
-              className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-2 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-2 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
             >
               <MenuIcon size={16} className="text-gray-700" aria-hidden="true" />
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-600 text-white">
@@ -516,7 +516,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
           {/* Mobile: hamburger only */}
           <button
             type="button"
-            className="flex items-center gap-2 rounded-full border border-gray-300 bg-white p-2.5 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:hidden"
+            className="flex items-center gap-2 rounded-full border border-gray-300 bg-white p-2.5 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 md:hidden"
             onClick={() => setMobileOpen((o) => !o)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
@@ -632,7 +632,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   <Link
                     href="/register"
                     onClick={closeMobile}
-                    className="block rounded-xl bg-brand px-4 py-3 text-center text-white transition hover:bg-brand-dark"
+                    className="block rounded-xl bg-ember-500 px-4 py-3 text-center text-white transition hover:bg-ember-600"
                   >
                     {t('register')}
                   </Link>

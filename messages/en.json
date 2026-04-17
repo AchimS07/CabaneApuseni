@@ -84,7 +84,7 @@
     },
     "pricing": {
       "heading": "Transparent plans, no surprises",
-      "subtitle": "Whether you're a tourist seeking adventure or an owner wanting to list your cabin, we have the right plan for you."
+      "subtitle": "List your cabin and receive bookings through Cabane Apuseni. Choose the right plan for your number of properties."
     },
     "trust": {
       "securePayments": "Secure payments",
@@ -108,7 +108,7 @@
       },
       "q4": {
         "question": "How does the trial period work?",
-        "answer": "The Free plan is available without time limits. Paid plans can be tested for 14 days for free — no credit card required."
+        "answer": "Paid plans can be tested for 14 days for free — no credit card required. You can cancel at any time during the trial."
       },
       "q5": {
         "question": "Are there discounts for annual payment?",
@@ -123,57 +123,11 @@
     }
   },
   "pricing": {
-    "tabsLabel": "Select account type",
-    "forTourists": "🏕️ For tourists",
-    "forOwners": "🏠 For owners",
-    "touristsTabLabel": "Plans for tourists",
     "ownersTabLabel": "Plans for owners",
     "vatNote": "All prices include VAT. You can cancel anytime, without penalties.",
     "period": "month",
     "recommended": "Recommended",
     "mostPopular": "Most popular",
-    "free": {
-      "name": "Free",
-      "price": "0 RON",
-      "description": "Perfect for discovering the platform at no cost.",
-      "cta": "Start for free",
-      "f1": "Unlimited cabin browsing",
-      "f2": "Availability view",
-      "f3": "Up to 2 bookings / month",
-      "f4": "Standard support (email)",
-      "f5": "Unlimited bookings",
-      "f6": "Seasonal discounts",
-      "f7": "Early access to new cabins",
-      "f8": "Priority support"
-    },
-    "explorer": {
-      "name": "Explorer",
-      "price": "29 RON",
-      "description": "For active tourists who book frequently.",
-      "cta": "Choose Explorer",
-      "f1": "Unlimited cabin browsing",
-      "f2": "Availability view",
-      "f3": "Unlimited bookings",
-      "f4": "Priority support (chat)",
-      "f5": "Early access to new cabins",
-      "f6": "Seasonal discounts",
-      "f7": "Exclusive premium cabin offers",
-      "f8": "Personal concierge service"
-    },
-    "premium": {
-      "name": "Premium",
-      "price": "69 RON",
-      "description": "Complete experience with exclusive benefits.",
-      "cta": "Choose Premium",
-      "f1": "Unlimited cabin browsing",
-      "f2": "Availability view",
-      "f3": "Unlimited bookings",
-      "f4": "24/7 priority support",
-      "f5": "Early access to new cabins",
-      "f6": "Seasonal discounts",
-      "f7": "Exclusive premium cabin offers",
-      "f8": "Personal concierge service"
-    },
     "basic": {
       "name": "Basic",
       "price": "50 RON",

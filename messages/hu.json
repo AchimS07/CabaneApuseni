@@ -84,7 +84,7 @@
     },
     "pricing": {
       "heading": "Átlátható csomagok, meglepetések nélkül",
-      "subtitle": "Akár kalandkereső turista, akár kabintulajdonos, megtalálják az Önnek megfelelő csomagot."
+      "subtitle": "Listázza kabinját és fogadjon foglalásokat a Cabane Apuseni platformon. Válassza a megfelelő csomagot ingatlanjai számához."
     },
     "trust": {
       "securePayments": "Biztonságos fizetés",
@@ -108,7 +108,7 @@
       },
       "q4": {
         "question": "Hogyan működik a próbaidőszak?",
-        "answer": "Az ingyenes csomag időkorlát nélkül elérhető. A fizetős csomagok 14 napig ingyen kipróbálhatók — bankkártya nem szükséges."
+        "answer": "A fizetős csomagok 14 napig ingyen kipróbálhatók — bankkártya nem szükséges. A próbaidőszak alatt bármikor lemondható."
       },
       "q5": {
         "question": "Van kedvezmény éves fizetésnél?",
@@ -123,57 +123,11 @@
     }
   },
   "pricing": {
-    "tabsLabel": "Fióktype kiválasztása",
-    "forTourists": "🏕️ Turistáknak",
-    "forOwners": "🏠 Tulajdonosoknak",
-    "touristsTabLabel": "Turistacsomagok",
     "ownersTabLabel": "Tulajdonosi csomagok",
     "vatNote": "Az árak tartalmazzák az ÁFÁ-t. Bármikor lemondható, büntetés nélkül.",
     "period": "hónap",
     "recommended": "Ajánlott",
     "mostPopular": "Legnépszerűbb",
-    "free": {
-      "name": "Ingyenes",
-      "price": "0 RON",
-      "description": "Tökéletes a platform felfedezéséhez díjmentesen.",
-      "cta": "Kezdje ingyenesen",
-      "f1": "Korlátlan kabin böngészés",
-      "f2": "Elérhetőség megtekintése",
-      "f3": "Legfeljebb 2 foglalás / hó",
-      "f4": "Normál támogatás (e-mail)",
-      "f5": "Korlátlan foglalás",
-      "f6": "Szezonális kedvezmények",
-      "f7": "Korai hozzáférés új kabinokhoz",
-      "f8": "Elsőbbségi támogatás"
-    },
-    "explorer": {
-      "name": "Explorer",
-      "price": "29 RON",
-      "description": "Aktív turistáknak, akik sűrűn foglalnak.",
-      "cta": "Explorer választása",
-      "f1": "Korlátlan kabin böngészés",
-      "f2": "Elérhetőség megtekintése",
-      "f3": "Korlátlan foglalás",
-      "f4": "Elsőbbségi támogatás (chat)",
-      "f5": "Korai hozzáférés új kabinokhoz",
-      "f6": "Szezonális kedvezmények",
-      "f7": "Exkluzív prémium kabin ajánlatok",
-      "f8": "Személyes concierge szolgálat"
-    },
-    "premium": {
-      "name": "Prémium",
-      "price": "69 RON",
-      "description": "Teljes élmény exkluzív előnyökkel.",
-      "cta": "Prémium választása",
-      "f1": "Korlátlan kabin böngészés",
-      "f2": "Elérhetőség megtekintése",
-      "f3": "Korlátlan foglalás",
-      "f4": "24/7 elsőbbségi támogatás",
-      "f5": "Korai hozzáférés új kabinokhoz",
-      "f6": "Szezonális kedvezmények",
-      "f7": "Exkluzív prémium kabin ajánlatok",
-      "f8": "Személyes concierge szolgálat"
-    },
     "basic": {
       "name": "Basic",
       "price": "50 RON",

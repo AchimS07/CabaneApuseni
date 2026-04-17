@@ -26,10 +26,10 @@ function NavLink({
         href={href}
         aria-current={isActive ? 'page' : undefined}
         className={[
-          'rounded-md px-3 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-brand',
+          'rounded-md px-3 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-pine-500',
           isActive
-            ? 'bg-rose-50 text-brand font-semibold'
-            : 'text-gray-600 hover:bg-rose-50 hover:text-brand',
+            ? 'bg-pine-50 text-pine-700 font-semibold'
+            : 'text-gray-600 hover:bg-pine-50 hover:text-pine-700',
         ].join(' ')}
       >
         {children}

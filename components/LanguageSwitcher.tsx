@@ -30,10 +30,10 @@ export function LanguageSwitcher() {
           aria-current={locale === l ? 'true' : undefined}
           className={[
             'rounded px-2 py-1 text-xs font-semibold uppercase transition',
-            'focus:outline-none focus:ring-2 focus:ring-indigo-500',
+            'focus:outline-none focus:ring-2 focus:ring-pine-500',
             'disabled:opacity-50',
             locale === l
-              ? 'bg-indigo-600 text-white'
+              ? 'bg-ember-500 text-white'
               : 'text-gray-600 hover:bg-gray-100',
           ].join(' ')}
         >

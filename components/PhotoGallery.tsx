@@ -46,7 +46,7 @@ export default function PhotoGallery({ photos, title }: Props) {
         {/* Main image */}
         <button
           onClick={() => setLightbox(true)}
-          className="w-full relative aspect-video rounded-xl overflow-hidden cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest-600"
+          className="w-full relative aspect-video rounded-xl overflow-hidden cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-pine-600"
           aria-label={'Open photo ' + (selected + 1) + ' of ' + photos.length + ' in lightbox'}
         >
           <Image
@@ -74,7 +74,7 @@ export default function PhotoGallery({ photos, title }: Props) {
                 className={
                   'relative flex-none w-20 h-16 rounded-lg overflow-hidden transition-all ' +
                   (selected === idx
-                    ? 'ring-2 ring-forest-600 ring-offset-1 opacity-100'
+                    ? 'ring-2 ring-pine-600 ring-offset-1 opacity-100'
                     : 'opacity-60 hover:opacity-90')
                 }
               >

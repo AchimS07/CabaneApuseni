@@ -22,10 +22,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         >
           <Link
             href="/dashboard"
-            className="flex items-center gap-2 font-bold text-brand hover:text-brand-dark focus:outline-none focus:ring-2 focus:ring-brand rounded"
+            className="flex items-center gap-2 font-bold text-pine-700 hover:text-pine-800 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
           >
             <span
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-forest-600 text-white text-xs"
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-pine-600 text-white text-xs"
               aria-hidden="true"
             >
               🏔️

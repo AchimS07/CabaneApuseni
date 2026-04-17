@@ -25,7 +25,7 @@ export function Input({ label, error, hint, id, className = '', ...props }: Inpu
         className={[
           'rounded-md border px-3 py-2 text-sm shadow-sm transition',
           'placeholder:text-gray-400',
-          'focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand',
+          'focus:outline-none focus:ring-2 focus:ring-pine-500 focus:border-pine-500',
           error
             ? 'border-red-400 focus:ring-red-400'
             : 'border-gray-300',

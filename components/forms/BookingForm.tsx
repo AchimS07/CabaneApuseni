@@ -331,7 +331,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
         <button
           type="submit"
           disabled={loading}
-          className="mt-4 w-full rounded-xl bg-brand py-4 text-base font-bold text-white shadow-sm transition hover:bg-brand-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-4 w-full rounded-xl bg-ember-500 py-4 text-base font-bold text-white shadow-sm transition hover:bg-ember-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">

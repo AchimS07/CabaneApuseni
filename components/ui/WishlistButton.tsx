@@ -71,7 +71,7 @@ export function WishlistButton({
       {wishlisted ? (
         <HeartFilledIcon
           size={iconSize}
-          className="text-brand drop-shadow-sm"
+          className="text-ember-500 drop-shadow-sm"
           aria-hidden="true"
         />
       ) : (
