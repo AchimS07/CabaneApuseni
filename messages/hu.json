@@ -563,7 +563,11 @@
     "filteredCountSingular": "1 kunyhó található",
     "filteredCountPlural": "{count} kunyhó található",
     "noFilterResults": "Egy kunyhó sem felel meg a kiválasztott szűrőknek.",
-    "resetFiltersLink": "Szűrők visszaállítása"
+    "resetFiltersLink": "Szűrők visszaállítása",
+    "mapHeading": "Térképnézet",
+    "mapSelectHint": "Válasszon ki egy kunyhót a terület megtekintéséhez a térképen.",
+    "openInMaps": "Megnyitás a Google Térképen",
+    "mapIframeTitle": "{title} térképe"
   },
   "ownerEditListing": {
     "title": "Kabin szerkesztése",

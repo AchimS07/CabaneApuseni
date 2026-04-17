@@ -563,7 +563,11 @@
     "filteredCountSingular": "1 cabană găsită",
     "filteredCountPlural": "{count} cabane găsite",
     "noFilterResults": "Nicio cabană nu corespunde filtrelor selectate.",
-    "resetFiltersLink": "Resetează filtrele"
+    "resetFiltersLink": "Resetează filtrele",
+    "mapHeading": "Vizualizare pe hartă",
+    "mapSelectHint": "Selectează o cabană pentru a vedea zona pe hartă.",
+    "openInMaps": "Deschide în Google Maps",
+    "mapIframeTitle": "Harta pentru {title}"
   },
   "ownerEditListing": {
     "title": "Editează cabana",

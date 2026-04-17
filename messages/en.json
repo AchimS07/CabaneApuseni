@@ -563,7 +563,11 @@
     "filteredCountSingular": "1 cabin found",
     "filteredCountPlural": "{count} cabins found",
     "noFilterResults": "No cabin matches the selected filters.",
-    "resetFiltersLink": "Reset filters"
+    "resetFiltersLink": "Reset filters",
+    "mapHeading": "Map view",
+    "mapSelectHint": "Select a cabin to see the area on the map.",
+    "openInMaps": "Open in Google Maps",
+    "mapIframeTitle": "Map for {title}"
   },
   "ownerEditListing": {
     "title": "Edit cabin",
