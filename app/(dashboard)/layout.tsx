@@ -40,14 +40,16 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 Acasă
               </Link>
             </li>
-            <li>
-              <Link
-                href="/cabins"
-                className="rounded-md px-3 py-2 text-gray-600 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-              >
-                {t('cabins')}
-              </Link>
-            </li>
+            {role !== 'owner' && (
+              <li>
+                <Link
+                  href="/cabins"
+                  className="rounded-md px-3 py-2 text-gray-600 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
+                >
+                  {t('cabins')}
+                </Link>
+              </li>
+            )}
             {role !== 'owner' && (
               <li>
                 <Link
@@ -58,14 +60,16 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                 </Link>
               </li>
             )}
-            <li>
-              <Link
-                href="/dashboard"
-                className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
-              >
-                Favorite
-              </Link>
-            </li>
+            {role !== 'owner' && (
+              <li>
+                <Link
+                  href="/dashboard/favourites"
+                  className="rounded-md px-3 py-2 text-gray-700 hover:bg-pine-50 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500"
+                >
+                  Favorite
+                </Link>
+              </li>
+            )}
             {role === 'owner' && (
               <>
                 <li>
