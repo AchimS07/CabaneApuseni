@@ -49,15 +49,31 @@ export async function listBookingsByCabinIds(
 ): Promise<Booking[]> {
   if (cabinIds.length === 0) return [];
   const db = getAdminFirestore();
-  // Firestore IN supports up to 30 values per query; slice defensively for MVP
-  const ids = cabinIds.slice(0, 30);
-  const snapshot = await db
-    .collection(COLLECTION)
-    .where('cabin.id', 'in', ids)
-    .orderBy('createdAt', 'desc')
-    .limit(limit)
-    .get();
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Booking);
+
+  // Firestore IN supports up to 30 values per query; chunk and merge results.
+  const CHUNK_SIZE = 30;
+  const chunks: string[][] = [];
+  for (let i = 0; i < cabinIds.length; i += CHUNK_SIZE) {
+    chunks.push(cabinIds.slice(i, i + CHUNK_SIZE));
+  }
+
+  const snapshots = await Promise.all(
+    chunks.map((ids) =>
+      db
+        .collection(COLLECTION)
+        .where('cabin.id', 'in', ids)
+        .orderBy('createdAt', 'desc')
+        .limit(limit)
+        .get(),
+    ),
+  );
+
+  const all = snapshots.flatMap((snapshot) =>
+    snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Booking),
+  );
+
+  // Re-sort merged results and apply the total limit.
+  return all.sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1)).slice(0, limit);
 }
 
 export async function listOverlappingBookings(

@@ -13,7 +13,7 @@ jest.mock('@/modules/users/infrastructure/firestoreUserRepository', () => ({
 }));
 jest.mock('@/lib/firebase/admin', () => ({
   getAdminAuth: jest.fn().mockReturnValue({
-    setCustomUserClaims: jest.fn().mockResolvedValue(undefined),
+    setCustomUserClaims: jest.fn<() => Promise<void>>().mockResolvedValue(),
   }),
   getAdminFirestore: jest.fn(),
 }));

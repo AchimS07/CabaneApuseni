@@ -172,6 +172,7 @@
     "about": "Despre această cabană",
     "whatOffers": "Ce oferă această cabană",
     "showMoreAmenities": "Afișează toate dotările (+{extra})",
+    "showLessAmenities": "Afișează mai puține dotări",
     "whereYouAre": "Unde te afli",
     "locationSuffix": "{location}, Munții Apuseni",
     "mapTitle": "Harta pentru {title}",

@@ -67,8 +67,8 @@ describe('canAccess', () => {
 // ─── requireAuth / requireOwner / requireAdmin ─────────────────────────────────
 
 jest.mock('next/navigation', () => ({
-  redirect: jest.fn().mockImplementation((url: string) => {
-    throw new Error(`REDIRECT:${url}`);
+  redirect: jest.fn().mockImplementation((...args: unknown[]) => {
+    throw new Error(`REDIRECT:${args[0]}`);
   }),
 }));
 

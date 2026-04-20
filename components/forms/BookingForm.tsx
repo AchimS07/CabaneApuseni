@@ -38,7 +38,7 @@ function formatDate(iso: string): string {
 }
 
 const CLEANING_FEE = 0; // included
-const PLATFORM_FEE_PCT = 0.12;
+const PLATFORM_FEE_PCT = 0; // no platform fee charged at this time
 
 /**
  * AirBnb-inspired booking widget.
@@ -372,10 +372,12 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
               <span>{t('cleaningFee')}</span>
               <span>{t('included')}</span>
             </div>
-            <div className="flex justify-between text-gray-700">
-              <span>{t('serviceFee', { pct: Math.round(PLATFORM_FEE_PCT * 100) })}</span>
-              <span>{platformFee} RON</span>
-            </div>
+            {platformFee > 0 && (
+              <div className="flex justify-between text-gray-700">
+                <span>{t('serviceFee', { pct: Math.round(PLATFORM_FEE_PCT * 100) })}</span>
+                <span>{platformFee} RON</span>
+              </div>
+            )}
             <div className="flex justify-between border-t border-gray-200 pt-3 font-bold text-gray-900">
               <span>{t('total')}</span>
               <span>{totalPrice} RON</span>
@@ -388,16 +390,6 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
           </div>
         )}
       </form>
-
-      {/* Report link */}
-      <p className="mt-5 text-center text-xs text-gray-400">
-        <button
-          type="button"
-          className="underline transition hover:text-gray-600"
-        >
-          {t('reportListing')}
-        </button>
-      </p>
     </div>
   );
 }
