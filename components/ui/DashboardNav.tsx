@@ -14,11 +14,15 @@ function NavLink({
   children,
   external,
   activeSearch,
+  notActiveSearch,
 }: {
   href: string;
   children: React.ReactNode;
   external?: boolean;
+  /** Link is active only when pathname AND this search param match. */
   activeSearch?: string;
+  /** Link is inactive when pathname AND this search param match. */
+  notActiveSearch?: string;
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -31,6 +35,15 @@ function NavLink({
     isActive = pathname === basePath && searchParams.get(paramKey) === paramValue;
   } else {
     isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href));
+  }
+
+  // Explicitly suppress active state when a disqualifying search param is present
+  if (isActive && notActiveSearch) {
+    const [basePath, query] = notActiveSearch.split('?');
+    const [paramKey, paramValue] = (query ?? '').split('=');
+    if (pathname === basePath && searchParams.get(paramKey) === paramValue) {
+      isActive = false;
+    }
   }
 
   return (
@@ -61,23 +74,18 @@ function DashboardNavInner({ role }: DashboardNavProps) {
 
   return (
     <ul className="flex flex-wrap items-center gap-1">
-      {role !== 'owner' && role !== 'admin' && (
-        <NavLink href="/cabins" external>
-          {t('cabins')}
-        </NavLink>
-      )}
+      <NavLink href="/dashboard">{t('home')}</NavLink>
 
       {role !== 'owner' && role !== 'admin' && (
-        <NavLink href="/dashboard/bookings">{t('myBookings')}</NavLink>
-      )}
+        <>
+          <NavLink href="/cabins" external>
+            {t('cabins')}
+          </NavLink>
 
-      {role !== 'owner' && role !== 'admin' && (
-        <NavLink
-          href="/dashboard?view=favorites"
-          activeSearch="/dashboard?view=favorites"
-        >
-          {t('favorites')}
-        </NavLink>
+          <NavLink href="/dashboard/bookings">{t('myBookings')}</NavLink>
+
+          <NavLink href="/dashboard/favorites">{t('favorites')}</NavLink>
+        </>
       )}
 
       {role === 'owner' && (

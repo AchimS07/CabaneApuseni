@@ -43,6 +43,17 @@ const nextConfig = {
       },
     ];
   },
+
+  // ─── Internal rewrites ────────────────────────────────────────────────────────
+  async rewrites() {
+    return [
+      {
+        // Expose favorites as a clean URL; the dashboard page renders it via ?view=favorites
+        source: '/dashboard/favorites',
+        destination: '/dashboard?view=favorites',
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);
