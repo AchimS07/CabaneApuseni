@@ -665,6 +665,10 @@
     "perMonth": "/hó",
     "featuresLabel": "{name} csomag funkciói",
     "ctaPrefix": "Kezdje ezzel:",
+    "subscribeTo": "Feliratkozás: {name}",
+    "subscribing": "Feldolgozás…",
+    "checkoutError": "Valami hiba történt. Kérjük, próbálja újra.",
+    "managePlan": "Jelenlegi csomag kezelése",
     "haveAccount": "Már van fiókja?",
     "signInLink": "Jelentkezzen be",
     "manageDashboard": "és kezelje előfizetését az irányítópultból."

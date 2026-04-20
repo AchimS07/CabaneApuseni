@@ -665,6 +665,10 @@
     "perMonth": "/lună",
     "featuresLabel": "Funcționalități plan {name}",
     "ctaPrefix": "Începe cu",
+    "subscribeTo": "Abonează-te la {name}",
+    "subscribing": "Se procesează…",
+    "checkoutError": "Ceva a mers greșit. Încearcă din nou.",
+    "managePlan": "Gestionează planul curent",
     "haveAccount": "Ai deja un cont?",
     "signInLink": "Autentifică-te",
     "manageDashboard": "și gestionează-ți abonamentul din dashboard."
