@@ -69,12 +69,12 @@ export default async function OwnerListingsPage() {
       {!isSubscriptionActive && (
         <div
           role="alert"
-          className="mb-6 flex items-center gap-3 rounded-xl border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800"
+          className="mb-6 flex items-center gap-3 rounded-xl border border-earth-200 bg-earth-50 px-4 py-3 text-sm text-earth-800"
         >
           <span aria-hidden="true">⚠️</span>
           <span>
             {t('noSubscription')}{' '}
-            <Link href="/pricing" className="font-medium underline hover:text-yellow-900">
+            <Link href="/pricing" className="font-medium underline hover:text-earth-900">
               {t('choosePlan')}
             </Link>{' '}
             {t('noSubscriptionSuffix')}
