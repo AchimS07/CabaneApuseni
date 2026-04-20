@@ -672,7 +672,8 @@
     "managePlan": "Gestionează planul curent",
     "haveAccount": "Ai deja un cont?",
     "signInLink": "Autentifică-te",
-    "manageDashboard": "și gestionează-ți abonamentul din dashboard."
+    "manageDashboard": "și gestionează-ți abonamentul din dashboard.",
+    "stripeNotConfigured": "Plățile online nu sunt configurate momentan. Contactați administratorul."
   },
   "cabinsView": {
     "categories": {

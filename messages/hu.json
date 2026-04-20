@@ -672,7 +672,8 @@
     "managePlan": "Jelenlegi csomag kezelése",
     "haveAccount": "Már van fiókja?",
     "signInLink": "Jelentkezzen be",
-    "manageDashboard": "és kezelje előfizetését az irányítópultból."
+    "manageDashboard": "és kezelje előfizetését az irányítópultból.",
+    "stripeNotConfigured": "Az online fizetés jelenleg nincs beállítva. Kérjük, lépjen kapcsolatba az adminisztrátorral."
   },
   "cabinsView": {
     "categories": {

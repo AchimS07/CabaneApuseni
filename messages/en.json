@@ -672,7 +672,8 @@
     "managePlan": "Manage current plan",
     "haveAccount": "Already have an account?",
     "signInLink": "Sign in",
-    "manageDashboard": "and manage your subscription from the dashboard."
+    "manageDashboard": "and manage your subscription from the dashboard.",
+    "stripeNotConfigured": "Online payments are not configured at the moment. Please contact the administrator."
   },
   "cabinsView": {
     "categories": {
