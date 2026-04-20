@@ -8,11 +8,10 @@ import { getTranslations } from 'next-intl/server';
 import { verifySession } from '@/lib/auth/session';
 import { PlanCheckoutButton } from '@/components/ui/PlanCheckoutButton';
 
-function isStripeConfigured(): boolean {
+function isNetopiaConfigured(): boolean {
   return Boolean(
-    process.env.STRIPE_SECRET_KEY &&
-    process.env.STRIPE_BASIC_PRICE_ID &&
-    process.env.STRIPE_PRO_PRICE_ID,
+    process.env.NETOPIA_API_KEY &&
+    process.env.NETOPIA_SELLER_ID,
   );
 }
 
@@ -42,7 +41,7 @@ export default async function PricingPage() {
 
   const isOwner = session?.role === 'owner' || session?.role === 'admin';
   const hasActiveSub = isOwner && session?.subscriptionStatus === 'active';
-  const stripeReady = isStripeConfigured();
+  const netopiaReady = isNetopiaConfigured();
 
   function planCtaClass(recommended?: boolean) {
     return (
@@ -116,7 +115,7 @@ export default async function PricingPage() {
               >
                 {t('managePlan')}
               </Link>
-            ) : isOwner && stripeReady ? (
+            ) : isOwner && netopiaReady ? (
               <PlanCheckoutButton planId={plan.id} recommended={plan.recommended} />
             ) : isOwner ? (
               <button
@@ -144,9 +143,9 @@ export default async function PricingPage() {
         ))}
       </div>
 
-      {isOwner && !stripeReady && (
+      {isOwner && !netopiaReady && (
         <p className="mt-6 text-center text-sm text-amber-600" role="status">
-          {t('stripeNotConfigured')}
+          {t('paymentsNotConfigured')}
         </p>
       )}
 

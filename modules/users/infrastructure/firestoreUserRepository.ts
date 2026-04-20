@@ -32,11 +32,11 @@ export async function listUsers(limit = 50): Promise<UserProfile[]> {
   return snapshot.docs.map((doc) => ({ uid: doc.id, ...doc.data() }) as UserProfile);
 }
 
-export async function getUserByStripeCustomerId(customerId: string): Promise<UserProfile | null> {
+export async function getUserByNetopiaCardToken(token: string): Promise<UserProfile | null> {
   const db = getAdminFirestore();
   const snapshot = await db
     .collection(COLLECTION)
-    .where('stripeCustomerId', '==', customerId)
+    .where('netopiaCardToken', '==', token)
     .limit(1)
     .get();
   if (snapshot.empty) return null;

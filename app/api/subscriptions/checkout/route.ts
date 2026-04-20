@@ -1,12 +1,15 @@
 /**
  * app/api/subscriptions/checkout/route.ts
- * Creates a Stripe Checkout Session for owner subscriptions.
+ * Creates a Netopia Payments hosted checkout session for owner subscriptions.
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { randomUUID } from 'crypto';
 import { verifySession } from '@/lib/auth/session';
-import { getUserById, upsertUser } from '@/modules/users/infrastructure/firestoreUserRepository';
-import { getStripe } from '@/lib/stripe/client';
+import { getUserById } from '@/modules/users/infrastructure/firestoreUserRepository';
+import { createNetopiaPayment } from '@/lib/netopia/client';
+import { getServerEnv } from '@/lib/env';
+import { PLANS } from '@/lib/subscription/plans';
 import { createLogger } from '@/lib/observability/logger';
 
 const log = createLogger({ module: 'subscriptions/checkout' });
@@ -28,48 +31,91 @@ export async function POST(req: NextRequest) {
   }
 
   const { plan } = parsed.data;
-  const priceId =
-    plan === 'basic'
-      ? process.env.STRIPE_BASIC_PRICE_ID
-      : process.env.STRIPE_PRO_PRICE_ID;
+  const planMeta = PLANS.find((p) => p.id === plan);
+  if (!planMeta) {
+    return NextResponse.json({ error: 'Plan not found.' }, { status: 400 });
+  }
 
-  if (!priceId) {
-    log.error({ plan }, 'Stripe price ID not configured');
-    return NextResponse.json({ error: 'Plan not configured.' }, { status: 500 });
+  const env = getServerEnv();
+  if (!env.NETOPIA_API_KEY || !env.NETOPIA_SELLER_ID) {
+    log.error({ plan }, 'Netopia credentials not configured');
+    return NextResponse.json({ error: 'Payment provider not configured.' }, { status: 500 });
   }
 
   try {
-    const stripe = getStripe();
     const profile = await getUserById(session.uid);
-    let customerId = profile?.stripeCustomerId;
-
-    if (!customerId) {
-      const customer = await stripe.customers.create({
-        email: session.email ?? undefined,
-        metadata: { uid: session.uid },
-      });
-      customerId = customer.id;
-      await upsertUser(session.uid, { stripeCustomerId: customerId });
-    }
-
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+    const orderID = randomUUID();
 
-    const checkoutSession = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      customer: customerId,
-      line_items: [{ price: priceId, quantity: 1 }],
-      success_url: appUrl + '/dashboard/owner?subscription=success',
-      cancel_url: appUrl + '/pricing',
-      metadata: { uid: session.uid, plan },
-      subscription_data: { metadata: { uid: session.uid } },
+    // Split display name into first/last (best-effort)
+    const nameParts = (profile?.name ?? session.email ?? 'User').trim().split(' ');
+    const firstName = nameParts[0] ?? 'User';
+    const lastName = nameParts.slice(1).join(' ') || firstName;
+
+    const billing = {
+      email: session.email ?? '',
+      phone: profile?.phone ?? '',
+      firstName,
+      lastName,
+      city: '',
+      country: 642, // Romania
+      state: '',
+      postalCode: '',
+      details: '',
+    };
+
+    const response = await createNetopiaPayment({
+      config: {
+        notifyUrl: `${appUrl}/api/subscriptions/ipn`,
+        redirectUrl: `${appUrl}/dashboard/owner?subscription=success`,
+        language: 'ro',
+      },
+      payment: {
+        options: { installments: 0, bonus: 0 },
+        // For a fresh checkout the instrument fields are empty; Netopia collects
+        // card details on its hosted page. Token-based repeat charges would
+        // populate `token`, `expMonth`, `expYear` here instead.
+        instrument: {
+          type: 'card',
+        },
+        data: {},
+      },
+      order: {
+        posSignature: env.NETOPIA_SELLER_ID,
+        dateTime: new Date().toISOString(),
+        description: `Abonament ${planMeta.name} – Cabane Apuseni`,
+        orderID,
+        amount: planMeta.priceRon,
+        currency: 'RON',
+        billing,
+        shipping: billing,
+        products: [
+          {
+            name: `Plan ${planMeta.name}`,
+            code: plan,
+            category: 'subscription',
+            price: planMeta.priceRon,
+            vat: 19,
+          },
+        ],
+        installments: { selected: 0, available: [] },
+        data: { uid: session.uid, plan },
+      },
     });
 
-    log.info({ uid: session.uid, plan }, 'Checkout session created');
-    return NextResponse.json({ url: checkoutSession.url });
+    // error.code "101" is Netopia's success code meaning "redirect to paymentURL"
+    const paymentURL = response.payment?.paymentURL;
+    if (!paymentURL) {
+      log.error({ response, uid: session.uid, plan }, 'Netopia did not return a paymentURL');
+      return NextResponse.json({ error: 'Failed to create payment session.' }, { status: 500 });
+    }
+
+    log.info({ uid: session.uid, plan, orderID }, 'Netopia checkout session created');
+    return NextResponse.json({ url: paymentURL });
   } catch (error) {
-    log.error({ error, uid: session.uid }, 'Failed to create checkout session');
+    log.error({ error, uid: session.uid }, 'Failed to create Netopia checkout session');
     return NextResponse.json(
-      { error: 'Failed to create checkout session.' },
+      { error: 'Failed to create payment session.' },
       { status: 500 },
     );
   }

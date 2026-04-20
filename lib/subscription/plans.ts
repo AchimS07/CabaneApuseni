@@ -13,7 +13,6 @@ export interface Plan {
   id: SubscriptionTier;
   name: string;
   priceRon: number;
-  stripePriceIdEnvKey: string;
   listingLimit: number;
   photoLimit: number;
   features: { label: string; included: boolean }[];
@@ -25,11 +24,10 @@ export const PLANS: Plan[] = [
     id: 'basic',
     name: 'Basic',
     priceRon: 50,
-    stripePriceIdEnvKey: 'STRIPE_BASIC_PRICE_ID',
     listingLimit: 1,
     photoLimit: 5,
     features: [
-      { label: '1 caban\u0103 activ\u0103', included: true },
+      { label: '1 cabin\u0103 activ\u0103', included: true },
       { label: '5 fotografii per listing', included: true },
       { label: 'Plasare standard \u00een c\u0103utare', included: true },
       { label: 'Badge "Recomandat"', included: false },
@@ -41,7 +39,6 @@ export const PLANS: Plan[] = [
     id: 'pro',
     name: 'Pro',
     priceRon: 150,
-    stripePriceIdEnvKey: 'STRIPE_PRO_PRICE_ID',
     listingLimit: 5,
     photoLimit: 15,
     recommended: true,
@@ -55,9 +52,3 @@ export const PLANS: Plan[] = [
     ],
   },
 ];
-
-export function getTierFromStripePrice(priceId: string): SubscriptionTier | null {
-  if (priceId === process.env.STRIPE_BASIC_PRICE_ID) return 'basic';
-  if (priceId === process.env.STRIPE_PRO_PRICE_ID) return 'pro';
-  return null;
-}

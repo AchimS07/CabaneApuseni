@@ -603,10 +603,9 @@
     "renewsAt": "Renews on: {date}",
     "upgradeToPro": "Upgrade to Pro",
     "manageSubscription": "Manage subscription",
-    "opening": "Opening…",
     "pastDueTitle": "Payment overdue",
-    "pastDueDescription": "Update your payment method to maintain access to listings.",
-    "updatePayment": "Update payment method",
+    "pastDueDescription": "Renew your plan to maintain access to listings.",
+    "renewPlan": "Renew plan",
     "noSubscriptionTitle": "No active subscription",
     "noSubscriptionDescription": "Choose a plan to publish and manage cabins.",
     "choosePlan": "Choose a plan"
@@ -673,7 +672,7 @@
     "haveAccount": "Already have an account?",
     "signInLink": "Sign in",
     "manageDashboard": "and manage your subscription from the dashboard.",
-    "stripeNotConfigured": "Online payments are not configured at the moment. Please contact the administrator."
+    "paymentsNotConfigured": "Online payments are not configured at the moment. Please contact the administrator."
   },
   "cabinsView": {
     "categories": {
