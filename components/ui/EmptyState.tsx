@@ -34,7 +34,7 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
         action.href ? (
           <Link
             href={action.href}
-            className="mt-4 inline-block rounded-xl bg-ember-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2"
+            className="mt-4 inline-block rounded-xl bg-pine-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-pine-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 focus-visible:ring-offset-2"
           >
             {action.label}
           </Link>
@@ -42,7 +42,7 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
           <button
             type="button"
             onClick={action.onClick}
-            className="mt-4 inline-block rounded-xl bg-ember-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2"
+            className="mt-4 inline-block rounded-xl bg-pine-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-pine-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 focus-visible:ring-offset-2"
           >
             {action.label}
           </button>
