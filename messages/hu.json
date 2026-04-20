@@ -172,6 +172,7 @@
     "about": "Erről a kabinról",
     "whatOffers": "Mit kínál ez a kabin",
     "showMoreAmenities": "Összes felszereltség megjelenítése (+{extra})",
+    "showLessAmenities": "Kevesebb felszereltség megjelenítése",
     "whereYouAre": "Hol tartózkodik",
     "locationSuffix": "{location}, Erdélyi-Szigethegység",
     "mapTitle": "Térkép ehhez: {title}",

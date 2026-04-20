@@ -5,11 +5,15 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 
 jest.mock('@/modules/cabins/infrastructure/firestoreCabinRepository');
+jest.mock('@/modules/users/application/userService', () => ({
+  getProfile: jest.fn(),
+}));
 jest.mock('@/lib/observability/logger', () => ({
   createLogger: () => ({ info: jest.fn(), error: jest.fn() }),
 }));
 
 import * as cabinRepo from '@/modules/cabins/infrastructure/firestoreCabinRepository';
+import * as userService from '@/modules/users/application/userService';
 import {
   createCabin,
   editCabin,
@@ -20,8 +24,10 @@ import {
   getCabinDetail,
 } from '@/modules/cabins/application/cabinService';
 import { MOCK_CABINS } from '@/modules/cabins/application/mockCabins';
+import { ok } from '@/lib/result';
 import type { SessionUser } from '@/lib/auth/session';
 import type { Cabin } from '@/modules/cabins/domain/types';
+import type { UserProfile } from '@/modules/users/domain/types';
 
 const ownerSession: SessionUser = { uid: 'owner-1', email: 'owner@example.com', role: 'owner' };
 const adminSession: SessionUser = { uid: 'admin-1', email: 'admin@example.com', role: 'admin' };
@@ -55,12 +61,26 @@ const validInput = {
   published: false,
 };
 
+const activeOwnerProfile: UserProfile = {
+  uid: 'owner-1',
+  email: 'owner@example.com',
+  name: 'Owner',
+  role: 'owner',
+  subscriptionStatus: 'active',
+  subscriptionTier: 'pro',
+  subscriptionExpiresAt: null,
+  createdAt: '2024-01-01T00:00:00Z',
+  updatedAt: '2024-01-01T00:00:00Z',
+};
+
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
 describe('createCabin', () => {
   it('creates a cabin and sets ownerId from actor', async () => {
+    jest.mocked(userService.getProfile).mockResolvedValue(ok(activeOwnerProfile));
+    jest.mocked(cabinRepo.listCabinsByOwner).mockResolvedValue([]);
     jest.mocked(cabinRepo.saveCabin).mockResolvedValue(undefined);
 
     const result = await createCabin(validInput, ownerSession);
@@ -295,6 +315,8 @@ describe('getOwnerCabins — error handling', () => {
 
 describe('createCabin — error handling', () => {
   it('returns INTERNAL_ERROR when saveCabin throws', async () => {
+    jest.mocked(userService.getProfile).mockResolvedValue(ok(activeOwnerProfile));
+    jest.mocked(cabinRepo.listCabinsByOwner).mockResolvedValue([]);
     jest.mocked(cabinRepo.saveCabin).mockRejectedValue(new Error('Firestore write failed'));
 
     const result = await createCabin(validInput, ownerSession);

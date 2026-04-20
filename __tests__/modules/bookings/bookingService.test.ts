@@ -54,6 +54,7 @@ beforeEach(() => {
 describe('createBooking', () => {
   it('returns a booking when input is valid', async () => {
     jest.mocked(cabinRepo.getCabinById).mockResolvedValue(mockCabin);
+    jest.mocked(bookingRepo.listOverlappingBookings).mockResolvedValue([]);
     jest.mocked(bookingRepo.saveBooking).mockResolvedValue(undefined);
 
     const result = await createBooking(
@@ -74,6 +75,32 @@ describe('createBooking', () => {
     }
   });
 
+  it('fails with CONFLICT when dates overlap an existing booking', async () => {
+    jest.mocked(cabinRepo.getCabinById).mockResolvedValue(mockCabin);
+    jest.mocked(bookingRepo.listOverlappingBookings).mockResolvedValue([
+      {
+        id: 'existing-bk',
+        userId: 'other-user',
+        cabin: { id: 'cabin-1', title: 'Cabana Test', slug: 'cabana-test', pricePerNight: 300 },
+        checkIn: '2030-07-11',
+        checkOut: '2030-07-14',
+        guestCount: 2,
+        status: 'confirmed',
+        totalPrice: 900,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+      },
+    ]);
+
+    const result = await createBooking(
+      { cabinId: 'cabin-1', checkIn: '2030-07-10', checkOut: '2030-07-13', guestCount: 2 },
+      mockActor,
+    );
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('CONFLICT');
+  });
+
   it('fails when cabin is not published', async () => {
     jest.mocked(cabinRepo.getCabinById).mockResolvedValue({ ...mockCabin, published: false });
 
@@ -88,6 +115,7 @@ describe('createBooking', () => {
 
   it('fails when guestCount exceeds maxGuests', async () => {
     jest.mocked(cabinRepo.getCabinById).mockResolvedValue(mockCabin);
+    jest.mocked(bookingRepo.listOverlappingBookings).mockResolvedValue([]);
 
     const result = await createBooking(
       { cabinId: 'cabin-1', checkIn: '2030-07-10', checkOut: '2030-07-13', guestCount: 10 },
@@ -256,13 +284,29 @@ describe('rejectBookingForOwner', () => {
 const adminActor: SessionUser = { uid: 'admin-1', email: 'admin@example.com', role: 'admin' };
 
 describe('confirmBooking (admin-only)', () => {
-  it('allows admin to confirm any booking', async () => {
+  it('allows admin to confirm a pending booking', async () => {
     jest.mocked(bookingRepo.getBookingById).mockResolvedValue(pendingBooking);
     jest.mocked(bookingRepo.updateBookingStatus).mockResolvedValue(undefined);
 
     const result = await confirmBooking('bk-2', adminActor);
     expect(result.ok).toBe(true);
     expect(bookingRepo.updateBookingStatus).toHaveBeenCalledWith('bk-2', 'confirmed');
+  });
+
+  it('returns CONFLICT when booking is already confirmed', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue({ ...pendingBooking, status: 'confirmed' as const });
+
+    const result = await confirmBooking('bk-2', adminActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('CONFLICT');
+  });
+
+  it('returns CONFLICT when booking is cancelled', async () => {
+    jest.mocked(bookingRepo.getBookingById).mockResolvedValue({ ...pendingBooking, status: 'cancelled' as const });
+
+    const result = await confirmBooking('bk-2', adminActor);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.code).toBe('CONFLICT');
   });
 
   it('rejects non-admin actors', async () => {

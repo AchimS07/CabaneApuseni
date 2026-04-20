@@ -6,8 +6,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { PhotoGrid } from '@/components/ui/PhotoGrid';
 import { WishlistButton } from '@/components/ui/WishlistButton';
-import { MapPinIcon, UsersIcon, StarIcon, ArrowLeftIcon, ShareIcon } from '@/components/ui/Icons';
+import { MapPinIcon, UsersIcon, StarIcon, ArrowLeftIcon } from '@/components/ui/Icons';
 import ReportButton from '@/components/ReportButton';
+import { ShareButton } from '@/components/ui/ShareButton';
+import { AmenitiesGrid } from '@/components/ui/AmenitiesGrid';
 import { getTranslations } from 'next-intl/server';
 
 interface Props {
@@ -44,35 +46,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: cabin.imageUrls[0] ? [cabin.imageUrls[0]] : [],
     },
   };
-}
-
-/** Maps common amenity names to emojis for a richer icon grid */
-const AMENITY_EMOJIS: Record<string, string> = {
-  'wi-fi': '📶',
-  'wifi': '📶',
-  'parcare': '🚗',
-  'bucătărie': '🍳',
-  'bucătărie utilată': '🍳',
-  'șemineu': '🔥',
-  'foc': '🔥',
-  'saună': '🛁',
-  'jacuzzi': '🛁',
-  'jacuzzi exterior': '🛁',
-  'ciubăr': '🪣',
-  'grătar': '🍖',
-  'terasă': '🪑',
-  'smart tv': '📺',
-  'tv': '📺',
-  'încălzire centrală': '🌡️',
-  'self check-in': '🔑',
-  'animale acceptate': '🐾',
-  'piscină': '🏊',
-  'vedere munte': '⛰️',
-  'internet': '📶',
-};
-
-function amenityEmoji(name: string): string {
-  return AMENITY_EMOJIS[name.toLowerCase()] ?? '✓';
 }
 
 export default async function CabinDetailPage({ params }: Props) {
@@ -135,14 +108,12 @@ export default async function CabinDetailPage({ params }: Props) {
           {t('backToCabins')}
         </Link>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 underline transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
-            aria-label={t('shareAriaLabel')}
-          >
-            <ShareIcon size={16} aria-hidden="true" />
-            {t('share')}
-          </button>
+          <ShareButton
+            title={cabin.title}
+            url={`${baseUrl}/cabins/${cabin.slug}`}
+            shareLabel={t('share')}
+            ariaLabel={t('shareAriaLabel')}
+          />
           <WishlistButton
             cabinId={cabin.id}
             cabinSlug={cabin.slug}
@@ -209,8 +180,9 @@ export default async function CabinDetailPage({ params }: Props) {
               </h2>
               <AmenitiesGrid
                 amenities={cabin.amenities}
-                showAll={SHOW_AMENITIES}
+                initialVisible={SHOW_AMENITIES}
                 showMoreLabel={(extra: number) => t('showMoreAmenities', { extra })}
+                showLessLabel={t('showLessAmenities')}
               />
             </section>
           )}
@@ -258,40 +230,6 @@ export default async function CabinDetailPage({ params }: Props) {
           </div>
         </aside>
       </div>
-    </div>
-  );
-}
-
-// ── Amenities grid sub-component ─────────────────────────────────────────────
-
-interface AmenitiesGridProps {
-  amenities: string[];
-  showAll: number;
-  showMoreLabel: (extra: number) => string;
-}
-
-function AmenitiesGrid({ amenities, showAll, showMoreLabel }: AmenitiesGridProps) {
-  const visible = amenities.slice(0, showAll);
-  const extra = amenities.length > showAll ? amenities.length - showAll : 0;
-
-  return (
-    <div>
-      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {visible.map((a) => (
-          <li key={a} className="flex items-center gap-3 text-sm text-gray-700">
-            <span className="text-xl leading-none" aria-hidden="true">{amenityEmoji(a)}</span>
-            {a}
-          </li>
-        ))}
-      </ul>
-      {extra > 0 && (
-        <button
-          type="button"
-          className="mt-5 rounded-xl border border-gray-900 px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500"
-        >
-          {showMoreLabel(extra)}
-        </button>
-      )}
     </div>
   );
 }

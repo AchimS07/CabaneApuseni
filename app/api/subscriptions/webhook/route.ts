@@ -100,7 +100,8 @@ export async function POST(req: NextRequest) {
     }
   } catch (error) {
     log.error({ error, eventType: event.type }, 'Error handling webhook event');
-    // Return 200 anyway — Stripe should not retry transient errors logged server-side
+    // Return 500 so Stripe retries this event — all service operations are idempotent.
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });

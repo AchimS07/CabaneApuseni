@@ -120,6 +120,7 @@ export async function confirmBooking(id: string, actor: SessionUser): Promise<Re
 
   const booking = await getBookingById(id);
   if (!booking) return fail('NOT_FOUND', 'Booking not found.');
+  if (booking.status !== 'pending') return fail('CONFLICT', 'Only pending bookings can be confirmed.');
 
   await updateBookingStatus(id, 'confirmed');
   log.info({ id, actorUid: actor.uid }, 'Booking confirmed');

@@ -172,6 +172,7 @@
     "about": "About this cabin",
     "whatOffers": "What this cabin offers",
     "showMoreAmenities": "Show all amenities (+{extra})",
+    "showLessAmenities": "Show fewer amenities",
     "whereYouAre": "Where you'll be",
     "locationSuffix": "{location}, Apuseni Mountains",
     "mapTitle": "Map for {title}",

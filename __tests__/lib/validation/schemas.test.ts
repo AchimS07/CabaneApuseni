@@ -151,8 +151,8 @@ describe('cabinSchema', () => {
     expect(cabinSchema.safeParse({ ...validCabin, pricePerNight: -1 }).success).toBe(false);
   });
 
-  it('accepts pricePerNight of 0', () => {
-    expect(cabinSchema.safeParse({ ...validCabin, pricePerNight: 0 }).success).toBe(true);
+  it('rejects pricePerNight of 0', () => {
+    expect(cabinSchema.safeParse({ ...validCabin, pricePerNight: 0 }).success).toBe(false);
   });
 
   it('rejects non-URL strings in imageUrls', () => {
