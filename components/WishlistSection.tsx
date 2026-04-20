@@ -100,6 +100,12 @@ export function WishlistSection() {
           <p className="mt-1 text-sm text-gray-500">
             {t('emptyHint')}
           </p>
+          <Link
+            href="/cabins"
+            className="mt-5 inline-flex items-center rounded-xl bg-pine-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500 focus:ring-offset-2"
+          >
+            {t('exploreCabins')}
+          </Link>
         </div>
       ) : (
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

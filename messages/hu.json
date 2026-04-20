@@ -268,7 +268,13 @@
     "ownerDashboardDesc": "Tekintse meg tulajdonosi fiókjának állapotát és a következő lépéseket.",
     "openDashboard": "Irányítópult megnyitása →",
     "favorites": "Kedvencek",
-    "favoritesDesc": "Az elmentett kabinjaid."
+    "favoritesDesc": "Az elmentett kabinjaid.",
+    "activeBookings": "{count} aktív foglalás",
+    "oneActiveBooking": "1 aktív foglalás",
+    "noBookingsYet": "Még nincs foglalás",
+    "profileCard": "Profilom",
+    "profileCardDesc": "Frissítse fiókja adatait.",
+    "viewProfile": "Profil megtekintése →"
   },
   "myBookings": {
     "title": "Foglalásaim",
