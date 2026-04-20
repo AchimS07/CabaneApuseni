@@ -603,10 +603,9 @@
     "renewsAt": "Se reînnoiește la: {date}",
     "upgradeToPro": "Upgradează la Pro",
     "manageSubscription": "Gestionează abonamentul",
-    "opening": "Se deschide…",
     "pastDueTitle": "Plată restantă",
-    "pastDueDescription": "Actualizează metoda de plată pentru a menține accesul la listinguri.",
-    "updatePayment": "Actualizează metoda de plată",
+    "pastDueDescription": "Reînnoiește planul pentru a menține accesul la listinguri.",
+    "renewPlan": "Reînnoiește planul",
     "noSubscriptionTitle": "Fără abonament activ",
     "noSubscriptionDescription": "Alege un plan pentru a putea publica și gestiona cabane.",
     "choosePlan": "Alege un plan"
@@ -673,7 +672,7 @@
     "haveAccount": "Ai deja un cont?",
     "signInLink": "Autentifică-te",
     "manageDashboard": "și gestionează-ți abonamentul din dashboard.",
-    "stripeNotConfigured": "Plățile online nu sunt configurate momentan. Contactați administratorul."
+    "paymentsNotConfigured": "Plățile online nu sunt configurate momentan. Contactați administratorul."
   },
   "cabinsView": {
     "categories": {

@@ -15,8 +15,8 @@ const log = createLogger({ module: 'subscriptionService' });
 export async function activateSubscription(
   uid: string,
   tier: SubscriptionTier,
-  stripeSubscriptionId: string,
-  stripeCustomerId: string,
+  netopiaOrderId: string,
+  netopiaCardToken?: string,
 ): Promise<Result<void>> {
   try {
     const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -25,8 +25,8 @@ export async function activateSubscription(
       subscriptionTier: tier,
       subscriptionStatus: 'active',
       subscriptionExpiresAt: expiresAt,
-      stripeSubscriptionId,
-      stripeCustomerId,
+      netopiaOrderId,
+      ...(netopiaCardToken ? { netopiaCardToken } : {}),
     });
 
     const auth = getAdminAuth();

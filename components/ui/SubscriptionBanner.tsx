@@ -1,10 +1,9 @@
 /**
  * components/ui/SubscriptionBanner.tsx
- * Client component: displays subscription status with portal / upgrade actions.
+ * Client component: displays subscription status with upgrade / plan management actions.
  */
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import type { SubscriptionTier, SubscriptionStatus } from '@/modules/users/domain/types';
 import { useTranslations } from 'next-intl';
@@ -17,22 +16,6 @@ interface SubscriptionBannerProps {
 
 export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBannerProps) {
   const t = useTranslations('subscriptionBanner');
-  const [loading, setLoading] = useState(false);
-
-  async function openPortal() {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/subscriptions/portal', { method: 'POST' });
-      const data = (await res.json()) as { url?: string; error?: string };
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch {
-      // silently fail — user remains on page
-    } finally {
-      setLoading(false);
-    }
-  }
 
   const expiryLabel = expiresAt
     ? new Date(expiresAt).toLocaleDateString()
@@ -68,14 +51,12 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
               {t('upgradeToPro')}
             </Link>
           )}
-          <button
-            onClick={openPortal}
-            disabled={loading}
-            aria-busy={loading}
-            className="rounded-md bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+          <Link
+            href="/pricing"
+            className="rounded-md bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1"
           >
-            {loading ? t('opening') : t('manageSubscription')}
-          </button>
+            {t('manageSubscription')}
+          </Link>
         </div>
       </div>
     );
@@ -96,14 +77,12 @@ export function SubscriptionBanner({ tier, status, expiresAt }: SubscriptionBann
             </p>
           </div>
         </div>
-        <button
-          onClick={openPortal}
-          disabled={loading}
-          aria-busy={loading}
-          className="rounded-md bg-yellow-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+        <Link
+          href="/pricing"
+          className="rounded-md bg-yellow-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-1"
         >
-          {loading ? t('opening') : t('updatePayment')}
-        </button>
+          {t('renewPlan')}
+        </Link>
       </div>
     );
   }

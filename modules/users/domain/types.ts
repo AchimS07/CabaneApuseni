@@ -24,6 +24,8 @@ export interface UserProfile {
   subscriptionTier: SubscriptionTier | null;
   subscriptionStatus: SubscriptionStatus | null;
   subscriptionExpiresAt: string | null;
-  stripeCustomerId?: string;
-  stripeSubscriptionId?: string;
+  /** Netopia card binding token – used for future recurring charges */
+  netopiaCardToken?: string;
+  /** Netopia internal order/transaction ID for the latest subscription payment */
+  netopiaOrderId?: string;
 }
