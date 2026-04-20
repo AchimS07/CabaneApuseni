@@ -8,6 +8,14 @@ import { getTranslations } from 'next-intl/server';
 import { verifySession } from '@/lib/auth/session';
 import { PlanCheckoutButton } from '@/components/ui/PlanCheckoutButton';
 
+function isStripeConfigured(): boolean {
+  return Boolean(
+    process.env.STRIPE_SECRET_KEY &&
+    process.env.STRIPE_BASIC_PRICE_ID &&
+    process.env.STRIPE_PRO_PRICE_ID,
+  );
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('pricingPage');
   return {
@@ -34,6 +42,7 @@ export default async function PricingPage() {
 
   const isOwner = session?.role === 'owner' || session?.role === 'admin';
   const hasActiveSub = isOwner && session?.subscriptionStatus === 'active';
+  const stripeReady = isStripeConfigured();
 
   function planCtaClass(recommended?: boolean) {
     return (
@@ -107,8 +116,22 @@ export default async function PricingPage() {
               >
                 {t('managePlan')}
               </Link>
-            ) : isOwner ? (
+            ) : isOwner && stripeReady ? (
               <PlanCheckoutButton planId={plan.id} recommended={plan.recommended} />
+            ) : isOwner ? (
+              <button
+                disabled
+                aria-disabled="true"
+                className={[
+                  'block w-full rounded-lg px-6 py-3 text-center text-sm font-semibold',
+                  'cursor-not-allowed opacity-50',
+                  plan.recommended
+                    ? 'bg-ember-500 text-white'
+                    : 'bg-gray-900 text-white',
+                ].join(' ')}
+              >
+                {t('subscribeTo', { name: plan.id === 'basic' ? 'Basic' : 'Pro' })}
+              </button>
             ) : (
               <Link
                 href={'/register/owner?plan=' + plan.id}
@@ -120,6 +143,12 @@ export default async function PricingPage() {
           </article>
         ))}
       </div>
+
+      {isOwner && !stripeReady && (
+        <p className="mt-6 text-center text-sm text-amber-600" role="status">
+          {t('stripeNotConfigured')}
+        </p>
+      )}
 
       {!session && (
         <p className="mt-10 text-center text-sm text-gray-500">
