@@ -72,13 +72,11 @@ export async function POST(req: NextRequest) {
       },
       payment: {
         options: { installments: 0, bonus: 0 },
+        // For a fresh checkout the instrument fields are empty; Netopia collects
+        // card details on its hosted page. Token-based repeat charges would
+        // populate `token`, `expMonth`, `expYear` here instead.
         instrument: {
           type: 'card',
-          account: '',
-          expMonth: 0,
-          expYear: 0,
-          secretCode: '',
-          token: '',
         },
         data: {},
       },

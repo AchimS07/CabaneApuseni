@@ -41,7 +41,7 @@ export default async function PricingPage() {
 
   const isOwner = session?.role === 'owner' || session?.role === 'admin';
   const hasActiveSub = isOwner && session?.subscriptionStatus === 'active';
-  const stripeReady = isNetopiaConfigured();
+  const netopiaReady = isNetopiaConfigured();
 
   function planCtaClass(recommended?: boolean) {
     return (
@@ -115,7 +115,7 @@ export default async function PricingPage() {
               >
                 {t('managePlan')}
               </Link>
-            ) : isOwner && stripeReady ? (
+            ) : isOwner && netopiaReady ? (
               <PlanCheckoutButton planId={plan.id} recommended={plan.recommended} />
             ) : isOwner ? (
               <button
@@ -143,7 +143,7 @@ export default async function PricingPage() {
         ))}
       </div>
 
-      {isOwner && !stripeReady && (
+      {isOwner && !netopiaReady && (
         <p className="mt-6 text-center text-sm text-amber-600" role="status">
           {t('paymentsNotConfigured')}
         </p>

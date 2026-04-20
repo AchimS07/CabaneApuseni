@@ -18,7 +18,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
   activateSubscription,
-  renewSubscription,
   deactivateSubscription,
   markSubscriptionPastDue,
 } from '@/modules/users/application/subscriptionService';
@@ -105,11 +104,7 @@ export async function POST(req: NextRequest) {
       }
 
       default: {
-        // Other status codes (e.g., pending antifraud) – no action needed
-        // Attempt renewal if payment came through on a known active subscription
-        if (payment.status === STATUS_CONFIRMED) {
-          await renewSubscription(uid);
-        }
+        // Other status codes (e.g., pending antifraud) — no subscription action needed
         log.debug({ uid, ntpID, status: payment.status }, 'Unhandled Netopia IPN status');
       }
     }
