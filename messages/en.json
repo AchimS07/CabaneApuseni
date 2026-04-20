@@ -268,7 +268,13 @@
     "ownerDashboardDesc": "View your owner account status and next steps.",
     "openDashboard": "Open dashboard →",
     "favorites": "Favourites",
-    "favoritesDesc": "Your saved cabins."
+    "favoritesDesc": "Your saved cabins.",
+    "activeBookings": "{count} active bookings",
+    "oneActiveBooking": "1 active booking",
+    "noBookingsYet": "No bookings yet",
+    "profileCard": "My profile",
+    "profileCardDesc": "Update your account information.",
+    "viewProfile": "View profile →"
   },
   "myBookings": {
     "title": "My bookings",

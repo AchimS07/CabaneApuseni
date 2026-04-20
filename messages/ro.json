@@ -268,7 +268,13 @@
     "ownerDashboardDesc": "Vezi statusul contului de proprietar și următorii pași.",
     "openDashboard": "Deschide dashboard →",
     "favorites": "Favorite",
-    "favoritesDesc": "Cabanele salvate de tine."
+    "favoritesDesc": "Cabanele salvate de tine.",
+    "activeBookings": "{count} rezervări active",
+    "oneActiveBooking": "1 rezervare activă",
+    "noBookingsYet": "Nicio rezervare încă",
+    "profileCard": "Profilul meu",
+    "profileCardDesc": "Actualizează informațiile contului.",
+    "viewProfile": "Vezi profil →"
   },
   "myBookings": {
     "title": "Rezervările mele",
