@@ -22,9 +22,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = await getTranslations('cabin');
   const result = await getCabinDetail(slug);
   if (!result.ok) return { title: t('notFoundMeta') };
+  const cabin = result.data;
+  const description = cabin.description.slice(0, 160);
+  const images = cabin.imageUrls[0]
+    ? [{ url: cabin.imageUrls[0], alt: cabin.title, width: 1200, height: 800 }]
+    : [];
+
   return {
-    title: result.data.title,
-    description: result.data.description.slice(0, 160),
+    title: cabin.title,
+    description,
+    openGraph: {
+      title: cabin.title,
+      description,
+      url: `/cabins/${cabin.slug}`,
+      type: 'website',
+      images,
+    },
+    twitter: {
+      title: cabin.title,
+      description,
+      images: cabin.imageUrls[0] ? [cabin.imageUrls[0]] : [],
+    },
   };
 }
 
@@ -69,12 +87,43 @@ export default async function CabinDetailPage({ params }: Props) {
   if (!result.ok) notFound();
   const cabin = result.data;
 
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://cabaneapuseni.ro';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LodgingBusiness',
+    name: cabin.title,
+    description: cabin.description,
+    url: `${baseUrl}/cabins/${cabin.slug}`,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: cabin.location,
+      addressRegion: 'Alba',
+      addressCountry: 'RO',
+    },
+    amenityFeature: cabin.amenities.map((a) => ({
+      '@type': 'LocationFeatureSpecification',
+      name: a,
+      value: true,
+    })),
+    ...(cabin.imageUrls[0] ? { image: cabin.imageUrls[0] } : {}),
+    offers: {
+      '@type': 'Offer',
+      price: cabin.pricePerNight,
+      priceCurrency: 'RON',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+
   const SHOW_AMENITIES = 6;
 
   const guestSuffix = cabin.maxGuests === 1 ? t('person') : t('persons');
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-24 pt-6 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* ── Top nav row ── */}
       <div className="mb-4 flex items-center justify-between">

@@ -9,6 +9,16 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: t('metaTitle'),
     description: t('metaDescription'),
+    openGraph: {
+      title: t('metaTitle'),
+      description: t('metaDescription'),
+      url: '/cabins',
+      type: 'website',
+    },
+    twitter: {
+      title: t('metaTitle'),
+      description: t('metaDescription'),
+    },
   };
 }
 

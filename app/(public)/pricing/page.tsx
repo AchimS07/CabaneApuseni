@@ -8,7 +8,20 @@ import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('pricingPage');
-  return { title: t('metaTitle') };
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    openGraph: {
+      title: t('metaTitle'),
+      description: t('metaDescription'),
+      url: '/pricing',
+      type: 'website',
+    },
+    twitter: {
+      title: t('metaTitle'),
+      description: t('metaDescription'),
+    },
+  };
 }
 
 export default async function PricingPage() {
