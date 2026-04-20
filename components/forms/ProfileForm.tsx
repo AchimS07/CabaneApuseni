@@ -3,18 +3,22 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { updateProfileAction } from '@/modules/users/actions';
 import type { UserRole } from '@/modules/users/domain/types';
 import { useTranslations } from 'next-intl';
+
+type ProfileUpdateResult =
+  | { ok: true }
+  | { ok: false; error: string; details?: Record<string, string[]> };
 
 interface ProfileFormProps {
   initialName: string;
   initialPhone: string;
   email: string;
   role: UserRole;
+  onUpdateProfile: (input: { name: string; phone?: string }) => Promise<ProfileUpdateResult>;
 }
 
-export default function ProfileForm({ initialName, initialPhone, email, role }: ProfileFormProps) {
+export default function ProfileForm({ initialName, initialPhone, email, role, onUpdateProfile }: ProfileFormProps) {
   const t = useTranslations('profile');
   const [name, setName] = useState(initialName);
   const [phone, setPhone] = useState(initialPhone);
@@ -37,7 +41,7 @@ export default function ProfileForm({ initialName, initialPhone, email, role }: 
 
     setLoading(true);
     try {
-      const result = await updateProfileAction({ name, phone: phone || undefined });
+      const result = await onUpdateProfile({ name, phone: phone || undefined });
       if (!result.ok) {
         setError(result.error);
         if (result.details) {

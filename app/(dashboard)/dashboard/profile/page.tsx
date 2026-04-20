@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { requireAuth } from '@/lib/auth/authorization';
 import { getProfile } from '@/modules/users/application/userService';
+import { updateProfileAction } from '@/modules/users/actions';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import ProfileForm from '@/components/forms/ProfileForm';
 import { getTranslations } from 'next-intl/server';
@@ -31,6 +32,7 @@ export default async function ProfilePage() {
           initialPhone={profile?.phone ?? ''}
           email={profile?.email ?? session.email ?? ''}
           role={profile?.role ?? session.role}
+          onUpdateProfile={updateProfileAction}
         />
       </div>
     </div>
