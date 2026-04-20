@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/auth/authorization';
 import { LogoutButton } from '@/components/ui/LogoutButton';
 import { getTranslations } from 'next-intl/server';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { PublicHeader } from '@/components/ui/PublicHeader';
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   await requireAdmin();
@@ -14,48 +15,9 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   return (
     <div className="flex min-h-screen flex-col">
       {/* ── Mobile top bar (hidden on lg) ── */}
-      <header className="border-b bg-white px-4 py-3 shadow-sm lg:hidden">
-        <nav
-          className="flex items-center justify-between"
-          aria-label={tNav('mainNav')}
-        >
-          <Link href="/admin" className="font-bold text-pine-700">
-            Admin
-          </Link>
-          <ul className="flex items-center gap-3 text-sm font-medium">
-            <li>
-              <Link
-                href="/admin"
-                className="text-gray-700 transition hover:text-pine-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 rounded-md"
-              >
-                {tAdmin('title')}
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/admin/cabins"
-                className="text-gray-700 transition hover:text-pine-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 rounded-md"
-              >
-                {t('title')}
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/admin/bookings"
-                className="text-gray-700 hover:text-pine-700 focus:outline-none focus:ring-2 focus:ring-pine-500 rounded"
-              >
-                {tNav('bookings')}
-              </Link>
-            </li>
-            <li>
-              <LanguageSwitcher />
-            </li>
-            <li>
-              <LogoutButton />
-            </li>
-          </ul>
-        </nav>
-      </header>
+      <div className="lg:hidden">
+        <PublicHeader isAuthenticated isAdmin variant="minimal" />
+      </div>
 
       {/* ── Desktop layout: sidebar + content ── */}
       <div className="flex flex-1">
