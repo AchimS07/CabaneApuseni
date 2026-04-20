@@ -21,6 +21,7 @@ interface PublicHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isOwner?: boolean;
+  variant?: 'full' | 'minimal';
 }
 
 type ActiveField = 'location' | 'checkin' | 'checkout' | 'guests' | null;
@@ -33,7 +34,7 @@ type ActiveField = 'location' | 'checkin' | 'checkout' | 'guests' | null;
  * – Sticky with shadow on scroll
  * – Fully accessible keyboard navigation
  */
-export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: PublicHeaderProps) {
+export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false, variant = 'full' }: PublicHeaderProps) {
   const router = useRouter();
   const t = useTranslations('nav');
   const th = useTranslations('publicHeader');
@@ -153,6 +154,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
         </Link>
 
         {/* ── Search bar (desktop) ── */}
+        {variant === 'full' && (
         <div
           ref={searchBarRef}
           className="hidden flex-1 md:flex md:justify-center"
@@ -396,11 +398,12 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
             </div>
           </form>
         </div>
+        )}
 
         {/* ── Right: profile / nav ── */}
         <div className="flex shrink-0 items-center gap-2">
-          {/* "Become a host" / "Owner dashboard" – desktop only */}
-          {!isAdmin && (
+          {/* "Become a host" / "Owner dashboard" – desktop only, full variant */}
+          {variant === 'full' && !isAdmin && (
             <Link
               href={isOwner ? '/dashboard/owner' : '/pricing'}
               className="hidden rounded-full px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine-500 lg:block"
@@ -549,6 +552,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
       </div>
 
       {/* ── Mobile search bar ── */}
+      {variant === 'full' && (
       <div className="border-t border-gray-100 px-4 pb-3 pt-2 md:hidden">
         <button
           type="button"
@@ -560,6 +564,7 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
           <span className="text-sm text-gray-500">{th('mobileSearchPlaceholder')}</span>
         </button>
       </div>
+      )}
 
       {/* ── Mobile nav drawer ── */}
       {mobileOpen && (
