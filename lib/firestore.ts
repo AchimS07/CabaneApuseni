@@ -22,13 +22,10 @@ import {
 import { getClientFirestore } from '@/lib/firebase/client';
 import type { UserRole } from './auth';
 
-// Lazy proxy — getClientFirestore() is called on first property access (client-side),
-// not at module evaluation time, so SSR never triggers the env-var check.
-const db = new Proxy({} as Firestore, {
-  get(_target, prop) {
-    return (getClientFirestore() as unknown as Record<string | symbol, unknown>)[prop];
-  },
-});
+// Lazy getter — called only at client-side call time, so SSR never triggers the env-var check.
+function getDb(): Firestore {
+  return getClientFirestore();
+}
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -119,7 +116,7 @@ export type CursorDoc = QueryDocumentSnapshot<DocumentData>;
 // ── User ──────────────────────────────────────────────────────────────────────
 
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {
-  const snap = await getDoc(doc(db, 'users', uid));
+  const snap = await getDoc(doc(getDb(), 'users', uid));
   if (!snap.exists()) return null;
   return snap.data() as UserProfile;
 }
@@ -134,7 +131,7 @@ export async function getPublishedCabins(
   let q;
   if (lastDoc) {
     q = query(
-      collection(db, 'cabins'),
+      collection(getDb(), 'cabins'),
       where('published', '==', true),
       where('hidden', '==', false),
       orderBy('createdAt', 'desc'),
@@ -143,7 +140,7 @@ export async function getPublishedCabins(
     );
   } else {
     q = query(
-      collection(db, 'cabins'),
+      collection(getDb(), 'cabins'),
       where('published', '==', true),
       where('hidden', '==', false),
       orderBy('createdAt', 'desc'),
@@ -156,7 +153,7 @@ export async function getPublishedCabins(
 }
 
 export async function getCabin(id: string): Promise<Cabin | null> {
-  const snap = await getDoc(doc(db, 'cabins', id));
+  const snap = await getDoc(doc(getDb(), 'cabins', id));
   if (!snap.exists()) return null;
   return { id: snap.id, ...snap.data() } as Cabin;
 }
@@ -164,7 +161,7 @@ export async function getCabin(id: string): Promise<Cabin | null> {
 export async function getOwnerCabins(ownerId: string): Promise<Cabin[]> {
   const snapshot = await getDocs(
     query(
-      collection(db, 'cabins'),
+      collection(getDb(), 'cabins'),
       where('ownerId', '==', ownerId),
       orderBy('createdAt', 'desc'),
     ),
@@ -175,7 +172,7 @@ export async function getOwnerCabins(ownerId: string): Promise<Cabin[]> {
 export async function createCabin(
   data: Omit<Cabin, 'id' | 'createdAt'>,
 ): Promise<string> {
-  const ref = await addDoc(collection(db, 'cabins'), {
+  const ref = await addDoc(collection(getDb(), 'cabins'), {
     ...data,
     createdAt: serverTimestamp(),
   });
@@ -186,7 +183,7 @@ export async function updateCabin(
   id: string,
   data: Partial<Omit<Cabin, 'id' | 'createdAt'>>,
 ): Promise<void> {
-  await updateDoc(doc(db, 'cabins', id), data as DocumentData);
+  await updateDoc(doc(getDb(), 'cabins', id), data as DocumentData);
 }
 
 // ── Conversations ─────────────────────────────────────────────────────────────
@@ -199,7 +196,7 @@ export async function getOrCreateConversation(
 ): Promise<string> {
   const snapshot = await getDocs(
     query(
-      collection(db, 'conversations'),
+      collection(getDb(), 'conversations'),
       where('cabinId', '==', cabinId),
       where('guestId', '==', guestId),
       limit(1),
@@ -207,7 +204,7 @@ export async function getOrCreateConversation(
   );
   if (!snapshot.empty) return snapshot.docs[0].id;
 
-  const ref = await addDoc(collection(db, 'conversations'), {
+  const ref = await addDoc(collection(getDb(), 'conversations'), {
     cabinId,
     cabinTitle,
     guestId,
@@ -219,7 +216,7 @@ export async function getOrCreateConversation(
 }
 
 export async function getConversation(id: string): Promise<Conversation | null> {
-  const snap = await getDoc(doc(db, 'conversations', id));
+  const snap = await getDoc(doc(getDb(), 'conversations', id));
   if (!snap.exists()) return null;
   return { id: snap.id, ...snap.data() } as Conversation;
 }
@@ -231,7 +228,7 @@ export async function getUserConversations(
   const field = role === 'guest' ? 'guestId' : 'ownerId';
   const snapshot = await getDocs(
     query(
-      collection(db, 'conversations'),
+      collection(getDb(), 'conversations'),
       where(field, '==', userId),
       orderBy('createdAt', 'desc'),
     ),
@@ -243,7 +240,7 @@ export function subscribeToConversation(
   id: string,
   callback: (conv: Conversation | null) => void,
 ): () => void {
-  return onSnapshot(doc(db, 'conversations', id), (snap) => {
+  return onSnapshot(doc(getDb(), 'conversations', id), (snap) => {
     callback(snap.exists() ? ({ id: snap.id, ...snap.data() } as Conversation) : null);
   });
 }
@@ -256,7 +253,7 @@ export function subscribeToMessages(
 ): () => void {
   return onSnapshot(
     query(
-      collection(db, 'conversations', conversationId, 'messages'),
+      collection(getDb(), 'conversations', conversationId, 'messages'),
       orderBy('createdAt', 'asc'),
     ),
     (snapshot) => {
@@ -274,7 +271,7 @@ export async function sendMessage(
   payload: Omit<Message, 'id' | 'createdAt'>,
 ): Promise<void> {
   await addDoc(
-    collection(db, 'conversations', conversationId, 'messages'),
+    collection(getDb(), 'conversations', conversationId, 'messages'),
     { ...payload, createdAt: serverTimestamp() },
   );
 }
@@ -288,9 +285,9 @@ export async function acceptProposal(
   guestId: string,
   ownerId: string,
 ): Promise<string> {
-  const batch = writeBatch(db);
-  batch.update(doc(db, 'conversations', conversationId), { status: 'accepted' });
-  const bookingRef = doc(collection(db, 'bookings'));
+  const batch = writeBatch(getDb());
+  batch.update(doc(getDb(), 'conversations', conversationId), { status: 'accepted' });
+  const bookingRef = doc(collection(getDb(), 'bookings'));
   batch.set(bookingRef, {
     conversationId,
     cabinId,
@@ -304,7 +301,7 @@ export async function acceptProposal(
 }
 
 export async function declineProposal(conversationId: string): Promise<void> {
-  await updateDoc(doc(db, 'conversations', conversationId), { status: 'declined' });
+  await updateDoc(doc(getDb(), 'conversations', conversationId), { status: 'declined' });
 }
 
 // ── Bookings ──────────────────────────────────────────────────────────────────
@@ -313,7 +310,7 @@ export async function getBookingByConversation(
   conversationId: string,
 ): Promise<Booking | null> {
   const snapshot = await getDocs(
-    query(collection(db, 'bookings'), where('conversationId', '==', conversationId), limit(1)),
+    query(collection(getDb(), 'bookings'), where('conversationId', '==', conversationId), limit(1)),
   );
   if (snapshot.empty) return null;
   return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as Booking;
@@ -324,7 +321,7 @@ export async function getBookingByConversation(
 export async function createReview(
   data: Omit<Review, 'id' | 'createdAt' | 'hidden'>,
 ): Promise<void> {
-  await addDoc(collection(db, 'reviews'), {
+  await addDoc(collection(getDb(), 'reviews'), {
     ...data,
     hidden: false,
     createdAt: serverTimestamp(),
@@ -333,7 +330,7 @@ export async function createReview(
 
 export async function getBookingReview(bookingId: string): Promise<Review | null> {
   const snapshot = await getDocs(
-    query(collection(db, 'reviews'), where('bookingId', '==', bookingId), limit(1)),
+    query(collection(getDb(), 'reviews'), where('bookingId', '==', bookingId), limit(1)),
   );
   if (snapshot.empty) return null;
   return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as Review;
@@ -343,7 +340,7 @@ export async function getCabinReviews(cabinId: string): Promise<Review[]> {
   // Requires composite index: cabinId ASC, hidden ASC, createdAt DESC
   const snapshot = await getDocs(
     query(
-      collection(db, 'reviews'),
+      collection(getDb(), 'reviews'),
       where('cabinId', '==', cabinId),
       where('hidden', '==', false),
       orderBy('createdAt', 'desc'),
@@ -357,7 +354,7 @@ export async function getCabinReviews(cabinId: string): Promise<Review[]> {
 export async function createReport(
   data: Omit<Report, 'id' | 'createdAt' | 'status'>,
 ): Promise<void> {
-  await addDoc(collection(db, 'reports'), {
+  await addDoc(collection(getDb(), 'reports'), {
     ...data,
     status: 'pending',
     createdAt: serverTimestamp(),
@@ -367,7 +364,7 @@ export async function createReport(
 export async function getPendingReports(): Promise<Report[]> {
   const snapshot = await getDocs(
     query(
-      collection(db, 'reports'),
+      collection(getDb(), 'reports'),
       where('status', '==', 'pending'),
       orderBy('createdAt', 'desc'),
     ),
@@ -376,7 +373,7 @@ export async function getPendingReports(): Promise<Report[]> {
 }
 
 export async function actionReport(reportId: string): Promise<void> {
-  await updateDoc(doc(db, 'reports', reportId), { status: 'actioned' });
+  await updateDoc(doc(getDb(), 'reports', reportId), { status: 'actioned' });
 }
 
 export async function hideAndActionReport(
@@ -384,10 +381,10 @@ export async function hideAndActionReport(
   contentType: 'listing' | 'review',
   contentId: string,
 ): Promise<void> {
-  const batch = writeBatch(db);
+  const batch = writeBatch(getDb());
   const collName = contentType === 'listing' ? 'cabins' : 'reviews';
-  batch.update(doc(db, collName, contentId), { hidden: true });
-  batch.update(doc(db, 'reports', reportId), { status: 'actioned' });
+  batch.update(doc(getDb(), collName, contentId), { hidden: true });
+  batch.update(doc(getDb(), 'reports', reportId), { status: 'actioned' });
   await batch.commit();
 }
 
@@ -397,7 +394,7 @@ export async function hideAndActionReport(
  * Returns the list of cabin IDs the user has wishlisted.
  */
 export async function getWishlistedCabins(uid: string): Promise<string[]> {
-  const snap = await getDoc(doc(db, 'users', uid));
+  const snap = await getDoc(doc(getDb(), 'users', uid));
   if (!snap.exists()) return [];
   return (snap.data() as UserProfile).wishlistedCabins ?? [];
 }
@@ -410,7 +407,7 @@ export async function toggleWishlistCabin(
   cabinId: string,
   add: boolean,
 ): Promise<void> {
-  await updateDoc(doc(db, 'users', uid), {
+  await updateDoc(doc(getDb(), 'users', uid), {
     wishlistedCabins: add ? arrayUnion(cabinId) : arrayRemove(cabinId),
   });
 }
