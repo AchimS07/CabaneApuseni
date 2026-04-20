@@ -13,6 +13,8 @@ import {
   CalendarIcon,
   UsersIcon,
   ChevronDownIcon,
+  HeartIcon,
+  HomeIcon,
 } from './Icons';
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -436,86 +438,90 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false, varian
             {profileOpen && (
               <div
                 role="menu"
-                className="absolute right-0 top-[calc(100%+8px)] w-56 overflow-hidden rounded-2xl border border-gray-200 bg-white py-1 shadow-xl"
+                className="absolute right-0 top-[calc(100%+8px)] w-60 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl"
               >
                 {isAuthenticated ? (
                   <>
-                    {!isAdmin && !isOwner && (
-                      <>
+                    {/* Primary navigation links */}
+                    <div className="py-1">
+                      {!isAdmin && !isOwner && (
+                        <>
+                          <Link
+                            href="/dashboard/bookings"
+                            role="menuitem"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-gray-50"
+                          >
+                            <CalendarIcon size={15} className="shrink-0 text-gray-400" aria-hidden="true" />
+                            {th('myBookings')}
+                          </Link>
+                          <Link
+                            href="/dashboard?view=favorites"
+                            role="menuitem"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-gray-50"
+                          >
+                            <HeartIcon size={15} className="shrink-0 text-gray-400" aria-hidden="true" />
+                            {th('favorites')}
+                          </Link>
+                        </>
+                      )}
+                      {isAdmin && (
                         <Link
-                          href="/dashboard/bookings"
+                          href="/admin"
                           role="menuitem"
                           onClick={() => setProfileOpen(false)}
-                          className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-gray-50"
                         >
-                          {th('myBookings')}
+                          <HomeIcon size={15} className="shrink-0 text-gray-400" aria-hidden="true" />
+                          {th('admin')}
                         </Link>
+                      )}
+                      {isOwner && !isAdmin && (
                         <Link
-                          href="/dashboard?view=favorites"
+                          href="/dashboard/owner"
                           role="menuitem"
                           onClick={() => setProfileOpen(false)}
-                          className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-gray-50"
                         >
-                          {th('favorites')}
+                          <HomeIcon size={15} className="shrink-0 text-gray-400" aria-hidden="true" />
+                          {th('ownerDashboard')}
                         </Link>
-                      </>
-                    )}
-                    {isAdmin && (
+                      )}
+                    </div>
+
+                    <hr className="border-gray-100" />
+
+                    {/* Account + logout */}
+                    <div className="py-1">
                       <Link
-                        href="/admin"
+                        href="/dashboard/profile"
                         role="menuitem"
                         onClick={() => setProfileOpen(false)}
-                        className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-gray-50"
                       >
-                        {th('admin')}
+                        <UserIcon size={15} className="shrink-0 text-gray-400" aria-hidden="true" />
+                        {t('myAccount')}
                       </Link>
-                    )}
-                    {isOwner && !isAdmin && (
-                      <Link
-                        href="/dashboard/owner"
+                      <button
+                        type="button"
                         role="menuitem"
-                        onClick={() => setProfileOpen(false)}
-                        className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                        onClick={handleLogout}
+                        disabled={loggingOut}
+                        className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50"
                       >
-                        {t('ownerDashboard')}
-                      </Link>
-                    )}
-                    {!isAdmin && !isOwner && (
-                      <Link
-                        href="/dashboard/bookings"
-                        role="menuitem"
-                        onClick={() => setProfileOpen(false)}
-                        className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
-                      >
-                        {t('myBookings')}
-                      </Link>
-                    )}
-                    <Link
-                      href="/dashboard/profile"
-                      role="menuitem"
-                      onClick={() => setProfileOpen(false)}
-                      className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
-                    >
-                      {t('myAccount')}
-                    </Link>
-                    <hr className="my-1 border-gray-100" />
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={handleLogout}
-                      disabled={loggingOut}
-                      className="block w-full px-5 py-3 text-left text-sm text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
-                    >
-                      {loggingOut ? th('loggingOut') : th('logout')}
-                    </button>
+                        <XIcon size={15} className="shrink-0" aria-hidden="true" />
+                        {loggingOut ? th('loggingOut') : th('logout')}
+                      </button>
+                    </div>
                   </>
                 ) : (
-                  <>
+                  <div className="py-1">
                     <Link
                       href="/login"
                       role="menuitem"
                       onClick={() => setProfileOpen(false)}
-                      className="block px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+                      className="block px-4 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
                     >
                       {th('login')}
                     </Link>
@@ -523,11 +529,11 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false, varian
                       href="/register"
                       role="menuitem"
                       onClick={() => setProfileOpen(false)}
-                      className="block px-5 py-3 text-sm text-gray-700 transition hover:bg-gray-50"
+                      className="block px-4 py-2.5 text-sm text-gray-700 transition hover:bg-gray-50"
                     >
                       {th('register')}
                     </Link>
-                  </>
+                  </div>
                 )}
               </div>
             )}
