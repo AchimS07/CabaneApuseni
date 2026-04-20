@@ -100,7 +100,7 @@ export default async function OwnerBookingsPage({ searchParams }: Props) {
               {s === 'pending' && pendingCount > 0 && (
                 <span
                   className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${
-                    isActive ? 'bg-white text-pine-700' : 'bg-yellow-400 text-white'
+                    isActive ? 'bg-white text-pine-700' : 'bg-earth-400 text-white'
                   }`}
                   aria-label={`${pendingCount} ${t('filterPending').toLowerCase()}`}
                 >

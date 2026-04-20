@@ -5,8 +5,8 @@ import type { BookingStatus } from '@/modules/bookings/domain/types';
 import { useTranslations } from 'next-intl';
 
 const STATUS_CLASSES: Record<BookingStatus, string> = {
-  pending: 'bg-yellow-100 text-yellow-800',
-  confirmed: 'bg-green-100 text-green-800',
+  pending: 'bg-earth-100 text-earth-700',
+  confirmed: 'bg-pine-100 text-pine-700',
   cancelled: 'bg-red-100 text-red-800',
   completed: 'bg-gray-100 text-gray-700',
 };
