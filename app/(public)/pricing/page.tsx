@@ -5,6 +5,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { PLANS } from '@/lib/subscription/plans';
 import { getTranslations } from 'next-intl/server';
+import { verifySession } from '@/lib/auth/session';
+import { PlanCheckoutButton } from '@/components/ui/PlanCheckoutButton';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('pricingPage');
@@ -25,7 +27,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PricingPage() {
-  const t = await getTranslations('pricingPage');
+  const [t, session] = await Promise.all([
+    getTranslations('pricingPage'),
+    verifySession(),
+  ]);
+
+  const isOwner = session?.role === 'owner' || session?.role === 'admin';
+  const hasActiveSub = isOwner && session?.subscriptionStatus === 'active';
+
+  function planCtaClass(recommended?: boolean) {
+    return (
+      'block rounded-lg px-6 py-3 text-center text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2' +
+      (recommended
+        ? ' bg-ember-500 text-white hover:bg-ember-600 focus:ring-ember-500'
+        : ' bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-700')
+    );
+  }
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-16">
@@ -83,28 +100,36 @@ export default async function PricingPage() {
               ))}
             </ul>
 
-            <Link
-              href={'/register/owner?plan=' + plan.id}
-              className={
-                'block rounded-lg px-6 py-3 text-center text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2' +
-                (plan.recommended
-                  ? ' bg-ember-500 text-white hover:bg-ember-600 focus:ring-ember-500'
-                  : ' bg-gray-900 text-white hover:bg-gray-800 focus:ring-gray-700')
-              }
-            >
-              {t('ctaPrefix')} {plan.name}
-            </Link>
+            {hasActiveSub ? (
+              <Link
+                href="/dashboard/owner"
+                className={planCtaClass(plan.recommended)}
+              >
+                {t('managePlan')}
+              </Link>
+            ) : isOwner ? (
+              <PlanCheckoutButton planId={plan.id} recommended={plan.recommended} />
+            ) : (
+              <Link
+                href={'/register/owner?plan=' + plan.id}
+                className={planCtaClass(plan.recommended)}
+              >
+                {t('ctaPrefix')} {plan.name}
+              </Link>
+            )}
           </article>
         ))}
       </div>
 
-      <p className="mt-10 text-center text-sm text-gray-500">
-        {t('haveAccount')}{' '}
-        <Link href="/login" className="font-medium text-pine-600 hover:underline">
-          {t('signInLink')}
-        </Link>{' '}
-        {t('manageDashboard')}
-      </p>
+      {!session && (
+        <p className="mt-10 text-center text-sm text-gray-500">
+          {t('haveAccount')}{' '}
+          <Link href="/login" className="font-medium text-pine-600 hover:underline">
+            {t('signInLink')}
+          </Link>{' '}
+          {t('manageDashboard')}
+        </p>
+      )}
     </main>
   );
 }

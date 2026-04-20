@@ -659,6 +659,10 @@
     "perMonth": "/month",
     "featuresLabel": "Plan {name} features",
     "ctaPrefix": "Get started with",
+    "subscribeTo": "Subscribe to {name}",
+    "subscribing": "Processing…",
+    "checkoutError": "Something went wrong. Please try again.",
+    "managePlan": "Manage current plan",
     "haveAccount": "Already have an account?",
     "signInLink": "Sign in",
     "manageDashboard": "and manage your subscription from the dashboard."
