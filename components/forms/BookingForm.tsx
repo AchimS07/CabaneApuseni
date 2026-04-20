@@ -181,7 +181,8 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
         )}
 
         {/* Date range block */}
-        <div className="overflow-hidden rounded-xl border border-gray-300">
+        {/* Check-in + Check-out: overflow-hidden clips bg to rounded corners */}
+        <div className="overflow-hidden rounded-t-xl border border-gray-300">
 
           {/* Check-in */}
           <div
@@ -221,7 +222,7 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
           {/* Check-out */}
           <div
             className={[
-              'flex flex-col border-b border-gray-300 px-3 py-3',
+              'flex flex-col px-3 py-3',
               fieldErrors.checkOut ? 'bg-red-50' : '',
             ].join(' ')}
           >
@@ -249,70 +250,70 @@ export default function BookingForm({ cabin, isAuthenticated }: BookingFormProps
               </p>
             )}
           </div>
+        </div>
 
-          {/* Guests popover trigger */}
-          <div ref={guestPopoverRef} className="relative">
-            <button
-              type="button"
-              onClick={() => setGuestPopoverOpen((o) => !o)}
-              aria-expanded={guestPopoverOpen}
-              aria-haspopup="dialog"
-              aria-controls={`${formId}-guest-popover`}
-              className="flex w-full flex-col px-3 py-3 text-left focus:outline-none"
+        {/* Guests popover trigger — intentionally outside overflow-hidden so the popover is not clipped */}
+        <div ref={guestPopoverRef} className="relative rounded-b-xl border border-t-0 border-gray-300">
+          <button
+            type="button"
+            onClick={() => setGuestPopoverOpen((o) => !o)}
+            aria-expanded={guestPopoverOpen}
+            aria-haspopup="dialog"
+            aria-controls={`${formId}-guest-popover`}
+            className="flex w-full flex-col rounded-b-xl px-3 py-3 text-left focus:outline-none"
+          >
+            <span className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-900">
+              <UsersIcon size={12} aria-hidden="true" />
+              {t('guests')}
+            </span>
+            <span className="text-sm text-gray-900">
+              {guestCount} {guestCount === 1 ? t('guestSingular') : t('guestPlural')}
+            </span>
+          </button>
+
+          {guestPopoverOpen && (
+            <div
+              id={`${formId}-guest-popover`}
+              role="dialog"
+              aria-label={t('selectGuestsAriaLabel')}
+              className="absolute bottom-[calc(100%+4px)] left-0 right-0 z-20 rounded-2xl border border-gray-200 bg-white p-4 shadow-xl"
             >
-              <span className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-900">
-                <UsersIcon size={12} aria-hidden="true" />
-                {t('guests')}
-              </span>
-              <span className="text-sm text-gray-900">
-                {guestCount} {guestCount === 1 ? t('guestSingular') : t('guestPlural')}
-              </span>
-            </button>
-
-            {guestPopoverOpen && (
-              <div
-                id={`${formId}-guest-popover`}
-                role="dialog"
-                aria-label={t('selectGuestsAriaLabel')}
-                className="absolute bottom-[calc(100%+4px)] left-0 right-0 z-20 rounded-2xl border border-gray-200 bg-white p-4 shadow-xl"
+              {/* Adults */}
+              <GuestCounter
+                label={t('adults')}
+                sublabel={t('adultsAge')}
+                value={adults}
+                min={1}
+                max={cabin.maxGuests - children}
+                onChange={setAdults}
+                decreaseAriaLabel={t('decreaseLabel', { label: t('adults') })}
+                increaseAriaLabel={t('increaseLabel', { label: t('adults') })}
+              />
+              {/* Children */}
+              <GuestCounter
+                label={t('children')}
+                sublabel={t('childrenAge')}
+                value={children}
+                min={0}
+                max={cabin.maxGuests - adults}
+                onChange={setChildren}
+                decreaseAriaLabel={t('decreaseLabel', { label: t('children') })}
+                increaseAriaLabel={t('increaseLabel', { label: t('children') })}
+              />
+              {fieldErrors.guestCount && (
+                <p className="mt-2 text-xs text-red-600" role="alert">
+                  {fieldErrors.guestCount}
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={() => setGuestPopoverOpen(false)}
+                className="mt-4 w-full text-right text-sm font-semibold text-gray-900 underline"
               >
-                {/* Adults */}
-                <GuestCounter
-                  label={t('adults')}
-                  sublabel={t('adultsAge')}
-                  value={adults}
-                  min={1}
-                  max={cabin.maxGuests - children}
-                  onChange={setAdults}
-                  decreaseAriaLabel={t('decreaseLabel', { label: t('adults') })}
-                  increaseAriaLabel={t('increaseLabel', { label: t('adults') })}
-                />
-                {/* Children */}
-                <GuestCounter
-                  label={t('children')}
-                  sublabel={t('childrenAge')}
-                  value={children}
-                  min={0}
-                  max={cabin.maxGuests - adults}
-                  onChange={setChildren}
-                  decreaseAriaLabel={t('decreaseLabel', { label: t('children') })}
-                  increaseAriaLabel={t('increaseLabel', { label: t('children') })}
-                />
-                {fieldErrors.guestCount && (
-                  <p className="mt-2 text-xs text-red-600" role="alert">
-                    {fieldErrors.guestCount}
-                  </p>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setGuestPopoverOpen(false)}
-                  className="mt-4 w-full text-right text-sm font-semibold text-gray-900 underline"
-                >
-                  {t('applyGuests')}
-                </button>
-              </div>
-            )}
-          </div>
+                {t('applyGuests')}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Notes */}
