@@ -128,8 +128,6 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
       })()
     : tomorrow;
 
-  const searchHasValue = location || checkIn || checkOut || guests > 1;
-
   return (
     <header
       className={[
@@ -173,68 +171,163 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
               ].join(' ')}
             >
               {/* Location */}
-              <button
-                type="button"
-                onClick={() => setActiveField(activeField === 'location' ? null : 'location')}
-                className={[
-                  'relative flex flex-col items-start justify-center px-5 py-2.5 transition',
-                  activeField === 'location'
-                    ? 'bg-white rounded-full shadow-md z-10'
-                    : 'bg-white hover:bg-gray-50',
-                ].join(' ')}
-                aria-expanded={activeField === 'location'}
-                aria-haspopup="listbox"
-              >
-                <span className="text-xs font-semibold text-gray-900">{th('locationLabel')}</span>
-                <span className={`text-sm ${location ? 'text-gray-900' : 'text-gray-400'}`}>
-                  {location || th('locationPlaceholder')}
-                </span>
-              </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setActiveField(activeField === 'location' ? null : 'location')}
+                  className={[
+                    'flex h-full flex-col items-start justify-center px-5 py-2.5 transition',
+                    activeField === 'location'
+                      ? 'bg-white rounded-full shadow-md z-10'
+                      : 'bg-white hover:bg-gray-50',
+                  ].join(' ')}
+                  aria-expanded={activeField === 'location'}
+                  aria-haspopup="listbox"
+                >
+                  <span className="text-xs font-semibold text-gray-900">{th('locationLabel')}</span>
+                  <span className={`text-sm ${location ? 'text-gray-900' : 'text-gray-400'}`}>
+                    {location || th('locationPlaceholder')}
+                  </span>
+                </button>
+
+                {/* Location popover */}
+                {activeField === 'location' && (
+                  <div className="absolute top-[calc(100%+8px)] left-0 z-50 w-80 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                      {th('searchByDestination')}
+                    </p>
+                    <div className="relative">
+                      <MapPinIcon
+                        size={16}
+                        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <input
+                        autoFocus
+                        type="text"
+                        placeholder={th('locationInputPlaceholder')}
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        className="w-full rounded-xl border border-gray-300 py-2.5 pl-9 pr-4 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                        onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), setActiveField('checkin'))}
+                      />
+                    </div>
+                    {location && (
+                      <button
+                        type="button"
+                        className="mt-2 text-xs text-ember-600 underline"
+                        onClick={() => setLocation('')}
+                      >
+                        {th('clear')}
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
 
               <div className="my-3 w-px bg-gray-200" aria-hidden="true" />
 
               {/* Check-in */}
-              <button
-                type="button"
-                onClick={() => setActiveField(activeField === 'checkin' ? null : 'checkin')}
-                className={[
-                  'relative flex flex-col items-start justify-center px-5 py-2.5 transition',
-                  activeField === 'checkin'
-                    ? 'bg-white rounded-full shadow-md z-10'
-                    : 'bg-white hover:bg-gray-50',
-                ].join(' ')}
-                aria-expanded={activeField === 'checkin'}
-              >
-                <span className="text-xs font-semibold text-gray-900">{th('checkInLabel')}</span>
-                <span className={`text-sm ${checkIn ? 'text-gray-900' : 'text-gray-400'}`}>
-                  {checkIn ? new Date(checkIn).toLocaleDateString(undefined, { day: '2-digit', month: 'short' }) : th('addDates')}
-                </span>
-              </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setActiveField(activeField === 'checkin' ? null : 'checkin')}
+                  className={[
+                    'flex h-full flex-col items-start justify-center px-5 py-2.5 transition',
+                    activeField === 'checkin'
+                      ? 'bg-white rounded-full shadow-md z-10'
+                      : 'bg-white hover:bg-gray-50',
+                  ].join(' ')}
+                  aria-expanded={activeField === 'checkin'}
+                >
+                  <span className="text-xs font-semibold text-gray-900">{th('checkInLabel')}</span>
+                  <span className={`text-sm ${checkIn ? 'text-gray-900' : 'text-gray-400'}`}>
+                    {checkIn ? new Date(checkIn).toLocaleDateString(undefined, { day: '2-digit', month: 'short' }) : th('addDates')}
+                  </span>
+                </button>
+
+                {/* Check-in popover */}
+                {activeField === 'checkin' && (
+                  <div className="absolute top-[calc(100%+8px)] left-0 z-50 w-72 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                      {th('checkInPopoverLabel')}
+                    </p>
+                    <div className="relative">
+                      <CalendarIcon
+                        size={16}
+                        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <input
+                        autoFocus
+                        type="date"
+                        value={checkIn}
+                        min={tomorrow}
+                        onChange={(e) => {
+                          setCheckIn(e.target.value);
+                          if (checkOut && e.target.value >= checkOut) setCheckOut('');
+                          setActiveField('checkout');
+                        }}
+                        className="w-full rounded-xl border border-gray-300 py-2.5 pl-9 pr-4 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div className="my-3 w-px bg-gray-200" aria-hidden="true" />
 
               {/* Check-out */}
-              <button
-                type="button"
-                onClick={() => setActiveField(activeField === 'checkout' ? null : 'checkout')}
-                className={[
-                  'relative flex flex-col items-start justify-center px-5 py-2.5 transition',
-                  activeField === 'checkout'
-                    ? 'bg-white rounded-full shadow-md z-10'
-                    : 'bg-white hover:bg-gray-50',
-                ].join(' ')}
-                aria-expanded={activeField === 'checkout'}
-              >
-                <span className="text-xs font-semibold text-gray-900">{th('checkOutLabel')}</span>
-                <span className={`text-sm ${checkOut ? 'text-gray-900' : 'text-gray-400'}`}>
-                  {checkOut ? new Date(checkOut).toLocaleDateString(undefined, { day: '2-digit', month: 'short' }) : th('addDates')}
-                </span>
-              </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setActiveField(activeField === 'checkout' ? null : 'checkout')}
+                  className={[
+                    'flex h-full flex-col items-start justify-center px-5 py-2.5 transition',
+                    activeField === 'checkout'
+                      ? 'bg-white rounded-full shadow-md z-10'
+                      : 'bg-white hover:bg-gray-50',
+                  ].join(' ')}
+                  aria-expanded={activeField === 'checkout'}
+                >
+                  <span className="text-xs font-semibold text-gray-900">{th('checkOutLabel')}</span>
+                  <span className={`text-sm ${checkOut ? 'text-gray-900' : 'text-gray-400'}`}>
+                    {checkOut ? new Date(checkOut).toLocaleDateString(undefined, { day: '2-digit', month: 'short' }) : th('addDates')}
+                  </span>
+                </button>
+
+                {/* Check-out popover */}
+                {activeField === 'checkout' && (
+                  <div className="absolute top-[calc(100%+8px)] left-0 z-50 w-72 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                      {th('checkOutPopoverLabel')}
+                    </p>
+                    <div className="relative">
+                      <CalendarIcon
+                        size={16}
+                        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <input
+                        autoFocus
+                        type="date"
+                        value={checkOut}
+                        min={minCheckOut}
+                        onChange={(e) => {
+                          setCheckOut(e.target.value);
+                          setActiveField('guests');
+                        }}
+                        className="w-full rounded-xl border border-gray-300 py-2.5 pl-9 pr-4 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div className="my-3 w-px bg-gray-200" aria-hidden="true" />
 
               {/* Guests */}
-              <div className="flex items-center">
+              <div className="relative flex items-center">
                 <button
                   type="button"
                   onClick={() => setActiveField(activeField === 'guests' ? null : 'guests')}
@@ -253,150 +346,54 @@ export function PublicHeader({ isAuthenticated, isAdmin, isOwner = false }: Publ
                   </span>
                 </button>
 
+                {/* Guests popover */}
+                {activeField === 'guests' && (
+                  <div className="absolute top-[calc(100%+8px)] right-0 z-50 w-72 rounded-3xl border border-gray-200 bg-white p-5 shadow-xl">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">{th('guestsPopoverLabel')}</p>
+                        <p className="text-xs text-gray-500">{th('guestsPopoverQuestion')}</p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setGuests((g) => Math.max(1, g - 1))}
+                          disabled={guests <= 1}
+                          aria-label={th('decreaseGuests')}
+                          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
+                        >
+                          <span aria-hidden="true" className="text-lg leading-none">−</span>
+                        </button>
+                        <span
+                          className="w-4 text-center text-sm font-medium"
+                          aria-live="polite"
+                          aria-atomic="true"
+                        >
+                          {guests}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setGuests((g) => Math.min(20, g + 1))}
+                          aria-label={th('increaseGuests')}
+                          className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900"
+                        >
+                          <span aria-hidden="true" className="text-lg leading-none">+</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Search button */}
                 <button
                   type="submit"
-                  className={[
-                    'mr-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition',
-                    searchHasValue
-                      ? 'bg-ember-500 text-white hover:bg-ember-600'
-                      : 'bg-ember-500 text-white hover:bg-ember-600',
-                  ].join(' ')}
+                  className="mr-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ember-500 text-white transition hover:bg-ember-600"
                   aria-label={th('searchButton')}
                 >
                   <SearchIcon size={16} />
                 </button>
               </div>
             </div>
-
-            {/* ── Dropdowns ── */}
-
-            {/* Location popover */}
-            {activeField === 'location' && (
-              <div className="absolute top-[calc(100%+8px)] left-0 w-80 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                  {th('searchByDestination')}
-                </p>
-                <div className="relative">
-                  <MapPinIcon
-                    size={16}
-                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  <input
-                    autoFocus
-                    type="text"
-                    placeholder={th('locationInputPlaceholder')}
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="w-full rounded-xl border border-gray-300 py-2.5 pl-9 pr-4 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), setActiveField('checkin'))}
-                  />
-                </div>
-                {location && (
-                  <button
-                    type="button"
-                    className="mt-2 text-xs text-ember-600 underline"
-                    onClick={() => setLocation('')}
-                  >
-                    {th('clear')}
-                  </button>
-                )}
-              </div>
-            )}
-
-            {/* Check-in popover */}
-            {activeField === 'checkin' && (
-              <div className="absolute top-[calc(100%+8px)] left-1/4 w-72 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                  {th('checkInPopoverLabel')}
-                </p>
-                <div className="relative">
-                  <CalendarIcon
-                    size={16}
-                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  <input
-                    autoFocus
-                    type="date"
-                    value={checkIn}
-                    min={tomorrow}
-                    onChange={(e) => {
-                      setCheckIn(e.target.value);
-                      if (checkOut && e.target.value >= checkOut) setCheckOut('');
-                      setActiveField('checkout');
-                    }}
-                    className="w-full rounded-xl border border-gray-300 py-2.5 pl-9 pr-4 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Check-out popover */}
-            {activeField === 'checkout' && (
-              <div className="absolute top-[calc(100%+8px)] left-1/3 w-72 rounded-3xl border border-gray-200 bg-white p-4 shadow-xl">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                  {th('checkOutPopoverLabel')}
-                </p>
-                <div className="relative">
-                  <CalendarIcon
-                    size={16}
-                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                    aria-hidden="true"
-                  />
-                  <input
-                    autoFocus
-                    type="date"
-                    value={checkOut}
-                    min={minCheckOut}
-                    onChange={(e) => {
-                      setCheckOut(e.target.value);
-                      setActiveField('guests');
-                    }}
-                    className="w-full rounded-xl border border-gray-300 py-2.5 pl-9 pr-4 text-sm focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Guests popover */}
-            {activeField === 'guests' && (
-              <div className="absolute top-[calc(100%+8px)] right-0 w-72 rounded-3xl border border-gray-200 bg-white p-5 shadow-xl">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900">{th('guestsPopoverLabel')}</p>
-                    <p className="text-xs text-gray-500">{th('guestsPopoverQuestion')}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setGuests((g) => Math.max(1, g - 1))}
-                      disabled={guests <= 1}
-                      aria-label={th('decreaseGuests')}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
-                    >
-                      <span aria-hidden="true" className="text-lg leading-none">−</span>
-                    </button>
-                    <span
-                      className="w-4 text-center text-sm font-medium"
-                      aria-live="polite"
-                      aria-atomic="true"
-                    >
-                      {guests}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setGuests((g) => Math.min(20, g + 1))}
-                      aria-label={th('increaseGuests')}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:border-gray-900"
-                    >
-                      <span aria-hidden="true" className="text-lg leading-none">+</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </form>
         </div>
 
