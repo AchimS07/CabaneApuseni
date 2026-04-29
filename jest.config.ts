@@ -3,6 +3,9 @@ import type { Config } from 'jest';
 const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
+  // Inject dummy env vars before any test module is loaded.
+  // Jest does not read .env.local automatically (that is a Next.js feature).
+  setupFiles: ['./jest.env.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
