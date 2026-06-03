@@ -2,8 +2,9 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/wedding1/repositories/CabaneApuseni
+    # Remove node_modules from source before copying (cPanel manages it via symlink)
+    - rm -rf node_modules
     - /bin/cp -R * $DEPLOYPATH
-    - cd $DEPLOYPATH
-    - npm install --production
-    - npm run build
+    # Build inside the deploy path using cPanel's virtual environment
+    - cd $DEPLOYPATH && source /home/wedding1/nodevenv/repositories/CabaneApuseni/20/bin/activate && npm install --production && npm run build
     - mkdir -p $DEPLOYPATH/tmp && touch $DEPLOYPATH/tmp/restart.txt
