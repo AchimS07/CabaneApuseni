@@ -8,6 +8,7 @@ import { randomUUID } from 'crypto';
 import { verifySession } from '@/lib/auth/session';
 import { getUserById } from '@/modules/users/infrastructure/firestoreUserRepository';
 import { createNetopiaPayment } from '@/lib/netopia/client';
+import { createPendingPayment } from '@/lib/netopia/pendingPayments';
 import { getServerEnv } from '@/lib/env';
 import { PLANS } from '@/lib/subscription/plans';
 import { createLogger } from '@/lib/observability/logger';
@@ -63,6 +64,11 @@ export async function POST(req: NextRequest) {
       postalCode: '',
       details: '',
     };
+
+    // Persist a pending-payment record so the subscription can be activated
+    // even if the Netopia IPN cannot reach the server (e.g. localhost) or if
+    // the IPN payload does not echo back our custom `data` fields.
+    await createPendingPayment(orderID, session.uid, plan);
 
     const response = await createNetopiaPayment({
       config: {
