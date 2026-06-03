@@ -7,6 +7,7 @@ import { getProfile } from '@/modules/users/application/userService';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SubscriptionBanner } from '@/components/ui/SubscriptionBanner';
+import { PaymentVerifier } from '@/components/ui/PaymentVerifier';
 import {
   HomeIcon,
   CheckCircleIcon,
@@ -28,9 +29,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const dynamic = 'force-dynamic';
 
-export default async function OwnerDashboardPage() {
+export default async function OwnerDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const session = await requireOwner();
   const t = await getTranslations('ownerDashboard');
+  const params = await searchParams;
+  const subscriptionSuccess = params['subscription'] === 'success';
 
   const [cabinsResult, bookingsResult, profileResult] = await Promise.all([
     getOwnerCabins(session.uid),
@@ -65,6 +72,9 @@ export default async function OwnerDashboardPage() {
         title={t('title')}
         description={t('description')}
       />
+
+      {/* Payment verification on redirect from Netopia */}
+      {subscriptionSuccess && <PaymentVerifier />}
 
       {/* Subscription status banner */}
       <SubscriptionBanner
