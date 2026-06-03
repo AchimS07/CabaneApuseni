@@ -6,3 +6,4 @@ deployment:
     - cd $DEPLOYPATH
     - npm install --production
     - npm run build
+    - mkdir -p $DEPLOYPATH/tmp && touch $DEPLOYPATH/tmp/restart.txt
