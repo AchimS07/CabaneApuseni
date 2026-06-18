@@ -2,7 +2,11 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/wedding1/repositories/CabaneApuseni
-    - rm -rf node_modules
-    - /bin/cp -R * $DEPLOYPATH
-    - cd $DEPLOYPATH && source /home/wedding1/nodevenv/repositories/CabaneApuseni/20/bin/activate && npm install --production && npm run build
+    # Clean previous build artifacts in deploy target
+    - cd $DEPLOYPATH && rm -rf .next node_modules
+    # Copy all files including dot-files (exclude .git)
+    - /bin/rsync -a --exclude='.git' --exclude='node_modules' --exclude='.next' ./ $DEPLOYPATH/
+    # Install all dependencies (dev needed for build), build, then prune dev deps
+    - cd $DEPLOYPATH && source /home/wedding1/nodevenv/repositories/CabaneApuseni/20/bin/activate && npm install && npm run build && npm prune --production
+    # Restart Passenger
     - mkdir -p $DEPLOYPATH/tmp && touch $DEPLOYPATH/tmp/restart.txt
