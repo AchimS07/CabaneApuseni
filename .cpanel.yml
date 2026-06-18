@@ -1,0 +1,10 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/wedding1/cabane-apuseni.ro
+    - /bin/cp -R * "$DEPLOYPATH/"
+    - /bin/cp .env.local "$DEPLOYPATH/.env.local" 2>/dev/null || true
+    - /bin/cp .cpanel.yml "$DEPLOYPATH/.cpanel.yml" 2>/dev/null || true
+    - cd "$DEPLOYPATH" && npm install --production=false
+    - cd "$DEPLOYPATH" && npm run build
+    - touch "$DEPLOYPATH/tmp/restart.txt" 2>/dev/null || true
