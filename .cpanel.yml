@@ -1,10 +1,12 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/wedding1/cabane-apuseni.ro
-    - /bin/cp -R * "$DEPLOYPATH/"
-    - /bin/cp .env.local "$DEPLOYPATH/.env.local" 2>/dev/null || true
-    - /bin/cp .cpanel.yml "$DEPLOYPATH/.cpanel.yml" 2>/dev/null || true
-    - cd "$DEPLOYPATH" && npm install --production=false
-    - cd "$DEPLOYPATH" && npm run build
-    - touch "$DEPLOYPATH/tmp/restart.txt" 2>/dev/null || true
+    - export DEPLOYPATH=/home/wedding1/repositories/CabaneApuseni
+    # Clean previous build artifacts only (preserve node_modules symlink for CloudLinux NodeJS Selector)
+    - cd $DEPLOYPATH && rm -rf .next
+    # Copy all files including dot-files (exclude .git, node_modules, .next)
+    - /bin/rsync -a --exclude='.git' --exclude='node_modules' --exclude='.next' ./ $DEPLOYPATH/
+    # Install all dependencies (dev needed for build), build, then prune dev deps
+    - cd $DEPLOYPATH && source /home/wedding1/nodevenv/repositories/CabaneApuseni/20/bin/activate && npm install && npm run build && npm prune --production
+    # Restart Passenger
+    - mkdir -p $DEPLOYPATH/tmp && touch $DEPLOYPATH/tmp/restart.txt
